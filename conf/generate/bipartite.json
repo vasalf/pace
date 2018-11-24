@@ -1,0 +1,44 @@
+{
+    "tests": [
+        {
+            "output_file": "data/bipartite/rnd_1000_full.txt",
+            "command": "./tools/generators/bipartite/random_bigraph.py 1000 1000 1000000"
+        },
+        {
+            "output_file": "data/bipartite/rnd_1000_sparse.txt",
+            "command": "./tools/generators/bipartite/random_bigraph.py 1000 1000 1000"
+        },
+        {
+            "output_file": "data/bipartite/rnd_10000_dense.txt",
+            "command": "./tools/generators/bipartite/random_bigraph.py 10000 10000 1000000"
+        },
+        {
+            "output_file": "data/bipartite/rnd_10000_sparse.txt",
+            "command": "./tools/generators/bipartite/random_bigraph.py 10000 10000 10000"
+        },
+        {
+            "output_file": "data/bipartite/rnd_100000.txt",
+            "command": "./tools/generators/bipartite/random_bigraph.py 100000 100000 1000000"
+        },
+        {
+            "output_file": "data/bipartite/rnd_10_200000.txt",
+            "command": "./tools/generators/bipartite/random_bigraph.py 10 200000 1000000"
+        },
+        {
+            "output_file": "data/bipartite/rnd_200000_10.txt",
+            "command": "./tools/generators/bipartite/random_bigraph.py 200000 10 1000000"
+        },
+        {
+            "output_file": "data/bipartite/rnd_1_200000.txt",
+            "command": "./tools/generators/bipartite/random_bigraph.py 1 200000 200000"
+        },
+        {
+            "output_file": "data/bipartite/rnd_100_10000_full.txt",
+            "command": "./tools/generators/bipartite/random_bigraph.py 100 10000 1000000"
+        },
+        {
+            "output_file": "data/bipartite/rnd_100_10000_sparse.txt",
+            "command": "./tools/generators/bipartite/random_bigraph.py 100 10000 100000"
+        }
+    ]
+}

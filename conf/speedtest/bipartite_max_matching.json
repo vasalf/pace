@@ -1,0 +1,59 @@
+{
+    "tests": [
+        {
+            "filename": "data/bipartite/rnd_1000_full.txt",
+            "name": "rnd_1000_full"
+        },
+        {
+            "filename": "data/bipartite/rnd_1000_sparse.txt",
+            "name": "rnd_1000_sparse"
+        },
+        {
+            "filename": "data/bipartite/rnd_10000_dense.txt",
+            "name": "rnd_10000_dense"
+        },
+        {
+            "filename": "data/bipartite/rnd_10000_sparse.txt",
+            "name": "rnd_10000_sparse"
+        },
+        {
+            "filename": "data/bipartite/rnd_100000.txt",
+            "name": "rnd_100000"
+        },
+        {
+            "filename": "data/bipartite/rnd_10_200000.txt",
+            "name": "rnd_10_200000"
+        },
+        {
+            "filename": "data/bipartite/rnd_200000_10.txt",
+            "name": "rnd_200000_10"
+        },
+        {
+            "filename": "data/bipartite/rnd_1_200000.txt",
+            "name": "rnd_1_200000"
+        },
+        {
+            "filename": "data/bipartite/rnd_100_10000_full.txt",
+            "name": "rnd_100_10000_full"
+        },
+        {
+            "filename": "data/bipartite/rnd_100_10000_sparse.txt",
+            "name": "rnd_100_10000_sparse"
+        }
+    ],
+    "solutions": [
+        {
+            "executable": "./build/solutions/bipartite_max_matching/boost_graph/boost_graph",
+            "name": "boost_graph"
+        },
+        {
+            "executable": "./solutions/bipartite_max_matching/py_hopcroftkarp/py_hopcroftkarp.py",
+            "name": "py_hopcroft"
+        },
+        {
+            "executable": "./build/solutions/bipartite_max_matching/classic_kuhn/classic_kuhn",
+            "name": "classic_kuhn"
+        }
+    ],
+    "timeout": 10
+}

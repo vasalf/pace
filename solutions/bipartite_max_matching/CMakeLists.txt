@@ -1,1 +1,2 @@
 add_subdirectory(boost_graph)
+add_subdirectory(classic_kuhn)

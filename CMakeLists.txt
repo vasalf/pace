@@ -3,6 +3,8 @@ project(pace)
 
 set(CMAKE_CXX_STANDARD 17)
 
+include_directories(${CMAKE_SOURCE_DIR}/lib)
 include_directories(${CMAKE_SOURCE_DIR}/third_party)
 
+add_subdirectory(lib)
 add_subdirectory(solutions)
