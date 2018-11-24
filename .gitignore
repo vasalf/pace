@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+# Build dir
+build/*
+!build/.keep
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
