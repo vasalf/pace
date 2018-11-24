@@ -53,7 +53,16 @@
         {
             "executable": "./build/solutions/bipartite_max_matching/classic_kuhn/classic_kuhn",
             "name": "classic_kuhn"
+        },
+        {
+            "executable": "./build/solutions/bipartite_max_matching/optimized_kuhn/optimized_kuhn",
+            "name": "optimized_kuhn"
+        },
+        {
+            "executable": "./build/solutions/bipartite_max_matching/hopcroftkarp/hopcroftkarp",
+            "name": "hopcroftkarp"
         }
+
     ],
     "timeout": 10
 }

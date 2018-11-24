@@ -1,2 +1,4 @@
 add_subdirectory(boost_graph)
 add_subdirectory(classic_kuhn)
+add_subdirectory(hopcroftkarp)
+add_subdirectory(optimized_kuhn)
