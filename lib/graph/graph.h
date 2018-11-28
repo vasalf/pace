@@ -1,0 +1,75 @@
+#pragma once
+
+#include <memory>
+#include <vector>
+#include <unordered_set>
+
+namespace PaceVC {
+
+class Graph {
+    struct ReductionBase {
+        virtual void reduce(Graph&, const Graph&) = 0;
+    };
+
+    using ReductionRulePtr = std::shared_ptr<ReductionBase>;
+
+    template<class ReductionRule>
+    struct ReductionImpl : public ReductionBase {
+        ReductionRule rule;
+
+        ReductionImpl(ReductionRule&& ofRule) : rule(ofRule) {}
+
+        virtual void reduce(Graph& oldGraph, const Graph& nextStepRes) override final {
+            rule(oldGraph, nextStepRes);
+        }
+    };
+
+public:
+    template<class T>
+    using Set = std::unordered_set<T>;
+
+    Graph(int n);
+    ~Graph();
+
+    Graph(const Graph&);
+    Graph& operator=(const Graph&);
+    Graph(Graph&&);
+    Graph& operator=(Graph&&);
+
+    void addEdge(int u, int v);
+    const Set<int>& adjacent(int v) const;
+
+    void takeVertex(int v);
+    void removeVertex(int v);
+    const Set<int>& undecided() const;
+    const std::vector<int>& solution() const;
+    const std::vector<int>& removed() const;
+
+    template<class ReductionRule>
+    void addReduction(ReductionRule&& rule, const Graph& newGraph) {
+        addReductionImpl(
+            std::make_shared<ReductionImpl<ReductionRule>>(std::forward<ReductionRule>(rule)),
+            newGraph
+        );
+    }
+
+    void addSimpleReduction(const std::vector<int>& newToOld);
+    void squeeze();
+
+    void restoreSolution();
+
+    int size() const;
+    int realSize() const;
+
+private:
+    void addReductionImpl(ReductionRulePtr rule, const Graph& newGraph);
+
+    struct TImpl;
+    std::unique_ptr<TImpl> impl_;
+
+    Graph(std::unique_ptr<TImpl>&&);
+};
+
+Graph readGraph(std::istream& is);
+
+}

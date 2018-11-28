@@ -1,9 +1,28 @@
+include(CTest)
+
 add_library(pacevc STATIC
     graph/boost_graph.cpp
     graph/bipartite_graph.cpp
+    graph/graph.cpp
 
     bipartite_maxm/augmenting_path.cpp
     bipartite_maxm/matching.cpp
 
     reader/line_reader.cpp
 )
+
+if (BUILD_TESTING)
+    enable_testing()
+    find_package(GTest REQUIRED)
+    include_directories(${GTEST_INCLUDE_DIR})
+
+    add_executable(pacevc_test
+        graph/graph_ut.cpp
+        bipartite_maxm/matching_ut.cpp
+    )
+
+    target_link_libraries(pacevc_test
+        ${GTEST_BOTH_LIBRARIES} pthread pacevc)
+
+    gtest_add_tests(pacevc_test "" AUTO)
+endif()
