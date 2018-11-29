@@ -10,12 +10,12 @@ namespace PaceVC {
 template<class MaxMFinder, class AugPathFinder>
 struct MinVCFinder {
     const BipartiteGraph& graph;
+    MaxMFinder maxm;
     std::vector<BipartiteGraph::Vertex> answer;
 
-    MinVCFinder(const BipartiteGraph& g) : graph(g) {}
+    MinVCFinder(const BipartiteGraph& g) : graph(g), maxm(g) {}
 
     int find() {
-        MaxMFinder maxm(graph);
         int ret = maxm.find();
 
         std::vector<bool> visLeft(graph.leftSize());

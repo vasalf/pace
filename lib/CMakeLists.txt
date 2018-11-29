@@ -10,6 +10,10 @@ add_library(pacevc STATIC
     bipartite_maxm/matching.cpp
     bipartite_maxm/min_vc.cpp
 
+    kernels/common.cpp
+    kernels/crown/crown.cpp
+    kernels/lp/lp.cpp
+
     reader/line_reader.cpp
 
     surplus/surplus.cpp

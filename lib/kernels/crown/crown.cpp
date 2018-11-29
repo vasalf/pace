@@ -1,0 +1,80 @@
+#include <kernels/crown/crown.h>
+
+#include <bipartite_maxm/best.h>
+#include <graph/bipartite_graph.h>
+#include <kernels/common.h>
+
+namespace {
+
+std::vector<bool> maximalMatching(PaceVC::Graph& g) {
+    std::vector<bool> ret(g.size());
+
+    for (int i = 0; i < g.size(); i++) {
+        for (int u : g.adjacent(i))
+            if (!ret[i] && !ret[u])
+                ret[i] = ret[u] = true;
+    }
+
+    return ret;
+}
+
+}
+
+namespace PaceVC {
+namespace Kernels {
+
+CrownKernel::CrownKernel(Graph& g)
+    : graph(g)
+{}
+
+void CrownKernel::reduce() {
+    if (graph.size() < graph.realSize())
+        graph.squeeze();
+
+    std::vector<bool> covered = maximalMatching(graph);
+
+    std::vector<int> idOfLeft, idOfRight;
+    std::vector<int> idInPart(graph.size());
+    for (int i = 0; i < graph.size(); i++) {
+        if (covered[i]) {
+            idInPart[i] = idOfLeft.size();
+            idOfLeft.push_back(i);
+        } else {
+            idInPart[i] = idOfRight.size();
+            idOfRight.push_back(i);
+        }
+    }
+
+    BipartiteGraph bg(idOfLeft.size(), idOfRight.size());
+    for (int u : idOfRight)
+        for (int v : graph.adjacent(u)) {
+            // Right part is an independent set so we don't need to verify
+            // that v lies in the left part
+            bg.addEdge(idInPart[v], idInPart[u]);
+        }
+
+    BestMinVCFinder vc(bg);
+    vc.find();
+
+    std::vector<bool> inVC(graph.size());
+    for (auto p : vc.answer) {
+        if (p.first == BipartiteGraph::Part::LEFT)
+            inVC[idOfLeft[p.second]] = true;
+        else
+            inVC[idOfRight[p.second]] = true;
+    }
+
+    for (int u : idOfLeft) {
+        if (inVC[u])
+            graph.takeVertex(u);
+    }
+
+    for (int u : idOfRight)
+        if (vc.maxm.pairRight[u] == -1)
+            graph.removeVertex(u);
+
+    cleanUp(graph);
+}
+
+}
+}
