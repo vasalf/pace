@@ -1,0 +1,76 @@
+{
+    "tests": [
+        {
+            "output_file": "data/graphs/rnd_100_100.txt",
+            "command": "./tools/generators/graph/random_graph.py 100 100"
+        },
+        {
+            "output_file": "data/graphs/rnd_100_150.txt",
+            "command": "./tools/generators/graph/random_graph.py 100 150"
+        },
+        {
+            "output_file": "data/graphs/rnd_100_200.txt",
+            "command": "./tools/generators/graph/random_graph.py 100 200"
+        },
+        {
+            "output_file": "data/graphs/rnd_100_300.txt",
+            "command": "./tools/generators/graph/random_graph.py 100 300"
+        },
+        {
+            "output_file": "data/graphs/rnd_1000_1000.txt",
+            "command": "./tools/generators/graph/random_graph.py 1000 1000"
+        },
+        {
+            "output_file": "data/graphs/rnd_1000_2000.txt",
+            "command": "./tools/generators/graph/random_graph.py 1000 2000"
+        },
+        {
+            "output_file": "data/graphs/rnd_1000_3000.txt",
+            "command": "./tools/generators/graph/random_graph.py 1000 3000"
+        },
+        {
+            "output_file": "data/graphs/rnd_1000_4000.txt",
+            "command": "./tools/generators/graph/random_graph.py 1000 4000"
+        },
+        {
+            "output_file": "data/graphs/rnd_1000_5000.txt",
+            "command": "./tools/generators/graph/random_graph.py 1000 5000"
+        },
+        {
+            "output_file": "data/graphs/rnd_1000_10000.txt",
+            "command": "./tools/generators/graph/random_graph.py 1000 10000"
+        },
+        {
+            "output_file": "data/graphs/rnd_1000_40000.txt",
+            "command": "./tools/generators/graph/random_graph.py 1000 40000"
+        },
+        {
+            "output_file": "data/graphs/rnd_10000_10000.txt",
+            "command": "./tools/generators/graph/random_graph.py 10000 10000"
+        },
+        {
+            "output_file": "data/graphs/rnd_10000_20000.txt",
+            "command": "./tools/generators/graph/random_graph.py 10000 20000"
+        },
+        {
+            "output_file": "data/graphs/rnd_10000_30000.txt",
+            "command": "./tools/generators/graph/random_graph.py 10000 30000"
+        },
+        {
+            "output_file": "data/graphs/rnd_10000_40000.txt",
+            "command": "./tools/generators/graph/random_graph.py 10000 40000"
+        },
+        {
+            "output_file": "data/graphs/rnd_10000_50000.txt",
+            "command": "./tools/generators/graph/random_graph.py 10000 50000"
+        },
+        {
+            "output_file": "data/graphs/rnd_10000_100000.txt",
+            "command": "./tools/generators/graph/random_graph.py 10000 100000"
+        },
+        {
+            "output_file": "data/graphs/rnd_10000_400000.txt",
+            "command": "./tools/generators/graph/random_graph.py 10000 400000"
+        }
+    ]
+}

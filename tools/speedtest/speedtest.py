@@ -44,6 +44,14 @@ class TestSuccess(TestResult):
         return "{}.{:>03d} s".format(seconds, msecs)
 
 
+class TestOutput(TestResult):
+    def __init__(self, out):
+        self.out = out
+
+    def __str__(self):
+        return self.out
+
+
 class TestTimeout(TestResult):
     def __str__(self):
         return "TO"
@@ -54,26 +62,31 @@ def run(config, solution, test):
         tstart = datetime.datetime.now()
         proc = subprocess.Popen([solution.executable],
                                 stdin=test_in,
-                                stdout=subprocess.DEVNULL)
+                                stdout=subprocess.PIPE)
         if config.timeout > 0:
             try:
                 proc.wait(timeout=config.timeout)
             except subprocess.TimeoutExpired:
                 proc.kill()
-                return TestTimeout()
+                return TestOutput("--"), TestTimeout()
         else:
             proc.wait()
         tend = datetime.datetime.now()
-        return TestSuccess((tend - tstart) // datetime.timedelta(microseconds=1000))
+        return TestOutput(proc.stdout.read().decode('utf-8').rstrip()), TestSuccess((tend - tstart) // datetime.timedelta(microseconds=1000))
 
 
 def run_all(config):
     data = []
-    headers = ["test"] + list(map(lambda x: x.name, config.solutions))
+    headers = ["test"]
+    for x in config.solutions:
+        headers.append(x.name)
+        headers.append("")
     for test in config.tests:
         row = [test.name]
         for solution in config.solutions:
-            row.append(run(config, solution, test))
+            a, b = run(config, solution, test)
+            row.append(a)
+            row.append(b)
         data.append(row)
     return tabulate.tabulate(data, headers=headers)
 
