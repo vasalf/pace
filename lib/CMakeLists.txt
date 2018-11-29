@@ -6,10 +6,13 @@ add_library(pacevc STATIC
     graph/graph.cpp
 
     bipartite_maxm/augmenting_path.cpp
+    bipartite_maxm/best.cpp
     bipartite_maxm/matching.cpp
     bipartite_maxm/min_vc.cpp
 
     reader/line_reader.cpp
+
+    surplus/surplus.cpp
 )
 
 if (BUILD_TESTING)
@@ -21,6 +24,7 @@ if (BUILD_TESTING)
         graph/graph_ut.cpp
         bipartite_maxm/matching_ut.cpp
         bipartite_maxm/min_vc_ut.cpp
+        surplus/surplus_ut.cpp
     )
 
     target_link_libraries(pacevc_test
