@@ -7,6 +7,7 @@ add_library(pacevc STATIC
 
     bipartite_maxm/augmenting_path.cpp
     bipartite_maxm/matching.cpp
+    bipartite_maxm/min_vc.cpp
 
     reader/line_reader.cpp
 )
@@ -19,6 +20,7 @@ if (BUILD_TESTING)
     add_executable(pacevc_test
         graph/graph_ut.cpp
         bipartite_maxm/matching_ut.cpp
+        bipartite_maxm/min_vc_ut.cpp
     )
 
     target_link_libraries(pacevc_test

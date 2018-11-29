@@ -10,6 +10,12 @@ namespace PaceVC {
  */
 class BipartiteGraph {
 public:
+    enum class Part {
+        LEFT, RIGHT
+    };
+
+    using Vertex = std::pair<Part, int>;
+
     BipartiteGraph(int n, int k);
 
     void addEdge(int u, int v);
