@@ -1,0 +1,2 @@
+add_executable(exhaustive_crown main.cpp)
+target_link_libraries(exhaustive_crown LINK_PUBLIC pacevc)
