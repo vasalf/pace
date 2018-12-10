@@ -6,7 +6,7 @@ namespace PaceVC {
 namespace Kernels {
 
 struct CrownKernel {
-    Graph graph;
+    Graph& graph;
 
     CrownKernel(Graph& g);
 

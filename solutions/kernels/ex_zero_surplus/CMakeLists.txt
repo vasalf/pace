@@ -1,0 +1,2 @@
+add_executable(ex_zero_surplus main.cpp)
+target_link_libraries(ex_zero_surplus LINK_PUBLIC pacevc)

@@ -69,9 +69,11 @@ void CrownKernel::reduce() {
             graph.takeVertex(u);
     }
 
-    for (int u : idOfRight)
-        if (vc.maxm.pairRight[u] == -1)
-            graph.removeVertex(u);
+    /*
+    for (int i = 0; i < bg.rightSize(); i++)
+        if (vc.maxm.pair[i] != -1 && inVC[idOfLeft[vc.maxm.pair[i]]])
+            graph.removeVertex(idOfRight[i]);
+    */
 
     cleanUp(graph);
 }

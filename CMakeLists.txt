@@ -8,3 +8,4 @@ include_directories(${CMAKE_SOURCE_DIR}/third_party)
 
 add_subdirectory(lib)
 add_subdirectory(solutions)
+add_subdirectory(tools)

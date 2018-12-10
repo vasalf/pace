@@ -83,12 +83,16 @@
             "name": "zero_surplus"
         },
         {
+            "executable": "./build/solutions/kernels/ex_zero_surplus/ex_zero_surplus",
+            "name": "ex_zero_surplus"
+        },
+        {
             "executable": "./build/solutions/kernels/crown/crown",
             "name": "crown"
         },
         {
-            "executable": "./build/solutions/kernels/exhaustive_crown/exhaustive_crown",
-            "name": "exhaustive_crown"
+            "executable": "./build/solutions/kernels/ex_crown/ex_crown",
+            "name": "ex_crown"
         }
     ],
     "timeout": 10

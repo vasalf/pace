@@ -25,7 +25,10 @@ LPKernel::LPKernel(Graph& g)
 
 void LPKernel::reduce() {
     MinimalSurplusSetFinder surplus(graph);
-    surplus.find();
+    int val = surplus.find();
+
+    if (val > 0)
+        return;
 
     reduceImpl(graph, surplus);
 }
@@ -36,7 +39,10 @@ ZeroSurplusLPKernel::ZeroSurplusLPKernel(Graph& g)
 
 void ZeroSurplusLPKernel::reduce() {
     MinimalSurplusNonEmptySetFinder surplus(graph);
-    surplus.find();
+    int val = surplus.find();
+
+    if (val > 0)
+        return;
 
     reduceImpl(graph, surplus);
 }

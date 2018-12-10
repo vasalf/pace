@@ -1,6 +1,7 @@
 #pragma once
 
 #include <graph/graph.h>
+#include <kernels/common.h>
 
 namespace PaceVC {
 namespace Kernels {
@@ -20,6 +21,8 @@ struct ZeroSurplusLPKernel {
 
     void reduce();
 };
+
+using ExhaustiveZeroSurplusLPKernel = Exhaustive<ZeroSurplusLPKernel>;
 
 }
 }
