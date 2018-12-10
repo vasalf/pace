@@ -1,6 +1,8 @@
 #include <graph/graph.h>
 #include <reader/line_reader.h>
 
+#include <algorithm>
+
 namespace {
 
 struct GraphImpl {
@@ -57,13 +59,18 @@ namespace PaceVC {
 struct Graph::TImpl {
     std::vector<GraphImpl> implStack;
     std::vector<ReductionRulePtr> reductionStack;
+    std::vector<int> bestSolution;
 
     TImpl(int n) {
         implStack.push_back(GraphImpl(n));
+        bestSolution.resize(n);
+        std::iota(bestSolution.begin(), bestSolution.end(), 0);
     }
 
     TImpl(const GraphImpl& impl) {
         implStack.push_back(impl);
+        bestSolution.resize(impl.graph.size());
+        std::iota(bestSolution.begin(), bestSolution.end(), 0);
     }
 
     TImpl(const TImpl&) = default;
@@ -102,6 +109,12 @@ void Graph::takeVertex(int v) {
 
 void Graph::removeVertex(int v) {
     impl_->implStack.back().removeVertex(v);
+}
+
+void Graph::saveSolution(std::vector<int> solution) {
+    if (impl_->bestSolution.size() > solution.size()) {
+        impl_->bestSolution = solution;
+    }
 }
 
 const Graph::Set<int>& Graph::undecided() const {
@@ -160,6 +173,22 @@ void Graph::restoreSolution() {
         impl_->reductionStack.pop_back();
         impl_->implStack.back() = oldGraph.impl_->implStack.back();
     }
+
+    if (impl_->implStack.back().undecided.size() > 0
+        || impl_->implStack.back().solution.size() > impl_->bestSolution.size()) {
+        std::vector<bool> inVC(realSize());
+        for (int u : impl_->bestSolution) {
+            inVC[u] = true;
+        }
+
+        impl_->implStack.back().solution = impl_->bestSolution;
+        impl_->implStack.back().removed.clear();
+        for (int i = 0; i < realSize(); i++) {
+            if (!inVC[i]) {
+                impl_->implStack.back().removed.push_back(i);
+            }
+        }
+    }
 }
 
 int Graph::size() const {
@@ -199,6 +228,16 @@ Graph readGraph(std::istream& is) {
     }
 
     return ret;
+}
+
+void printSolution(std::ostream& os, Graph& graph) {
+    graph.restoreSolution();
+
+    os << "c What are those comments for?" << std::endl
+       << "s vc " << graph.realSize() << " " << graph.solution().size() << std::endl;
+
+    for (int u : graph.solution())
+        os << u + 1 << std::endl;
 }
 
 }

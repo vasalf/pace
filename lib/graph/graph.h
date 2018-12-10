@@ -41,6 +41,7 @@ public:
 
     void takeVertex(int v);
     void removeVertex(int v);
+    void saveSolution(std::vector<int> solution);
     const Set<int>& undecided() const;
     const std::vector<int>& solution() const;
     const std::vector<int>& removed() const;
@@ -71,5 +72,6 @@ private:
 };
 
 Graph readGraph(std::istream& is);
+void printSolution(std::ostream& os, Graph& g);
 
 }

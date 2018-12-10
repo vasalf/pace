@@ -10,6 +10,8 @@ add_library(pacevc STATIC
     bipartite_maxm/matching.cpp
     bipartite_maxm/min_vc.cpp
 
+    branching/max_degree.cpp
+
     kernels/common.cpp
     kernels/crown/crown.cpp
     kernels/lp/lp.cpp
