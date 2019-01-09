@@ -1,0 +1,26 @@
+{
+    "testdir": "data/vc-exact-public",
+    "solutions": [
+        {
+            "executable": "./build/solutions/vc/mxd_lp/mxd_lp",
+            "name": "lp"
+        },
+        {
+            "executable": "./build/solutions/vc/mxd_zs/mxd_zs",
+            "name": "zero_surplus"
+        },
+        {
+            "executable": "./build/solutions/vc/mxd_exzs/mxd_exzs",
+            "name": "ex_zero_surplus"
+        },
+        {
+            "executable": "./build/solutions/vc/mxd_cr/mxd_cr",
+            "name": "crown"
+        },
+        {
+            "executable": "./build/solutions/vc/mxd_excr/mxd_excr",
+            "name": "ex_crown"
+        }
+    ],
+    "timeout": 1
+}

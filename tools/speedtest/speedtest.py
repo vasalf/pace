@@ -5,9 +5,10 @@ import argparse
 import abc
 import datetime
 import json
+import os
+import os.path
 import subprocess
 import tabulate
-
 
 class Test:
     def __init__(self, config):
@@ -24,7 +25,19 @@ class Solution:
 class Config:
     def __init__(self, data):
         self.timeout = data.get("timeout", -1)
-        self.tests = list(map(Test, data["tests"]))
+
+        if "tests" in data:
+            self.tests = list(map(Test, data["tests"]))
+        else:
+            testdir = data["testdir"]
+            tests = [f for f in os.listdir(testdir) if os.path.isfile(os.path.join(testdir, f))]
+            self.tests = []
+            for test in tests:
+                test_cfg = dict()
+                test_cfg["filename"] = os.path.join(testdir, test)
+                test_cfg["name"] = test
+                self.tests.append(Test(test_cfg))
+
         self.solutions = list(map(Solution, data["solutions"]))
 
 
