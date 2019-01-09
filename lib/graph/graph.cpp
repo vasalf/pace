@@ -176,6 +176,10 @@ void Graph::restoreSolution() {
 
     if (impl_->implStack.back().undecided.size() > 0
         || impl_->implStack.back().solution.size() > impl_->bestSolution.size()) {
+        if ((int)impl_->bestSolution.size() == realSize()) {
+            return;
+        }
+
         std::vector<bool> inVC(realSize());
         for (int u : impl_->bestSolution) {
             inVC[u] = true;
