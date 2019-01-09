@@ -87,6 +87,10 @@
             "name": "ex_zero_surplus"
         },
         {
+            "executable": "./build/solutions/kernels/glop/glop",
+            "name": "glop"
+        },
+        {
             "executable": "./build/solutions/kernels/crown/crown",
             "name": "crown"
         },

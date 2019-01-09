@@ -15,6 +15,7 @@ add_library(pacevc STATIC
     kernels/common.cpp
     kernels/crown/crown.cpp
     kernels/lp/lp.cpp
+    kernels/lp/glop.cpp
 
     reader/line_reader.cpp
 
@@ -24,7 +25,6 @@ add_library(pacevc STATIC
 if (BUILD_TESTING)
     enable_testing()
     find_package(GTest REQUIRED)
-    include_directories(${GTEST_INCLUDE_DIR})
 
     add_executable(pacevc_test
         graph/graph_ut.cpp

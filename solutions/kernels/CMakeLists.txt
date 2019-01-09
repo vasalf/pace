@@ -1,5 +1,6 @@
 add_subdirectory(lp)
 add_subdirectory(zero_surplus)
 add_subdirectory(ex_zero_surplus)
+add_subdirectory(glop)
 add_subdirectory(crown)
 add_subdirectory(ex_crown)
