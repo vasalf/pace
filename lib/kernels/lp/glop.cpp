@@ -37,13 +37,10 @@ void reduceImpl(PaceVC::Graph& g, operations_research::MPSolver::OptimizationPro
 
     for (int u = 0; u < g.size(); u++) {
         const double value = vars[u]->solution_value();
-        std::cout << value;
         if (value < 0.5) {
             g.removeVertex(u);
-            std::cout << " remove" << std::endl;
         } else if (value > 0.5) {
             g.takeVertex(u);
-            std::cout << " take" << std::endl;
         }
     }
 }
