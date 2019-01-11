@@ -1,16 +1,16 @@
-p tw 23541 51846
-c 
+p td 23541 51846
+c
 c Graphs generated from publicly available GTFS transit feeds.
-c 
+c
 c References
 c [1] https://en.wikipedia.org/wiki/General_Transit_Feed_Specification or
 c [2] https://developers.google.com/transit/gtfs/
 c [3] https://github.com/daajoe/transit_graphs/blob/master/transitfeeds-tw.pdf
 c [4] Johannes K. Fichte. https://github.com/daajoe/gtfs2graphs (2017).
-c 
+c
 c GTFS feeds extracted using gtfs2graphs [4].
-c 
-c 
+c
+c
 c Author: fichte (2018-12-21 13:55:20)
 c Origin: Denmark_GTFS.zip
 c Agency Info/URL: "agency_id","agency_name","agency_url","agency_timezone","agency_lang","agency_phone"
@@ -44,7 +44,7 @@ c Agency Info/URL: 391,"Samsø Bus","http://www.tilsamsoe.dk/samsoe-bus","Europe
 c Agency Info/URL: 396,"GoShuttle","https://www.goshuttle.dk/","Europe/Berlin","",""
 c Agency Info/URL: 406,"Fanø Kommune","http://www.fanoe.dk/borger/faerge-og-bus","Europe/Berlin","",""
 c Agency Info/URL: 411,"Rute700","https://rute700.dk/","Europe/Berlin","",""
-c Agency Info/URL: 
+c Agency Info/URL:
 7040 16086
 20505 20499
 9660 9310

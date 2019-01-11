@@ -1,22 +1,22 @@
-p tw 420 864
-c 
+p td 420 864
+c
 c Graphs generated from publicly available GTFS transit feeds.
-c 
+c
 c References
 c [1] https://en.wikipedia.org/wiki/General_Transit_Feed_Specification or
 c [2] https://developers.google.com/transit/gtfs/
 c [3] https://github.com/daajoe/transit_graphs/blob/master/transitfeeds-tw.pdf
 c [4] Johannes K. Fichte. https://github.com/daajoe/gtfs2graphs (2017).
-c 
+c
 c GTFS feeds extracted using gtfs2graphs [4].
-c 
-c 
+c
+c
 c Author: fichte (2018-12-23 12:21:02)
 c Origin: Wiener_Linien_GTFS.zip
 c Agency Info/URL: agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone
 c Agency Info/URL: "1","Wiener Linien","https://www.wienerlinien.at/","Europe/Vienna","DE","+43 (0)1 7909 - 0"
 c Agency Info/URL: "2","WLB","https://www.wlb.at/","Europe/Vienna","DE","+43 (0) 1/ 90 444"
-c Agency Info/URL: 
+c Agency Info/URL:
 206 266
 8 7
 125 126

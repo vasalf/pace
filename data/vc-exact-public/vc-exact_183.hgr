@@ -1,21 +1,21 @@
-p tw 42 82
-c 
+p td 42 82
+c
 c Graphs generated from publicly available GTFS transit feeds.
-c 
+c
 c References
 c [1] https://en.wikipedia.org/wiki/General_Transit_Feed_Specification or
 c [2] https://developers.google.com/transit/gtfs/
 c [3] https://github.com/daajoe/transit_graphs/blob/master/transitfeeds-tw.pdf
 c [4] Johannes K. Fichte. https://github.com/daajoe/gtfs2graphs (2017).
-c 
+c
 c GTFS feeds extracted using gtfs2graphs [4].
-c 
-c 
+c
+c
 c Author: fichte (2018-12-21 15:21:47)
 c Origin: Metro_Bilbao.zip
 c Agency Info/URL: agency_name,agency_url,agency_timezone,agency_lang,agency_phone
 c Agency Info/URL: Metro Bilbao,http://www.metrobilbao.com,Europe/Madrid,ES,+34 94 425 40 25
-c Agency Info/URL: 
+c Agency Info/URL:
 27 26
 36 37
 37 36
