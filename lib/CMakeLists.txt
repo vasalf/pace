@@ -1,5 +1,3 @@
-include(CTest)
-
 add_library(pacevc STATIC
     graph/boost_graph.cpp
     graph/bipartite_graph.cpp
@@ -22,10 +20,7 @@ add_library(pacevc STATIC
     surplus/surplus.cpp
 )
 
-if (BUILD_TESTING)
-    enable_testing()
-    find_package(GTest REQUIRED)
-
+if(BUILD_TESTING)
     add_executable(pacevc_test
         graph/graph_ut.cpp
         bipartite_maxm/matching_ut.cpp

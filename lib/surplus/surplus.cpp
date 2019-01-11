@@ -57,6 +57,7 @@ MinimalSurplusNonEmptySetFinder::MinimalSurplusNonEmptySetFinder(const Graph& gr
 
 int MinimalSurplusNonEmptySetFinder::find() {
     MinimalSurplusSetFinder trial(g);
+    trial.find();
     if (trial.set.size() > 0) {
         set = trial.set;
         neighbours = trial.neighbours;

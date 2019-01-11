@@ -13,9 +13,15 @@ add_subdirectory(third_party/gtest)
 
 add_subdirectory(third_party/abseil-cpp)
 
-set (USE_GLOG 0)
-set (USE_GFLAGS 0)
-set (USE_PROTOBUF 0)
+set(USE_GLOG 0)
+set(USE_GFLAGS 0)
+set(USE_PROTOBUF 0)
+
+include(CTest)
+if (BUILD_TESTING)
+    find_package(GTest REQUIRED)
+    enable_testing()
+endif()
 
 add_subdirectory(lib)
 add_subdirectory(solutions)

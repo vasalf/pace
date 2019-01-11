@@ -2,6 +2,7 @@
 #include <reader/line_reader.h>
 
 #include <algorithm>
+#include <numeric>
 
 namespace {
 
