@@ -1,5 +1,6 @@
 #include <graph/graph.h>
 #include <reader/line_reader.h>
+#include <util/cow.h>
 
 #include <algorithm>
 #include <cassert>
@@ -11,7 +12,7 @@ static int numberOfExistingGraphImpls = 0;
 
 struct GraphImpl {
     int size;
-    std::vector<PaceVC::Graph::Set<int>> graph;
+    std::vector<PaceVC::CowPtr<PaceVC::Graph::Set<int>>> graph;
     PaceVC::Graph::Set<int> undecided;
     std::vector<int> solution;
     std::vector<int> removed;
@@ -21,7 +22,7 @@ struct GraphImpl {
 
     GraphImpl(int n) {
         size = n;
-        graph.resize(n);
+        graph.resize(n, PaceVC::makeCow<PaceVC::Graph::Set<int>>());
 
         for (int i = 0; i < n; i++)
             undecided.insert(i);
@@ -39,15 +40,16 @@ struct GraphImpl {
             return;
         }
 
-        graph[u].insert(v);
-        graph[v].insert(u);
+        graph[u]->insert(v);
+        graph[v]->insert(u);
     }
 
     void decideVertex(int v) {
         undecided.erase(v);
 
-        for (int u : graph[v])
-            graph[u].erase(v);
+        const auto& adj = graph[v];
+        for (int u : *adj)
+            graph[u]->erase(v);
     }
 
     void takeVertex(int v) {
@@ -128,7 +130,7 @@ void Graph::addEdge(int u, int v) {
 }
 
 const Graph::Set<int>& Graph::adjacent(int v) const {
-    return impl_->implStack.back().graph[v];
+    return *impl_->implStack.back().graph[v];
 }
 
 void Graph::takeVertex(int v) {
