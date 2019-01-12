@@ -30,10 +30,6 @@ TEST(TestGraph, reduction) {
         0, 1, 6, 7, 8, 9, 10
     };
 
-    std::vector<int> secretIndependentSet = {
-        2, 3, 4, 5, 11
-    };
-
     Graph g1(12);
     for (int i = 6; i < 12; i++)
         for (int j = i + 1; j < 12; j++)
@@ -83,17 +79,11 @@ TEST(TestGraph, reduction) {
     g1.takeVertex(6);
     g1.removeVertex(7);
 
-    g1.restoreSolution();
-
-    ASSERT_TRUE(g1.undecided().empty());
-    ASSERT_EQ(secretSolution, g1.solution());
-    ASSERT_EQ(secretIndependentSet, g1.removed());
+    ASSERT_EQ(secretSolution, g1.restoreSolution());
 }
 
 TEST(TestGraph, simpleReduction) {
     std::vector<int> secretSolution = {6};
-    std::unordered_set<int> secretUndecided = {2, 3, 4, 5};
-    std::vector<int> secretRemoved = {0, 1, 7};
 
     Graph g(8);
     for (int i = 2; i < 8; i++)
@@ -117,11 +107,7 @@ TEST(TestGraph, simpleReduction) {
     g.takeVertex(2);
     g.removeVertex(3);
 
-    g.restoreSolution();
-
-    ASSERT_EQ(secretSolution, g.solution());
-    ASSERT_EQ(secretUndecided, g.undecided());
-    ASSERT_EQ(secretRemoved, g.removed());
+    ASSERT_EQ(secretSolution, g.restoreSolution());
 }
 
 TEST(TestGraph, squeeze) {

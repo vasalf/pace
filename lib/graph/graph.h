@@ -58,7 +58,7 @@ public:
     void addSimpleReduction(const std::vector<int>& newToOld);
     void squeeze();
 
-    void restoreSolution();
+    std::vector<int> restoreSolution();
 
     int size() const;
     int realSize() const;

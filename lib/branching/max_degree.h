@@ -15,19 +15,10 @@ public:
     {}
 
     void branch() {
-        doBranch();
-    }
-
-private:
-    Graph& graph;
-
-    void doBranch() {
         IntermediateReducer(graph).reduce();
 
         if (graph.size() == 0) {
-            Graph copy = graph;
-            copy.restoreSolution();
-            graph.saveSolution(copy.solution());
+            graph.saveSolution(graph.restoreSolution());
             return;
         }
 
@@ -39,7 +30,7 @@ private:
 
         graph.placeMark();
         graph.takeVertex(v);
-        doBranch();
+        branch();
         graph.restoreMark();
 
         graph.placeMark();
@@ -47,9 +38,12 @@ private:
         for (int u : adjCopy) {
             graph.takeVertex(u);
         }
-        doBranch();
+        branch();
         graph.restoreMark();
     }
+
+private:
+    Graph& graph;
 };
 
 }

@@ -193,20 +193,18 @@ void Graph::squeeze() {
     addSimpleReduction(newToOld);
 }
 
-void Graph::restoreSolution() {
-    while (impl_->implStack.size() > 1) {
-        auto oldGraphImpl = std::make_unique<Graph::TImpl>(impl_->implStack[impl_->implStack.size() - 2]);
-        Graph oldGraph(std::move(oldGraphImpl));
+std::vector<int> Graph::restoreSolution() {
+    GraphImpl cur = impl_->implStack.back();
+    for (int i = impl_->reductionStack.size() - 1; i >= 0; i--) {
+        Graph prevGraph(std::make_unique<Graph::TImpl>(impl_->implStack[i]));
+        Graph curGraph(std::make_unique<Graph::TImpl>(cur)); 
 
-        auto newGraphImpl = std::make_unique<Graph::TImpl>(impl_->implStack.back());
-        Graph newGraph(std::move(newGraphImpl));
+        impl_->reductionStack[i]->reduce(prevGraph, curGraph);
 
-        impl_->reductionStack.back()->reduce(oldGraph, newGraph);
-
-        impl_->implStack.pop_back();
-        impl_->reductionStack.pop_back();
-        impl_->implStack.back() = oldGraph.impl_->implStack.back();
+        cur = prevGraph.impl_->implStack.back();
     }
+
+    return cur.solution;
 }
 
 int Graph::size() const {
@@ -264,8 +262,6 @@ Graph readGraph(std::istream& is) {
 }
 
 void printSolution(std::ostream& os, Graph& graph) {
-    graph.restoreSolution();
-
     os << "c What are those comments for?" << std::endl
        << "s vc " << graph.realSize() << " " << graph.bestSolution().size() << std::endl;
 
