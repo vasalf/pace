@@ -95,5 +95,6 @@
             "name": "ex_crown"
         }
     ],
-    "timeout": 10
+    "output": "vc",
+    "timeout": 1
 }

@@ -231,3 +231,17 @@ TEST(TestGraph, readGraph) {
 
     ASSERT_EQ(secretNeighbours, adj);
 }
+
+TEST(TestGraph, testSelfLoops) {
+    Graph g(3);
+
+    g.addEdge(0, 0);
+    g.addEdge(1, 1);
+    g.addEdge(0, 1);
+    g.addEdge(0, 0);
+
+    g.removeVertex(2);
+
+    ASSERT_EQ(2, g.solution().size());
+    ASSERT_EQ(1, g.removed().size());
+}

@@ -22,5 +22,7 @@
             "name": "ex_crown"
         }
     ],
-    "timeout": 1
+    "output": "vc",
+    "database_dir": "./data/analysis/db",
+    "timeout": 40
 }

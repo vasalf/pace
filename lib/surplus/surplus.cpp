@@ -41,7 +41,7 @@ int MinimalSurplusSetFinder::find() {
         count[p.second]++;
     }
 
-    for (int i = 0; i < g.realSize(); i++) {
+    for (int i : g.undecided()) {
         if (count[i] == 0)
             set.push_back(i);
         else if (count[i] == 2)
@@ -79,7 +79,7 @@ int MinimalSurplusNonEmptySetFinder::find() {
 
         std::vector<int> cset, cneighbours;
 
-        for (int i = 0; i < g.realSize(); i++) {
+        for (int i : g.undecided()) {
             if (count[i] == 0 && !g.adjacent(u).count(i))
                 cset.push_back(i);
             else if (count[i] == 2)

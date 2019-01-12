@@ -152,3 +152,14 @@ TEST(TestSurplus, complete) {
 
     assertSurplus(4, g);
 }
+
+TEST(TestSurplus, testSurplusOnPartialySolvedGraph) {
+    Graph g(4);
+    for (int i = 0; i < 4; i++)
+        for (int j = i + 1; j < 4; j++)
+            g.addEdge(i, j);
+
+    g.takeVertex(0);
+
+    assertSurplus(1, g);
+}

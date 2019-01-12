@@ -48,3 +48,6 @@ data/bipartite/*
 !data/bipartite/.keep
 data/graphs/*
 !data/graphs/.keep
+
+# Run logs
+run.log

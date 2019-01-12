@@ -2,6 +2,7 @@
 #include <reader/line_reader.h>
 
 #include <algorithm>
+#include <cassert>
 #include <numeric>
 
 namespace {
@@ -25,6 +26,12 @@ struct GraphImpl {
     GraphImpl& operator=(const GraphImpl&) = default;
 
     void addEdge(int u, int v) {
+        assert(u != v);
+
+        if (!undecided.count(u) || !undecided.count(v)) {
+            return;
+        }
+
         graph[u].insert(v);
         graph[v].insert(u);
     }
@@ -97,7 +104,13 @@ Graph& Graph::operator=(Graph&& g) {
 }
 
 void Graph::addEdge(int u, int v) {
-    impl_->implStack.back().addEdge(u, v);
+    if (u == v) {
+        if (undecided().count(u)) {
+            takeVertex(u);
+        }
+    } else {
+        impl_->implStack.back().addEdge(u, v);
+    }
 }
 
 const Graph::Set<int>& Graph::adjacent(int v) const {
