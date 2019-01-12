@@ -112,6 +112,9 @@ class Config:
         if args.timeout > 0:
             self.timeout = args.timeout
 
+        if args.memory_limit > 0:
+            self.memory_limit = args.memory_limit
+
 
 class TestResult(abc.ABC):
     @abc.abstractmethod
@@ -263,7 +266,7 @@ def main():
                         metavar="THREADS",
                         type=int,
                         default=1,
-                        help='Number of execution threads')
+                        help='Number of execution threads (DEFAULT: 1)')
     parser.add_argument('--filter-tests',
                         type=str,
                         default="",
@@ -276,6 +279,10 @@ def main():
                         type=int,
                         default=0,
                         help='When non-zero, overrides timeout in seconds from config (DEFAULT: 0)')
+    parser.add_argument('--memory-limit',
+                        type=int,
+                        default=0,
+                        help='When non-zero, overrides memory limit in bytes from config (DEFAULT: 0)')
     args = parser.parse_args()
 
     with open(args.config, 'r') as conf:
