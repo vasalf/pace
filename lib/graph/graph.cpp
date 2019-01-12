@@ -7,6 +7,8 @@
 
 namespace {
 
+static int numberOfExistingGraphImpls = 0;
+
 struct GraphImpl {
     int size;
     std::vector<PaceVC::Graph::Set<int>> graph;
@@ -14,7 +16,8 @@ struct GraphImpl {
     std::vector<int> solution;
     std::vector<int> removed;
 
-    GraphImpl() {}
+    GraphImpl() = default;
+    ~GraphImpl() = default;
 
     GraphImpl(int n) {
         size = n;
@@ -26,6 +29,8 @@ struct GraphImpl {
 
     GraphImpl(const GraphImpl&) = default;
     GraphImpl& operator=(const GraphImpl&) = default;
+    GraphImpl(GraphImpl&&) = default;
+    GraphImpl& operator=(GraphImpl&&) = default;
 
     void addEdge(int u, int v) {
         assert(u != v);
@@ -221,7 +226,7 @@ void Graph::restoreMark() {
 
     impl_->implStack.resize(impl_->marks.back().implStackSize);
     impl_->reductionStack.resize(impl_->marks.back().reductionStackSize);
-    impl_->implStack.back() = impl_->marks.back().impl;
+    impl_->implStack.back() = std::move(impl_->marks.back().impl);
     impl_->marks.pop_back();
 }
 
