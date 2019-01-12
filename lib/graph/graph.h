@@ -42,6 +42,7 @@ public:
     void takeVertex(int v);
     void removeVertex(int v);
     void saveSolution(std::vector<int> solution);
+    std::vector<int> bestSolution() const;
     const Set<int>& undecided() const;
     const std::vector<int>& solution() const;
     const std::vector<int>& removed() const;
@@ -61,6 +62,9 @@ public:
 
     int size() const;
     int realSize() const;
+
+    void placeMark();
+    void restoreMark();
 
 private:
     void addReductionImpl(ReductionRulePtr rule, const Graph& newGraph);

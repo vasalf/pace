@@ -24,5 +24,5 @@
     ],
     "output": "vc",
     "database_dir": "./data/analysis/db",
-    "timeout": 40
+    "timeout": 108000
 }

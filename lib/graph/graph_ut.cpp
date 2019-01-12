@@ -245,3 +245,47 @@ TEST(TestGraph, testSelfLoops) {
     ASSERT_EQ(2, g.solution().size());
     ASSERT_EQ(1, g.removed().size());
 }
+
+TEST(TestGraph, testGraphMarks) {
+    Graph g(6);
+
+    g.addEdge(0, 3);
+    g.addEdge(1, 4);
+    g.addEdge(2, 5);
+    g.addEdge(0, 1);
+    g.addEdge(1, 2);
+    g.addEdge(2, 0);
+
+    g.takeVertex(0);
+    g.removeVertex(3);
+
+    ASSERT_EQ(4, g.size());
+
+    g.placeMark();
+
+    g.takeVertex(1);
+    g.removeVertex(4);
+    
+    ASSERT_EQ(2, g.size());
+
+    g.placeMark();
+
+    g.takeVertex(5);
+    g.removeVertex(2);
+
+    ASSERT_EQ(0, g.size());
+
+    {
+        Graph h = g;
+        h.restoreSolution();
+        g.saveSolution(h.solution());
+    }
+
+    g.restoreMark();
+    ASSERT_EQ(2, g.size());
+
+    g.restoreMark();
+    ASSERT_EQ(4, g.size());
+
+    ASSERT_EQ(3, g.bestSolution().size());
+}

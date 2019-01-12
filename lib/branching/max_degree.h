@@ -15,40 +15,40 @@ public:
     {}
 
     void branch() {
-        doBranch(graph);
+        doBranch();
     }
 
 private:
     Graph& graph;
 
-    void doBranch(Graph curCopy) {
-        IntermediateReducer(curCopy).reduce();
+    void doBranch() {
+        IntermediateReducer(graph).reduce();
 
-        if (curCopy.size() == 0) {
-            curCopy.restoreSolution();
-            graph.saveSolution(curCopy.solution());
+        if (graph.size() == 0) {
+            Graph copy = graph;
+            copy.restoreSolution();
+            graph.saveSolution(copy.solution());
             return;
         }
 
-        int v = *std::max_element(curCopy.undecided().begin(), curCopy.undecided().end(),
-            [&curCopy](int u, int v) {
-                return curCopy.adjacent(u).size() < curCopy.adjacent(v).size();
+        int v = *std::max_element(graph.undecided().begin(), graph.undecided().end(),
+            [this](int u, int v) {
+                return graph.adjacent(u).size() < graph.adjacent(v).size();
             }
         );
 
-        {
-            Graph next(curCopy);
-            next.takeVertex(v);
-            doBranch(std::move(next));
-        }
+        graph.placeMark();
+        graph.takeVertex(v);
+        doBranch();
+        graph.restoreMark();
 
-        {
-            Graph next(curCopy);
-            for (int u : curCopy.adjacent(v)) {
-                next.takeVertex(u);
-            }
-            doBranch(std::move(next));
+        graph.placeMark();
+        auto adjCopy = graph.adjacent(v);
+        for (int u : adjCopy) {
+            graph.takeVertex(u);
         }
+        doBranch();
+        graph.restoreMark();
     }
 };
 

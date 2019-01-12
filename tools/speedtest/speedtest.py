@@ -109,6 +109,9 @@ class Config:
             filter_solutions = args.filter_solutions.split(",")
             self.solutions = list(filter(lambda x: x.name in filter_solutions, self.solutions))
 
+        if args.timeout > 0:
+            self.timeout = args.timeout
+
 
 class TestResult(abc.ABC):
     @abc.abstractmethod
@@ -273,6 +276,10 @@ def main():
                         type=str,
                         default="",
                         help='Comma-separated list of names of solutions to be launched (DEFAULT: launch all)')
+    parser.add_argument('--timeout',
+                        type=int,
+                        default=0,
+                        help='When non-zero, overrides timeout in seconds from config (DEFAULT: 0)')
     args = parser.parse_args()
 
     with open(args.config, 'r') as conf:

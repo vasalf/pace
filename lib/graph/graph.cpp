@@ -14,6 +14,8 @@ struct GraphImpl {
     std::vector<int> solution;
     std::vector<int> removed;
 
+    GraphImpl() {}
+
     GraphImpl(int n) {
         size = n;
         graph.resize(n);
@@ -60,6 +62,12 @@ struct GraphImpl {
     }
 };
 
+struct GraphMark {
+    GraphImpl impl;
+    int implStackSize;
+    int reductionStackSize;
+};
+
 }
 
 namespace PaceVC {
@@ -68,6 +76,7 @@ struct Graph::TImpl {
     std::vector<GraphImpl> implStack;
     std::vector<ReductionRulePtr> reductionStack;
     std::vector<int> bestSolution;
+    std::vector<GraphMark> marks;
 
     TImpl(int n) {
         implStack.push_back(GraphImpl(n));
@@ -131,6 +140,10 @@ void Graph::saveSolution(std::vector<int> solution) {
     }
 }
 
+std::vector<int> Graph::bestSolution() const {
+    return impl_->bestSolution;
+}
+
 const Graph::Set<int>& Graph::undecided() const {
     return impl_->implStack.back().undecided;
 }
@@ -187,26 +200,6 @@ void Graph::restoreSolution() {
         impl_->reductionStack.pop_back();
         impl_->implStack.back() = oldGraph.impl_->implStack.back();
     }
-
-    if (impl_->implStack.back().undecided.size() > 0
-        || impl_->implStack.back().solution.size() > impl_->bestSolution.size()) {
-        if ((int)impl_->bestSolution.size() == realSize()) {
-            return;
-        }
-
-        std::vector<bool> inVC(realSize());
-        for (int u : impl_->bestSolution) {
-            inVC[u] = true;
-        }
-
-        impl_->implStack.back().solution = impl_->bestSolution;
-        impl_->implStack.back().removed.clear();
-        for (int i = 0; i < realSize(); i++) {
-            if (!inVC[i]) {
-                impl_->implStack.back().removed.push_back(i);
-            }
-        }
-    }
 }
 
 int Graph::size() const {
@@ -215,6 +208,21 @@ int Graph::size() const {
 
 int Graph::realSize() const {
     return impl_->implStack.back().size;
+}
+
+void Graph::placeMark() {
+    impl_->marks.push_back({impl_->implStack.back(), impl_->implStack.size(), impl_->reductionStack.size()});
+}
+
+void Graph::restoreMark() {
+    if (impl_->marks.empty()) {
+        throw std::runtime_error("Attempt to restore mark in graph with empty mark stack");
+    }
+
+    impl_->implStack.resize(impl_->marks.back().implStackSize);
+    impl_->reductionStack.resize(impl_->marks.back().reductionStackSize);
+    impl_->implStack.back() = impl_->marks.back().impl;
+    impl_->marks.pop_back();
 }
 
 void Graph::addReductionImpl(ReductionRulePtr rule, const Graph& newGraph) {
@@ -252,9 +260,9 @@ void printSolution(std::ostream& os, Graph& graph) {
     graph.restoreSolution();
 
     os << "c What are those comments for?" << std::endl
-       << "s vc " << graph.realSize() << " " << graph.solution().size() << std::endl;
+       << "s vc " << graph.realSize() << " " << graph.bestSolution().size() << std::endl;
 
-    for (int u : graph.solution())
+    for (int u : graph.bestSolution())
         os << u + 1 << std::endl;
 }
 
