@@ -70,6 +70,11 @@ class TestTimeout(TestResult):
         return "TO"
 
 
+class ExecutionFailureError(RuntimeError):
+    def __init__(self, cmd, exitcode):
+        super(RuntimeError, self).__init__("Command '{}' failed with exit code {}".format(cmd, exitcode))
+
+
 def run(config, solution, test):
     with open(test.filename, "r") as test_in:
         tstart = datetime.datetime.now()
@@ -85,6 +90,8 @@ def run(config, solution, test):
         else:
             proc.wait()
         tend = datetime.datetime.now()
+        if proc.returncode != 0:
+            raise ExecutionFailureError("{} < {}".format(solution.executable, test.filename), proc.returncode)
         return TestOutput(proc.stdout.read().decode('utf-8').rstrip()), TestSuccess((tend - tstart) // datetime.timedelta(microseconds=1000))
 
 
