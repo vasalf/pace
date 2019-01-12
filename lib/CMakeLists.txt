@@ -22,6 +22,11 @@ add_library(pacevc STATIC
     util/cow.h
 )
 
+target_link_libraries(pacevc LINK_PUBLIC 
+    absl::base absl::container absl::hashtablez_sampler
+    absl::hash
+    pthread)
+
 if(BUILD_TESTING)
     add_executable(pacevc_test
         graph/graph_ut.cpp

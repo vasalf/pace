@@ -2,13 +2,13 @@
 #include <reader/line_reader.h>
 #include <util/cow.h>
 
+#include <absl/container/flat_hash_set.h>
+
 #include <algorithm>
 #include <cassert>
 #include <numeric>
 
 namespace {
-
-static int numberOfExistingGraphImpls = 0;
 
 struct GraphImpl {
     int size;

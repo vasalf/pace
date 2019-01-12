@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef USE_ABSL_HASH_TABLES
+#include <absl/container/flat_hash_set.h>
+#endif
+
 #include <memory>
 #include <vector>
 #include <unordered_set>
@@ -25,8 +29,13 @@ class Graph {
     };
 
 public:
+#ifdef USE_ABSL_HASH_TABLES
     template<class T>
-    using Set = std::unordered_set<T>;
+    using Set = absl::flat_hash_set<int>;
+#else
+    template<class T>
+    using Set = std::unordered_set<int>;
+#endif
 
     Graph(int n);
     ~Graph();

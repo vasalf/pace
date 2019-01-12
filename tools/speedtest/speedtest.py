@@ -217,10 +217,6 @@ class SpeedtestExecutor:
         else:
             self.database = None
 
-    def __del__(self):
-        if self.executor is not None:
-            self.executor.shutdown(wait=False)
-
     def launch(self):
         self.executor = concurrent.futures.ThreadPoolExecutor(max_workers=self.config.threads)
         self.futures = []
@@ -288,6 +284,7 @@ def main():
     executor = SpeedtestExecutor(config)
     executor.launch()
     executor.finish()
+
     print(executor.result())
 
 

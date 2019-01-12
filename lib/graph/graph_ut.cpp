@@ -195,7 +195,7 @@ TEST(TestGraph, moveAssignment) {
 }
 
 TEST(TestGraph, readGraph) {
-    std::vector<std::unordered_set<int> > secretNeighbours = {
+    std::vector<Graph::Set<int>> secretNeighbours = {
         {1, 2},
         {0, 3},
         {0, 3},
@@ -211,7 +211,7 @@ TEST(TestGraph, readGraph) {
 
     Graph g = readGraph(ss);
 
-    std::vector<std::unordered_set<int> > adj(4);
+    std::vector<Graph::Set<int>> adj(4);
     for (int i = 0; i < 4; i++)
         adj[i] = g.adjacent(i);
 
