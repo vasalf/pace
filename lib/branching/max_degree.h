@@ -2,6 +2,7 @@
 
 #include <graph/graph.h>
 #include <kernels/bound.h>
+#include <kernels/trivial.h>
 
 #include <algorithm>
 
@@ -28,6 +29,8 @@ private:
             k.reduce();
             bound = Kernels::getKernelBound(k);
         }
+
+        Kernels::Trivial(graph).reduce();
 
         if (graph.size() == 0) {
             graph.saveSolution(graph.restoreSolution());

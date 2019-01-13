@@ -20,6 +20,11 @@
         {
             "executable": "./build/solutions/vc/mxd_excr/mxd_excr",
             "name": "ex_crown"
+        },
+        {
+            "executable": "./build/solutions/vc/mxd_trivial/mxd_trivial",
+            "name": "trivial",
+            "hidden": true
         }
     ],
     "output": "vc",

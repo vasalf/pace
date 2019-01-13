@@ -27,6 +27,7 @@ class Solution:
     def __init__(self, config):
         self.executable = config["executable"]
         self.name = config.get("name", self.executable)
+        self.hidden = config.get("hidden", False)
 
 
 VC_SOLUTION = re.compile(".*s vc \\d+ (\\d+).*")
@@ -108,6 +109,8 @@ class Config:
         if args.filter_solutions != "":
             filter_solutions = args.filter_solutions.split(",")
             self.solutions = list(filter(lambda x: x.name in filter_solutions, self.solutions))
+        else:
+            self.solutions = list(filter(lambda x: not x.hidden, self.solutions))
 
         if args.timeout > 0:
             self.timeout = args.timeout

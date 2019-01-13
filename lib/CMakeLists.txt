@@ -15,6 +15,7 @@ add_library(pacevc STATIC
     kernels/crown/crown.cpp
     kernels/lp/lp.cpp
     kernels/lp/glop.cpp
+    kernels/trivial.cpp
 
     reader/line_reader.cpp
 
