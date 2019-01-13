@@ -27,9 +27,12 @@ void LPKernel::reduce() {
     MinimalSurplusSetFinder surplus(graph);
     int val = surplus.find();
 
-    if (val > 0)
+    if (val > 0) {
+        bound = graph.size() - val;
         return;
+    }
 
+    bound = -1;
     reduceImpl(graph, surplus);
 }
 
@@ -41,9 +44,12 @@ void ZeroSurplusLPKernel::reduce() {
     MinimalSurplusNonEmptySetFinder surplus(graph);
     int val = surplus.find();
 
-    if (val > 0)
+    if (val > 0) {
+        bound = graph.size() - val;
         return;
+    }
 
+    bound = -1;
     reduceImpl(graph, surplus);
 }
 

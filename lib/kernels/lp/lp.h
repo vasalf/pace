@@ -8,6 +8,7 @@ namespace Kernels {
 
 struct LPKernel {
     Graph& graph;
+    int bound = -1;
 
     LPKernel(Graph& g);
 
@@ -16,6 +17,7 @@ struct LPKernel {
 
 struct ZeroSurplusLPKernel {
     Graph& graph;
+    int bound = -1;
 
     ZeroSurplusLPKernel(Graph& g);
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <graph/graph.h>
+#include <kernels/bound.h>
 
 #include <algorithm>
 
@@ -15,7 +16,18 @@ public:
     {}
 
     void branch() {
-        IntermediateReducer(graph).reduce();
+        doBranch(graph.size());
+    }
+
+private:
+    Graph& graph;
+
+    void doBranch(int bound) {
+        if (bound >= graph.size() || bound < 0) {
+            IntermediateReducer k(graph);
+            k.reduce();
+            bound = Kernels::getKernelBound(k);
+        }
 
         if (graph.size() == 0) {
             graph.saveSolution(graph.restoreSolution());
@@ -30,7 +42,7 @@ public:
 
         graph.placeMark();
         graph.takeVertex(v);
-        branch();
+        doBranch(bound);
         graph.restoreMark();
 
         graph.placeMark();
@@ -38,12 +50,9 @@ public:
         for (int u : adjCopy) {
             graph.takeVertex(u);
         }
-        branch();
+        doBranch(bound);
         graph.restoreMark();
     }
-
-private:
-    Graph& graph;
 };
 
 }

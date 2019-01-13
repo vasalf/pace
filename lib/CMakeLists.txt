@@ -10,6 +10,7 @@ add_library(pacevc STATIC
 
     branching/max_degree.cpp
 
+    kernels/bound.cpp
     kernels/common.cpp
     kernels/crown/crown.cpp
     kernels/lp/lp.cpp
