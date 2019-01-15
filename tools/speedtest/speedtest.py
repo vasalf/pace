@@ -131,6 +131,7 @@ class TestSuccess(TestResult):
         msecs = self.time_ms % 1000
         return "{}.{:>03d} s".format(seconds, msecs)
 
+
 class TestOutput(TestResult):
     def __init__(self, out):
         self.out = out

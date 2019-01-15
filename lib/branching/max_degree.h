@@ -17,7 +17,9 @@ public:
     {}
 
     void branch() {
+        graph.placeMark();
         doBranch(graph.size());
+        graph.restoreMark();
     }
 
 private:
