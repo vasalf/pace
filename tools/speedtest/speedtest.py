@@ -38,7 +38,6 @@ class TestResultDatabase:
         self.directory = directory
         self.lock = threading.Lock()
 
-
     def __cur_solution(self, test):
         sf = os.path.join(self.directory, test.name)
         if os.path.isfile(sf):
@@ -51,13 +50,11 @@ class TestResultDatabase:
                     s = f.readline()
         return None
 
-
     def __new_solution(self, result):
         m = VC_SOLUTION.match(result)
         if m is not None:
             return int(m.groups()[0])
         return None
-
 
     def process_result(self, test, solution, result):
         with self.lock:
@@ -80,6 +77,7 @@ class Config:
         self.timeout = data.get("timeout", -1)
         self.output = data.get("output", "plain")
         self.memory_limit = data.get("memory_limit", 1024 ** 3)
+        self.validate = data.get("validate", None)
         self.threads = args.threads
 
         if "tests" in data:
@@ -173,10 +171,28 @@ class TestCrash(TestResult):
         return "CR"
 
 
+class TestValidationFailure(TestResult):
+    def __str__(self):
+        return "VF"
+
+
 class ExecutionFailureError(RuntimeError):
     def __init__(self, cmd, exitcode, results):
         self.results = results
         super(RuntimeError, self).__init__("Command '{}' failed with exit code {}".format(cmd, exitcode))
+
+
+class ValidationError(RuntimeError):
+    def __init__(self, cmd, results):
+        self.results = results
+        super(RuntimeError, self).__init__("Command '{}' did not pass the validation".format(cmd))
+
+
+def validate_output(config, test, output):
+    proc = subprocess.Popen([config.validate, "--graph", test.filename], stdin=subprocess.PIPE)
+    proc.communicate(input=output.encode("utf8"))
+    proc.wait()
+    return proc.returncode == 0
 
 
 def run(config, database, solution, test):
@@ -204,6 +220,10 @@ def run(config, database, solution, test):
             raise ExecutionFailureError("{} < {}".format(solution.executable, test.filename), proc.returncode, (a, b, 0))
 
         output = proc.stdout.read().decode('utf-8').rstrip()
+        if config.validate is not None:
+            if not validate_output(config, test, output):
+                a, b = test_output("--"), TestValidationFailure()
+                raise ValidationError("{} < {}".format(solution.executable, test.filename), (a, b, 0))
         if database is not None:
             dbres = database.process_result(test, solution, output)
         else:
@@ -246,6 +266,9 @@ class SpeedtestExecutor:
                 except ExecutionFailureError as e:
                     a, b, dbres = e.results
                     self.err_msgs.append("EXECUTION FAILURE: {}".format(str(e)))
+                except ValidationError as e:
+                    a, b, dbres = e.results
+                    self.err_msgs.append("VALIDATION FAILURE: {}".format(str(e)))
                 row.append(a)
                 row.append(b)
                 if dbres == 1:

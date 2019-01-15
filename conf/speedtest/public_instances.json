@@ -25,9 +25,15 @@
             "executable": "./build/solutions/vc/mxd_trivial/mxd_trivial",
             "name": "trivial",
             "hidden": true
+        },
+        {
+            "executable": "/bin/true",
+            "name": "true",
+            "hidden": true
         }
     ],
     "output": "vc",
     "database_dir": "./data/analysis/db",
+    "validate": "./build/tools/validate/validate",
     "timeout": 1800
 }

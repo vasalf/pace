@@ -24,9 +24,9 @@ add_library(pacevc STATIC
     util/cow.h
 )
 
-target_link_libraries(pacevc LINK_PUBLIC 
+target_link_libraries(pacevc LINK_PUBLIC
     absl::base absl::container absl::hashtablez_sampler
-    absl::hash
+    absl::hash absl::node_hash_set
     pthread)
 
 if(BUILD_TESTING)

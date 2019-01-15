@@ -11,6 +11,8 @@ include_directories(${CMAKE_SOURCE_DIR}/third_party/abseil-cpp)
 include(FindZLIB)
 find_package(ZLIB REQUIRED)
 
+find_package(gflags COMPONENTS nothreads_static)
+
 add_subdirectory(third_party/gtest)
 
 add_subdirectory(third_party/abseil-cpp)
