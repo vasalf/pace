@@ -13,7 +13,9 @@ import os.path
 import re
 import resource
 import subprocess
+import sys
 import tabulate
+import tempfile
 import threading
 
 
@@ -201,35 +203,37 @@ def run(config, database, solution, test):
 
     test_output = functools.partial(make_test_output, config.output)
     with open(test.filename, "r") as test_in:
-        tstart = datetime.datetime.now()
-        proc = subprocess.Popen([solution.executable],
-                                stdin=test_in,
-                                stdout=subprocess.PIPE,
-                                preexec_fn=functools.partial(set_memory_limit, config.memory_limit))
-        if config.timeout > 0:
-            try:
-                proc.wait(timeout=config.timeout)
-            except subprocess.TimeoutExpired:
-                proc.kill()
-                return test_output("--"), TestTimeout(), 0
-        else:
-            proc.wait()
-        tend = datetime.datetime.now()
-        if proc.returncode != 0:
-            a, b = test_output("--"), TestCrash()
-            raise ExecutionFailureError("{} < {}".format(solution.executable, test.filename), proc.returncode, (a, b, 0))
+        with tempfile.TemporaryFile() as test_out:
+            tstart = datetime.datetime.now()
+            proc = subprocess.Popen([solution.executable],
+                                    stdin=test_in,
+                                    stdout=test_out,
+                                    preexec_fn=functools.partial(set_memory_limit, config.memory_limit))
+            if config.timeout > 0:
+                try:
+                    proc.wait(timeout=config.timeout)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                    return test_output("--"), TestTimeout(), 0
+            else:
+                proc.wait()
+            tend = datetime.datetime.now()
+            if proc.returncode != 0:
+                a, b = test_output("--"), TestCrash()
+                raise ExecutionFailureError("{} < {}".format(solution.executable, test.filename), proc.returncode, (a, b, 0))
 
-        output = proc.stdout.read().decode('utf-8').rstrip()
-        if config.validate is not None:
-            if not validate_output(config, test, output):
-                a, b = test_output("--"), TestValidationFailure()
-                raise ValidationError("{} < {}".format(solution.executable, test.filename), (a, b, 0))
-        if database is not None:
-            dbres = database.process_result(test, solution, output)
-        else:
-            dbres = 0
+            test_out.seek(0)
+            output = test_out.read().decode('utf-8').rstrip()
+            if config.validate is not None:
+                if not validate_output(config, test, output):
+                    a, b = test_output("--"), TestValidationFailure()
+                    raise ValidationError("{} < {}".format(solution.executable, test.filename), (a, b, 0))
+            if database is not None:
+                dbres = database.process_result(test, solution, output)
+            else:
+                dbres = 0
 
-        return test_output(output), TestSuccess((tend - tstart) // datetime.timedelta(microseconds=1000)), dbres
+            return test_output(output), TestSuccess((tend - tstart) // datetime.timedelta(microseconds=1000)), dbres
 
 
 class SpeedtestExecutor:
