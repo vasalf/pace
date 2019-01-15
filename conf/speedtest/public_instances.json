@@ -25,11 +25,6 @@
             "executable": "./build/solutions/vc/mxd_trivial/mxd_trivial",
             "name": "trivial",
             "hidden": true
-        },
-        {
-            "executable": "/bin/true",
-            "name": "true",
-            "hidden": true
         }
     ],
     "output": "vc",

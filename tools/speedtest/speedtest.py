@@ -60,15 +60,14 @@ class TestResultDatabase:
         with self.lock:
             cs = self.__cur_solution(test)
             ns = self.__new_solution(result.replace("\n", "#"))
-            if cs is None or ns < cs:
+            if cs is None:
                 sf = os.path.join(self.directory, test.name)
                 with open(sf, "w") as f:
                     f.write("c {}\n".format(solution.name))
                     f.write(result)
-                if cs is None:
-                    return 1
-                else:
-                    return -1
+                return 1
+            elif ns != cs:
+                return -1
         return 0
 
 
@@ -274,7 +273,7 @@ class SpeedtestExecutor:
                 if dbres == 1:
                     self.succ_msgs.append("SUCCESS: Found solution for test {}".format(test.name))
                 elif dbres == -1:
-                    self.err_msgs.append("SUSPECT: Found better solution for test {}".format(test.name))
+                    self.err_msgs.append("SUSPECT: Found solution of another size for test {}".format(test.name))
             data.append(row)
         self.table = tabulate.tabulate(data, headers=headers)
 
