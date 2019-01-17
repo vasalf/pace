@@ -65,7 +65,7 @@ public:
     }
 
     void addSimpleReduction(const std::vector<int>& newToOld);
-    void squeeze();
+    void trySqueeze();
 
     std::vector<int> restoreSolution();
 
@@ -78,6 +78,12 @@ public:
 private:
     void addReductionImpl(ReductionRulePtr rule, const Graph& newGraph);
 
+#ifdef GRAPH_UT
+public:
+#endif
+    void squeeze();
+
+private:
     struct TImpl;
     std::unique_ptr<TImpl> impl_;
 

@@ -26,6 +26,8 @@ private:
     Graph& graph;
 
     void doBranch(int bound) {
+        graph.trySqueeze();
+
         if (bound >= graph.size() || bound < 0) {
             IntermediateReducer k(graph);
             k.reduce();

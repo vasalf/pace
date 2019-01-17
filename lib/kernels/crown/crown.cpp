@@ -7,9 +7,9 @@
 namespace {
 
 std::vector<bool> maximalMatching(PaceVC::Graph& g) {
-    std::vector<bool> ret(g.size());
+    std::vector<bool> ret(g.realSize());
 
-    for (int i = 0; i < g.size(); i++) {
+    for (int i : g.undecided()) {
         for (int u : g.adjacent(i))
             if (!ret[i] && !ret[u])
                 ret[i] = ret[u] = true;
@@ -28,14 +28,11 @@ CrownKernel::CrownKernel(Graph& g)
 {}
 
 void CrownKernel::reduce() {
-    if (graph.size() < graph.realSize())
-        graph.squeeze();
-
     std::vector<bool> covered = maximalMatching(graph);
 
     std::vector<int> idOfLeft, idOfRight;
-    std::vector<int> idInPart(graph.size());
-    for (int i = 0; i < graph.size(); i++) {
+    std::vector<int> idInPart(graph.realSize());
+    for (int i : graph.undecided()) {
         if (covered[i]) {
             idInPart[i] = idOfLeft.size();
             idOfLeft.push_back(i);
@@ -56,7 +53,7 @@ void CrownKernel::reduce() {
     BestMinVCFinder vc(bg);
     vc.find();
 
-    std::vector<bool> inVC(graph.size());
+    std::vector<bool> inVC(graph.realSize());
     for (auto p : vc.answer) {
         if (p.first == BipartiteGraph::Part::LEFT)
             inVC[idOfLeft[p.second]] = true;

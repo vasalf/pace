@@ -193,6 +193,12 @@ void Graph::squeeze() {
     addSimpleReduction(newToOld);
 }
 
+void Graph::trySqueeze() {
+    if (2 * size() < realSize()) {
+        squeeze();
+    }
+}
+
 std::vector<int> Graph::restoreSolution() {
     GraphImpl cur = impl_->implStack.back();
     for (int i = impl_->reductionStack.size() - 1; i >= 0; i--) {
@@ -216,7 +222,7 @@ int Graph::realSize() const {
 }
 
 void Graph::placeMark() {
-    impl_->marks.push_back({impl_->implStack.back(), impl_->implStack.size(), impl_->reductionStack.size()});
+    impl_->marks.push_back({impl_->implStack.back(), (int)impl_->implStack.size(), (int)impl_->reductionStack.size()});
 }
 
 void Graph::restoreMark() {

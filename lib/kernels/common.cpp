@@ -8,9 +8,6 @@ void cleanUp(Graph& graph) {
     for (int u : undecidedCopy)
         if (graph.adjacent(u).empty())
             graph.removeVertex(u);
-
-    if (graph.size() < graph.realSize())
-        graph.squeeze();
 }
 
 }

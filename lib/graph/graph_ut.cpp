@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#define GRAPH_UT
 #include <graph/graph.h>
 
 #include <algorithm>
@@ -251,7 +252,7 @@ TEST(TestGraph, testGraphMarks) {
 
     g.takeVertex(1);
     g.removeVertex(4);
-    
+
     ASSERT_EQ(2, g.size());
 
     g.placeMark();

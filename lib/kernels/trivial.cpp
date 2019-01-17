@@ -15,7 +15,7 @@ void Trivial::reduce() {
     std::queue<int> leaves;
     for (int u : undecidedCopy) {
         if (graph.adjacent(u).size() == 1)
-            leaves.push(u);   
+            leaves.push(u);
     }
 
     while (!leaves.empty()) {
@@ -24,7 +24,7 @@ void Trivial::reduce() {
 
         if (!graph.undecided().count(a))
             continue;
-        
+
         int u = -1;
         if (graph.adjacent(a).size() == 1) {
             u = *(graph.adjacent(a).begin());
