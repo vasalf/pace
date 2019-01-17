@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
             solution = readSolution(std::cin);
         } else {
             std::ifstream solution_f(FLAGS_solution);
-            Solution solution = readSolution(solution_f);
+            solution = readSolution(solution_f);
         }
 
         if (!validate(graph, solution)) {
