@@ -14,13 +14,12 @@ int main() {
 
     std::vector<MPVariable*> vars;
     for (int i = 0; i < graph.realSize(); i++) {
-        vars.push_back(solver.MakeIntVar(0, 0, ""));
+        vars.push_back(solver.MakeIntVar(0, 1, ""));
     }
 
     for (int u : graph.undecided()) {
         for (int v : graph.adjacent(u)) {
             if (u < v) {
-                std::cout << u << " " << v << std::endl;
                 LinearRange edgeVal = LinearExpr(vars[u]) + LinearExpr(vars[v]) >= 1;
                 solver.MakeRowConstraint(edgeVal);
             }
