@@ -95,6 +95,10 @@
             "name": "crown"
         },
         {
+            "executable": "./build/solutions/kernels/crown_2k/crown_2k",
+            "name": "crown_2k"
+        },
+        {
             "executable": "./build/solutions/kernels/ex_crown/ex_crown",
             "name": "ex_crown"
         }

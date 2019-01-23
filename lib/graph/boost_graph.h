@@ -2,6 +2,8 @@
 
 #include <boost/graph/adjacency_list.hpp>
 
+#include <graph/graph.h>
+
 #include <iostream>
 
 namespace PaceVC {
@@ -15,4 +17,7 @@ using VertexIterator = GraphTraits::vertex_iterator;
 Graph readGraph(std::istream& is);
 
 }
+
+Boost::Graph toBoostGraph(const Graph& g);
+
 }

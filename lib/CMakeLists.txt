@@ -13,6 +13,7 @@ add_library(pacevc STATIC
     kernels/bound.cpp
     kernels/common.cpp
     kernels/crown/crown.cpp
+    kernels/crown/crown_2k.cpp
     kernels/lp/lp.cpp
     kernels/lp/glop.cpp
     kernels/trivial.cpp
