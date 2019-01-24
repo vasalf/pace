@@ -134,16 +134,26 @@ class TestSuccess(TestResult):
         return "{}.{:>03d} s".format(seconds, msecs)
 
 
+NUMBER_OF_VERTICES = re.compile(".*p td (\\d+).*")
+
+
 class TestOutput(TestResult):
-    def __init__(self, out):
+    def __init__(self, test, out):
+        self.test = test
         self.out = out
 
     def __str__(self):
-        return self.out
+        with open(self.test.filename, 'r') as f:
+            m = NUMBER_OF_VERTICES.match(f.read().replace("\n", "#"))
+            if m is None:
+                n = "--"
+            else:
+                n = m.groups()[0]
+        return '{}/{}'.format(self.out, n)
 
 
 class VCTestOutput(TestResult):
-    def __init__(self, out):
+    def __init__(self, test, out):
         self.sz = VC_SOLUTION.match(out.replace("\n", "#"))
         if self.sz is None:
             self.sz = "--"
@@ -154,11 +164,11 @@ class VCTestOutput(TestResult):
         return self.sz
 
 
-def make_test_output(method, out):
+def make_test_output(method, test, out):
     if method == "plain":
-        return TestOutput(out)
+        return TestOutput(test, out)
     if method == "vc":
-        return VCTestOutput(out)
+        return VCTestOutput(test, out)
 
     raise RuntimeException("Unknown output method {}".format(method))
 
@@ -214,26 +224,26 @@ def run(config, database, solution, test):
                     proc.wait(timeout=config.timeout)
                 except subprocess.TimeoutExpired:
                     proc.kill()
-                    return test_output("--"), TestTimeout(), 0
+                    return test_output(test, "--"), TestTimeout(), 0
             else:
                 proc.wait()
             tend = datetime.datetime.now()
             if proc.returncode != 0:
-                a, b = test_output("--"), TestCrash()
+                a, b = test_output(test, "--"), TestCrash()
                 raise ExecutionFailureError("{} < {}".format(solution.executable, test.filename), proc.returncode, (a, b, 0))
 
             test_out.seek(0)
             output = test_out.read().decode('utf-8').rstrip()
             if config.validate is not None:
                 if not validate_output(config, test, output):
-                    a, b = test_output("--"), TestValidationFailure()
+                    a, b = test_output(test, "--"), TestValidationFailure()
                     raise ValidationError("{} < {}".format(solution.executable, test.filename), (a, b, 0))
             if database is not None:
                 dbres = database.process_result(test, solution, output)
             else:
                 dbres = 0
 
-            return test_output(output), TestSuccess((tend - tstart) // datetime.timedelta(microseconds=1000)), dbres
+            return test_output(test, output), TestSuccess((tend - tstart) // datetime.timedelta(microseconds=1000)), dbres
 
 
 class SpeedtestExecutor:

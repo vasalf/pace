@@ -1,0 +1,34 @@
+{
+    "testdir": "data/vc-exact-public",
+    "solutions": [
+        {
+            "executable": "./build/solutions/kernels/lp/lp",
+            "name": "lp"
+        },
+        {
+            "executable": "./build/solutions/kernels/zero_surplus/zero_surplus",
+            "name": "zero_surplus"
+        },
+        {
+            "executable": "./build/solutions/kernels/ex_zero_surplus/ex_zero_surplus",
+            "name": "ex_zero_surplus"
+        },
+        {
+            "executable": "./build/solutions/kernels/glop/glop",
+            "name": "glop"
+        },
+        {
+            "executable": "./build/solutions/kernels/crown/crown",
+            "name": "crown"
+        },
+        {
+            "executable": "./build/solutions/kernels/crown_2k/crown_2k",
+            "name": "crown_2k"
+        },
+        {
+            "executable": "./build/solutions/kernels/ex_crown/ex_crown",
+            "name": "ex_crown"
+        }
+    ],
+    "timeout": 10
+}
