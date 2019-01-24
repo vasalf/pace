@@ -1,0 +1,27 @@
+{
+    "tests": [
+        {
+            "filename": "data/graphs/rnd_10000_10000.txt",
+            "name": "random(10000, 10000)"
+        },
+        {
+            "filename": "data/graphs/complete_graph_3000.txt",
+            "name": "complete(3000)"
+        },
+        {
+            "filename": "data/graphs/descending_triangles_100.txt",
+            "name": "desc_triangles(1000)"
+        }
+    ],
+    "solutions": [
+        {
+            "executable": "./build/solutions/kernels/lp/lp",
+            "name": "lp"
+        },
+        {
+            "executable": "./build/solutions/kernels/crown/crown",
+            "name": "crown"
+        }
+    ],
+    "timeout": 10
+}

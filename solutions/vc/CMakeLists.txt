@@ -1,4 +1,5 @@
 add_subdirectory(mxd_cr)
+add_subdirectory(mxd_cr2k)
 add_subdirectory(mxd_excr)
 add_subdirectory(mxd_lp)
 add_subdirectory(mxd_zs)

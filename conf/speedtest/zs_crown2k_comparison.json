@@ -1,0 +1,27 @@
+{
+    "tests": [
+        {
+            "filename": "data/graphs/rnd_10000_10000.txt",
+            "name": "random(10000, 10000)"
+        },
+        {
+            "filename": "data/graphs/complete_graph_3000.txt",
+            "name": "complete(3000)"
+        },
+        {
+            "filename": "data/graphs/stretched_clique_300.txt",
+            "name": "stretched_clique(300)"
+        }
+    ],
+    "solutions": [
+        {
+            "executable": "./build/solutions/kernels/ex_zero_surplus/ex_zero_surplus",
+            "name": "lp+"
+        },
+        {
+            "executable": "./build/solutions/kernels/crown_2k/crown_2k",
+            "name": "crown+"
+        }
+    ],
+    "timeout": 60
+}

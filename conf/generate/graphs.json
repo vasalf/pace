@@ -71,6 +71,66 @@
         {
             "output_file": "data/graphs/rnd_10000_400000.txt",
             "command": "./tools/generators/graph/random_graph.py 10000 400000"
+        },
+        {
+            "output_file": "data/graphs/ind_and_clique_1000_50_100.txt",
+            "command": "./tools/generators/graph/ind_and_clique.py 1000 50 100"
+        },
+        {
+            "output_file": "data/graphs/ind_and_clique_10000_500_1000.txt",
+            "command": "./tools/generators/graph/ind_and_clique.py 10000 500 1000"
+        },
+        {
+            "output_file": "data/graphs/ind_and_clique_10000_50_1000.txt",
+            "command": "./tools/generators/graph/ind_and_clique.py 10000 50 1000"
+        },
+        {
+            "output_file": "data/graphs/ind_and_clique_10000_1000_1000.txt",
+            "command": "./tools/generators/graph/ind_and_clique.py 10000 1000 1000"
+        },
+        {
+            "output_file": "data/graphs/ind_and_clique_1_1_1000.txt",
+            "command": "./tools/generators/graph/ind_and_clique.py 1 1 1000"
+        },
+        {
+            "output_file": "data/graphs/descending_triangles_32.txt",
+            "command": "./tools/generators/graph/descending_triangles.py 32"
+        },
+        {
+            "output_file": "data/graphs/descending_triangles_50.txt",
+            "command": "./tools/generators/graph/descending_triangles.py 50"
+        },
+        {
+            "output_file": "data/graphs/descending_triangles_100.txt",
+            "command": "./tools/generators/graph/descending_triangles.py 100"
+        },
+        {
+            "output_file": "data/graphs/complete_graph_50.txt",
+            "command": "./tools/generators/graph/complete_graph.py 50"
+        },
+        {
+            "output_file": "data/graphs/complete_graph_100.txt",
+            "command": "./tools/generators/graph/complete_graph.py 100"
+        },
+        {
+            "output_file": "data/graphs/complete_graph_500.txt",
+            "command": "./tools/generators/graph/complete_graph.py 500"
+        },
+        {
+            "output_file": "data/graphs/complete_graph_1000.txt",
+            "command": "./tools/generators/graph/complete_graph.py 1000"
+        },
+        {
+            "output_file": "data/graphs/complete_graph_3000.txt",
+            "command": "./tools/generators/graph/complete_graph.py 3000"
+        },
+        {
+            "output_file": "data/graphs/stretched_clique_300.txt",
+            "command": "./tools/generators/graph/stretched_clique.py 300"
+        },
+        {
+            "output_file": "data/graphs/stretched_clique_500.txt",
+            "command": "./tools/generators/graph/stretched_clique.py 500"
         }
     ]
 }

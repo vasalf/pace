@@ -1,0 +1,34 @@
+{
+    "tests": [
+        {
+            "filename": "data/graphs/rnd_10000_10000.txt",
+            "name": "random(10000, 10000)"
+        },
+        {
+            "filename": "data/graphs/complete_graph_100.txt",
+            "name": "complete(100)"
+        },
+        {
+            "filename": "data/graphs/descending_triangles_100.txt",
+            "name": "desc_triangles(100)"
+        }
+    ],
+    "solutions": [
+        {
+            "executable": "./build/solutions/vc/mxd_lp/mxd_lp",
+            "name": "lp"
+        },
+        {
+            "executable": "./build/solutions/vc/mxd_cr/mxd_cr",
+            "name": "crown"
+        },
+        {
+            "executable": "./build/solutions/vc/ilp_cbc/ilp_cbc",
+            "name": "ilp"
+        }
+    ],
+    "output": "vc",
+    "validate": "./build/tools/validate/validate",
+    "timeout": 30,
+    "memory_limit": 12884901888
+}
