@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Current status</title>
+    <meta charset="UTF-8">
+    <style>
+        table, td, tr, th {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+
+        .test-n, .test-m {
+            text-align: center;
+        }
+
+        #tests-table {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+<table id="tests-table">
+<tr>
+    <th>Test</th>
+    <th>Vetices</th>
+    <th>Edges</th>
+</tr>
+{% for test in tests %}
+    <tr>
+        <td class="test-name">{{ test.name }}</td>
+        <td class="test-n">{{ test.n }}</td>
+        <td class="test-m">{{ test.m }}</td>
+    </tr>
+{% endfor %}
+</table>
+</body>
+</html>

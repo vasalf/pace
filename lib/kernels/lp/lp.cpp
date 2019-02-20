@@ -11,7 +11,6 @@ void reduceImpl(PaceVC::Graph& graph, const SurplusFinder& surplus) {
         graph.removeVertex(u);
     for (int v : surplus.neighbours)
         graph.takeVertex(v);
-    PaceVC::Kernels::cleanUp(graph);
 }
 
 }
@@ -41,7 +40,7 @@ ZeroSurplusLPKernel::ZeroSurplusLPKernel(Graph& g)
 {}
 
 void ZeroSurplusLPKernel::reduce() {
-    MinimalSurplusNonEmptySetFinder surplus(graph);
+    MinimalSurplusSetFinder surplus(graph);
     int val = surplus.find();
 
     if (val > 0) {
@@ -50,7 +49,32 @@ void ZeroSurplusLPKernel::reduce() {
     }
 
     bound = -1;
-    reduceImpl(graph, surplus);
+
+    if (val < 0) {
+        reduceImpl(graph, surplus);
+        return;
+    }
+
+    auto undecidedCopy = graph.undecided();
+    for (int u : undecidedCopy) {
+        if (!graph.undecided().count(u))
+            continue;
+
+        Graph copy = graph;
+        for (int v : graph.adjacent(u))
+            copy.takeVertex(v);
+        copy.removeVertex(u);
+        MinimalSurplusSetFinder surplusCopy(copy);
+        int copyVal = surplusCopy.find();
+
+        if (copyVal + graph.adjacent(u).size() - 1 == 0) {
+            auto adjCopy = graph.adjacent(u);
+            for (int v : adjCopy)
+                graph.takeVertex(v);
+            graph.removeVertex(u);
+            reduceImpl(graph, surplusCopy);
+        }
+    }
 }
 
 }

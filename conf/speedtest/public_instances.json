@@ -22,6 +22,10 @@
             "name": "ex_crown"
         },
         {
+            "executable": "./build/solutions/vc/mxd_cr2k/mxd_cr2k",
+            "name": "crown_2k"
+        },
+        {
             "executable": "./build/solutions/vc/mxd_trivial/mxd_trivial",
             "name": "trivial",
             "hidden": true
