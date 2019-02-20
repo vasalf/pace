@@ -12,8 +12,16 @@
             padding: 10px;
         }
 
-        .test-n, .test-m {
+        .test-n, .test-m, .test-answer {
             text-align: center;
+        }
+
+        .externally-solved-test {
+            background-color: #FFFF99
+        }
+
+        .solved-test {
+            background-color: #90EE90;
         }
 
         #tests-table {
@@ -27,12 +35,22 @@
     <th>Test</th>
     <th>Vetices</th>
     <th>Edges</th>
+    <th>Answer</th>
+    <th>Solved by</th>
 </tr>
 {% for test in tests %}
+{% if test.status == "TestStatus.SOLVED" %}
+    <tr class="solved-test">
+{% elif test.status == "TestStatus.EXTERNALLY_SOLVED" %}
+    <tr class="externally-solved-test">
+{% else %}
     <tr>
+{% endif %}
         <td class="test-name">{{ test.name }}</td>
         <td class="test-n">{{ test.n }}</td>
         <td class="test-m">{{ test.m }}</td>
+        <td class="test-answer">{{ test.answer }}</td>
+        <td class="test-solved-by">{{ test.solved_by }}</td>
     </tr>
 {% endfor %}
 </table>

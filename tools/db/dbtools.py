@@ -7,6 +7,7 @@ import os.path
 
 class Database:
     def __init__(self, config):
+        self.config = config
         self.tests = list(map(instance.Test, config.tests))
         db_filename = os.path.join(config.database_dir, "db.json")
         self.db_filename = db_filename

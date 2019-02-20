@@ -19,6 +19,7 @@ class TestConfig:
     def __init__(self, config):
         self.filename = config["filename"]
         self.name = config["name"]
+        self.answer = config["answer"]
 
 
 class Config:
@@ -30,6 +31,8 @@ class Config:
         self.database_dir = st_data["database_dir"]
         self.solutions = [SolutionConfig(data, solution) for solution in st_data["solutions"]]
         if "tests" in st_data.keys():
+            for test in st_data["tests"]:
+                test["answer"] = os.path.join(database_dir, test["name"])
             self.tests = list(map(TestConfig, st_data["tests"]))
         else:
             tests = [f for f in os.listdir(st_data["testdir"]) if os.path.isfile(os.path.join(st_data["testdir"], f))]
@@ -38,6 +41,7 @@ class Config:
                 test_cfg = {}
                 test_cfg["filename"] = os.path.join(st_data["testdir"], test)
                 test_cfg["name"] = test
+                test_cfg["answer"] = os.path.join(self.database_dir, test)
                 self.tests.append(TestConfig(test_cfg))
             self.tests.sort(key=lambda x: x.filename)
 
