@@ -12,6 +12,7 @@ class TestInfo:
         "update_solution",
         "update_surplus",
         "update_lpvc",
+        "update_greed",
     ]
 
     def __init__(self, config, db=None):
@@ -81,6 +82,14 @@ class TestInfo:
             p = subprocess.Popen(["./build/tools/lpvc/lpvc"], stdin=test, stdout=subprocess.PIPE)
             p.wait()
             self.info["lpvc"] = float(p.stdout.read().decode("utf-8").rstrip())
+
+    def update_greed(self):
+        if "greed" in self.info:
+            return
+        with open(self.config.filename, "r") as test:
+            p = subprocess.Popen(["./build/tools/greed/greed"], stdin=test, stdout=subprocess.PIPE)
+            p.wait()
+            self.info["greed"] = int(p.stdout.read().decode("utf-8").rstrip())
 
 
 class Test:
