@@ -6,13 +6,33 @@
     <style>
         table, td, tr, th {
             border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        tr {
+            height: 40px;
         }
 
         th, td {
             padding: 10px;
+            box-sizing: border-box;
         }
 
-        .test-n, .test-m, .test-answer, .test-surplus {
+        #content {
+            display: block;
+            height: 100%;
+            overflow: auto;
+        }
+
+        thead.fixed-headers {
+            position: fixed;
+            top: 0;
+            background-color: white;
+            z-index: 2;
+            left: 10px;
+        }
+
+        .test-n, .test-m, .test-answer, .test-surplus, .test-lpvc {
             text-align: center;
         }
 
@@ -24,37 +44,72 @@
             background-color: #90EE90;
         }
 
-        #tests-table {
-            border-collapse: collapse;
+        #tests {
+            position: absolute;
+            top: 40px;
+            left: 10px;
         }
     </style>
 </head>
 <body>
-<table id="tests-table">
-<tr>
-    <th>Test</th>
-    <th>Vetices</th>
-    <th>Edges</th>
-    <th>Surplus</th>
-    <th>Answer</th>
-    <th>Solved by</th>
-</tr>
-{% for test in tests %}
-{% if test.status == "TestStatus.SOLVED" %}
-    <tr class="solved-test">
-{% elif test.status == "TestStatus.EXTERNALLY_SOLVED" %}
-    <tr class="externally-solved-test">
-{% else %}
-    <tr>
-{% endif %}
-        <td class="test-name">{{ test.name }}</td>
-        <td class="test-n">{{ test.n }}</td>
-        <td class="test-m">{{ test.m }}</td>
-        <td class="test-surplus">{{ test.surplus }}</td>
-        <td class="test-answer">{{ test.answer }}</td>
-        <td class="test-solved-by">{{ test.solved_by }}</td>
-    </tr>
-{% endfor %}
-</table>
+<div id="content">
+    <table class="fixed-headers">
+    <thead class="fixed-headers">
+        <tr class="fixed-headers">
+            <th id="test-name">Test</th>
+            <th id="test-n">Vetices</th>
+            <th id="test-m">Edges</th>
+            <th id="test-surplus">Surplus</th>
+            <th id="test-lpvc">LPVC</th>
+            <th id="test-answer">Answer</th>
+            <th id="test-solved-by">Solved by</th>
+        </tr>
+    </thead>
+    </table>
+    <div id="tests">
+        <table id="tests-table">
+        <tbody class="fixed-headers">
+        {% for test in tests %}
+        {% if test.status == "TestStatus.SOLVED" %}
+            <tr class="solved-test fixed-headers">
+        {% elif test.status == "TestStatus.EXTERNALLY_SOLVED" %}
+            <tr class="externally-solved-test fixed-headers">
+        {% else %}
+            <tr class="fixed-headers">
+        {% endif %}
+                <td class="test-name">{{ test.name }}</td>
+                <td class="test-n">{{ test.n }}</td>
+                <td class="test-m">{{ test.m }}</td>
+                <td class="test-surplus">{{ test.surplus }}</td>
+                <td class="test-lpvc">{{ test.lpvc }}</td>
+                <td class="test-answer">{{ test.answer }}</td>
+                <td class="test-solved-by">{{ test.solved_by }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+</div>
+<script language="javascript">
+    classes = [
+        "test-name",
+        "test-n",
+        "test-m",
+        "test-surplus",
+        "test-lpvc",
+        "test-answer",
+        "test-solved-by"
+    ]
+    for (i in classes) {
+        c = classes[i];
+        width1 = document.getElementsByClassName(c)[0].offsetWidth;
+        width2 = document.getElementById(c).offsetWidth;
+        width = width1 > width2 ? width1 : width2;
+        document.getElementById(c).style.width = width + "px";
+        for (var j = 0; j < document.getElementsByClassName(c).length; j++) {
+            document.getElementsByClassName(c)[j].style.width = width + "px";
+        }
+    }
+</script>
 </body>
 </html>

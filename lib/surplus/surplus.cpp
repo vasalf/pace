@@ -102,4 +102,10 @@ int MinimalSurplusNonEmptySetFinder::find() {
     return ret;
 }
 
+int findLPVCValue(const Graph& graph) {
+    BipartiteGraph h = duplicateVertices(graph);
+    BestMinVCFinder vc(h);
+    return vc.find();
+}
+
 }

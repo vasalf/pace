@@ -11,6 +11,7 @@ class TestInfo:
         "update_nm",
         "update_solution",
         "update_surplus",
+        "update_lpvc",
     ]
 
     def __init__(self, config, db=None):
@@ -72,6 +73,14 @@ class TestInfo:
             out.seek(0)
             surlus_str = out.readline().decode("utf-8")
         self.info["surplus"] = int(surlus_str.split("=")[1])
+
+    def update_lpvc(self):
+        if "lpvc" in self.info:
+            return
+        with open(self.config.filename, "r") as test:
+            p = subprocess.Popen(["./build/tools/lpvc/lpvc"], stdin=test, stdout=subprocess.PIPE)
+            p.wait()
+            self.info["lpvc"] = float(p.stdout.read().decode("utf-8").rstrip())
 
 
 class Test:

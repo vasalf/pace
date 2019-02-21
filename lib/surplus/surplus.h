@@ -24,4 +24,7 @@ struct MinimalSurplusNonEmptySetFinder {
     int find();
 };
 
+/// Returns 2 * {LPVC answer}
+int findLPVCValue(const Graph& graph);
+
 }
