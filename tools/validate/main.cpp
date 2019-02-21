@@ -1,7 +1,7 @@
 #include <graph/graph.h>
 #include <reader/line_reader.h>
 
-#include <gflags/gflags.h>
+#include <CLI11/CLI11.hpp>
 
 #include <fstream>
 
@@ -58,25 +58,30 @@ bool validate(const PaceVC::Graph& g, const Solution& s) {
 
 }
 
-DEFINE_string(graph, "", "Path to the instance of VC problem");
-DEFINE_string(solution, "", "Path to the solution of VC problem");
-
 int main(int argc, char **argv) {
-    try {
-        google::ParseCommandLineFlags(&argc, &argv, true);
+    CLI::App app("VC solution validator");
 
-        if (FLAGS_graph == "") {
+    std::string graphPath;
+    std::string solutionPath;
+
+    app.add_option("-g,--graph", graphPath, "Path to the instance of VC problem")->required();
+    app.add_option("-s,--solution", solutionPath, "Path to the solution of VC problem");
+
+    try {
+        CLI11_PARSE(app, argc, argv);
+
+        if (graphPath == "") {
             throw std::runtime_error("graph is not provided");
         }
 
-        std::ifstream graph_f(FLAGS_graph);
+        std::ifstream graph_f(graphPath);
         PaceVC::Graph graph = PaceVC::readGraph(graph_f);
 
         Solution solution;
-        if (FLAGS_solution == "") {
+        if (solutionPath == "") {
             solution = readSolution(std::cin);
         } else {
-            std::ifstream solution_f(FLAGS_solution);
+            std::ifstream solution_f(solutionPath);
             solution = readSolution(solution_f);
         }
 

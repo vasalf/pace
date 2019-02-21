@@ -3,578 +3,678 @@
         "answer": 132,
         "m": 264,
         "n": 176,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_003.hgr": {
         "answer": 120,
         "m": 240,
         "n": 160,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_005.hgr": {
         "answer": 126,
         "m": 252,
         "n": 168,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_007.hgr": {
         "answer": 138,
         "m": 1255,
         "n": 147,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_009.hgr": {
         "answer": 137,
         "m": 812,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 3
     },
     "vc-exact_011.hgr": {
         "answer": 98,
         "m": 371,
         "n": 113,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 5
     },
     "vc-exact_013.hgr": {
         "answer": 139,
         "m": 1404,
         "n": 167,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 0
     },
     "vc-exact_015.hgr": {
         "answer": 98,
         "m": 290,
         "n": 120,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 0
     },
     "vc-exact_017.hgr": {
         "answer": 101,
         "m": 403,
         "n": 135,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 3
     },
     "vc-exact_019.hgr": {
         "answer": 113,
         "m": 492,
         "n": 149,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_021.hgr": {
         "answer": 99,
         "m": 495,
         "n": 110,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 8
     },
     "vc-exact_023.hgr": {
         "answer": 105,
         "m": 385,
         "n": 140,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 4
     },
     "vc-exact_025.hgr": {
         "answer": 145,
         "m": 625,
         "n": 210,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 4
     },
     "vc-exact_027.hgr": {
         "answer": 127,
         "m": 379,
         "n": 190,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_029.hgr": {
         "answer": 100,
         "m": 300,
         "n": 150,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 3
     },
     "vc-exact_031.hgr": {
         "answer": 100,
         "m": 300,
         "n": 150,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 3
     },
     "vc-exact_033.hgr": {
         "answer": 112,
         "m": 546,
         "n": 140,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 5
     },
     "vc-exact_035.hgr": {
         "answer": 144,
         "m": 713,
         "n": 180,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 6
     },
     "vc-exact_037.hgr": {
         "answer": 82,
         "m": 166,
         "n": 109,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_039.hgr": {
         "answer": 91,
         "m": 184,
         "n": 121,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_041.hgr": {
         "answer": 100,
         "m": 202,
         "n": 133,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_043.hgr": {
         "answer": 109,
         "m": 220,
         "n": 145,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_045.hgr": {
         "answer": 64,
         "m": 130,
         "n": 85,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_047.hgr": {
         "answer": 141,
         "m": 1330,
         "n": 205,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 0
     },
     "vc-exact_049.hgr": {
         "answer": 128,
         "m": 802,
         "n": 153,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 5
     },
     "vc-exact_051.hgr": {
         "answer": 128,
         "m": 384,
         "n": 192,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 3
     },
     "vc-exact_053.hgr": {
         "answer": 111,
         "m": 331,
         "n": 166,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_055.hgr": {
         "answer": 143,
         "m": 427,
         "n": 214,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_057.hgr": {
         "answer": 126,
         "m": 378,
         "n": 190,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_059.hgr": {
         "answer": 111,
         "m": 330,
         "n": 166,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_061.hgr": {
         "answer": 142,
         "m": 426,
         "n": 214,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_063.hgr": {
         "answer": 411,
         "m": 567411,
         "n": 489,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": -7
     },
     "vc-exact_065.hgr": {
         "answer": 343,
         "m": 4688952,
         "n": 394,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": -1
     },
     "vc-exact_067.hgr": {
         "m": 41261,
-        "n": 484
+        "n": 484,
+        "surplus": 0
     },
     "vc-exact_069.hgr": {
         "m": 39122,
-        "n": 470
+        "n": 470,
+        "surplus": -1
     },
     "vc-exact_071.hgr": {
         "answer": 3422,
         "m": 19783,
         "n": 16244,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -9400
     },
     "vc-exact_073.hgr": {
         "answer": 3248,
         "m": 19031,
         "n": 15241,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -8745
     },
     "vc-exact_075.hgr": {
         "answer": 3584,
         "m": 23377,
         "n": 18019,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -10851
     },
     "vc-exact_077.hgr": {
         "answer": 132,
         "m": 881,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_079.hgr": {
         "answer": 131,
         "m": 821,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_081.hgr": {
         "m": 1199,
-        "n": 200
+        "n": 200,
+        "surplus": 3
     },
     "vc-exact_083.hgr": {
         "answer": 136,
         "m": 998,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_085.hgr": {
         "answer": 140,
         "m": 1047,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 3
     },
     "vc-exact_087.hgr": {
         "answer": 140,
         "m": 1054,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 3
     },
     "vc-exact_089.hgr": {
         "m": 1210,
-        "n": 200
+        "n": 200,
+        "surplus": 2
     },
     "vc-exact_091.hgr": {
         "answer": 135,
         "m": 966,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_093.hgr": {
         "answer": 138,
         "m": 1020,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_095.hgr": {
         "answer": 138,
         "m": 983,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_097.hgr": {
         "answer": 135,
         "m": 994,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_099.hgr": {
         "answer": 130,
         "m": 828,
         "n": 199,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 0
     },
     "vc-exact_101.hgr": {
         "answer": 138,
         "m": 979,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_103.hgr": {
         "answer": 132,
         "m": 824,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 0
     },
     "vc-exact_105.hgr": {
         "answer": 131,
         "m": 827,
         "n": 198,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_107.hgr": {
         "answer": 134,
         "m": 886,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_109.hgr": {
         "answer": 126,
         "m": 752,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 0
     },
     "vc-exact_111.hgr": {
         "answer": 130,
         "m": 821,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_113.hgr": {
         "answer": 129,
         "m": 822,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 0
     },
     "vc-exact_115.hgr": {
         "answer": 5056,
         "m": 30197,
         "n": 25667,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -15555
     },
     "vc-exact_117.hgr": {
         "answer": 5111,
         "m": 31552,
         "n": 25123,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -14901
     },
     "vc-exact_119.hgr": {
         "answer": 4970,
         "m": 30451,
         "n": 23879,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -13939
     },
     "vc-exact_121.hgr": {
         "answer": 135,
         "m": 983,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_123.hgr": {
         "m": 1152,
-        "n": 200
+        "n": 200,
+        "surplus": 2
     },
     "vc-exact_125.hgr": {
         "answer": 136,
         "m": 961,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_127.hgr": {
         "answer": 133,
         "m": 897,
         "n": 199,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_129.hgr": {
         "answer": 138,
         "m": 1054,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_131.hgr": {
         "answer": 137,
         "m": 1037,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_133.hgr": {
         "answer": 141,
         "m": 1141,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 3
     },
     "vc-exact_135.hgr": {
         "answer": 140,
         "m": 1042,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_137.hgr": {
         "answer": 135,
         "m": 985,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_139.hgr": {
         "m": 1128,
-        "n": 199
+        "n": 199,
+        "surplus": 1
     },
     "vc-exact_141.hgr": {
         "answer": 140,
         "m": 1123,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 0
     },
     "vc-exact_143.hgr": {
         "answer": 136,
         "m": 1049,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 1
     },
     "vc-exact_145.hgr": {
         "answer": 140,
         "m": 1110,
         "n": 200,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": 2
     },
     "vc-exact_147.hgr": {
         "answer": 10504,
         "m": 63303,
         "n": 49620,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -28612
     },
     "vc-exact_149.hgr": {
         "answer": 10100,
         "m": 61188,
         "n": 48033,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -27833
     },
     "vc-exact_151.hgr": {
         "answer": 10201,
         "m": 63601,
         "n": 49212,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -28810
     },
     "vc-exact_153.hgr": {
         "answer": 11211,
         "m": 67000,
         "n": 54991,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -32569
     },
     "vc-exact_155.hgr": {
         "answer": 11648,
         "m": 71155,
         "n": 57287,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -33991
     },
     "vc-exact_157.hgr": {
         "answer": 10918,
         "m": 69091,
         "n": 53861,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -32025
     },
     "vc-exact_159.hgr": {
         "answer": 12084,
         "m": 75601,
         "n": 59785,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -35617
     },
     "vc-exact_161.hgr": {
         "answer": 13431,
         "m": 81245,
         "n": 65866,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -39004
     },
     "vc-exact_163.hgr": {
         "answer": 12840,
         "m": 79974,
         "n": 64479,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -38799
     },
     "vc-exact_165.hgr": {
         "answer": 13338,
         "m": 79557,
         "n": 62853,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -36177
     },
     "vc-exact_167.hgr": {
         "m": 17831,
-        "n": 450
+        "n": 450,
+        "surplus": 47
     },
     "vc-exact_169.hgr": {
         "m": 126163,
-        "n": 1534
+        "n": 1534,
+        "surplus": 99
     },
     "vc-exact_171.hgr": {
         "m": 127011,
-        "n": 1534
+        "n": 1534,
+        "surplus": 97
     },
     "vc-exact_173.hgr": {
         "m": 81068,
-        "n": 1150
+        "n": 1150,
+        "surplus": 70
     },
     "vc-exact_175.hgr": {
         "m": 572774,
-        "n": 4000
+        "n": 4000,
+        "surplus": 134
     },
     "vc-exact_177.hgr": {
         "answer": 12097,
         "m": 51846,
         "n": 23541,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": -270
     },
     "vc-exact_179.hgr": {
         "answer": 11033,
         "m": 46848,
         "n": 20431,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": -225
     },
     "vc-exact_181.hgr": {
         "answer": 36,
         "m": 207,
         "n": 68,
-        "solved_by": "ex_zero_surplus"
+        "solved_by": "ex_zero_surplus",
+        "surplus": 0
     },
     "vc-exact_183.hgr": {
         "answer": 20,
         "m": 82,
         "n": 42,
-        "solved_by": "lp"
+        "solved_by": "lp",
+        "surplus": -2
     },
     "vc-exact_185.hgr": {
         "answer": 187,
         "m": 1060,
         "n": 377,
-        "solved_by": "ex_zero_surplus"
+        "solved_by": "ex_zero_surplus",
+        "surplus": -7
     },
     "vc-exact_187.hgr": {
         "answer": 1747,
         "m": 8471,
         "n": 3381,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": -61
     },
     "vc-exact_189.hgr": {
         "answer": 4402,
         "m": 10158,
         "n": 8794,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": -88
     },
     "vc-exact_191.hgr": {
         "answer": 6674,
         "m": 32384,
         "n": 12335,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": -168
     },
     "vc-exact_193.hgr": {
         "answer": 755,
         "m": 3411,
         "n": 1517,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": -39
     },
     "vc-exact_195.hgr": {
         "answer": 6821,
         "m": 33485,
         "n": 12589,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": -147
     },
     "vc-exact_197.hgr": {
         "answer": 927,
         "m": 4152,
         "n": 1806,
-        "solved_by": "ILP"
+        "solved_by": "ILP",
+        "surplus": -54
     },
     "vc-exact_199.hgr": {
         "answer": 211,
         "m": 864,
         "n": 420,
-        "solved_by": "ex_zero_surplus"
+        "solved_by": "ex_zero_surplus",
+        "surplus": -28
     }
 }

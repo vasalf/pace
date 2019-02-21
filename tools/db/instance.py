@@ -2,12 +2,15 @@
 # *-* coding: utf-8 *-*
 
 import os.path
+import subprocess
+import tempfile
 
 
 class TestInfo:
     UPDATE_OPS = [
         "update_nm",
         "update_solution",
+        "update_surplus",
     ]
 
     def __init__(self, config, db=None):
@@ -58,6 +61,17 @@ class TestInfo:
             if solution != self.info.get("solved_by", ""):
                 self.info["solved_by"] = solution
                 self.info["answer"] = size
+
+    def update_surplus(self):
+        if "surplus" in self.info:
+            return
+        with tempfile.TemporaryFile() as out:
+            with open(self.config.filename, "r") as test:
+                p = subprocess.Popen(["./build/tools/surplus/surplus"], stdin=test, stdout=out)
+                p.wait()
+            out.seek(0)
+            surlus_str = out.readline().decode("utf-8")
+        self.info["surplus"] = int(surlus_str.split("=")[1])
 
 
 class Test:
