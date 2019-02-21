@@ -859,7 +859,7 @@
     },
     "vc-exact_177.hgr": {
         "answer": 12097,
-        "crbound": 11819,
+        "crbound": 11685,
         "greed": 19341,
         "lpvc": 11586.0,
         "m": 51846,
@@ -869,7 +869,7 @@
     },
     "vc-exact_179.hgr": {
         "answer": 11033,
-        "crbound": 10434,
+        "crbound": 10342,
         "greed": 15735,
         "lpvc": 9864.5,
         "m": 46848,
@@ -889,7 +889,7 @@
     },
     "vc-exact_183.hgr": {
         "answer": 20,
-        "crbound": 21,
+        "crbound": 20,
         "greed": 39,
         "lpvc": 20.0,
         "m": 82,
@@ -899,7 +899,7 @@
     },
     "vc-exact_185.hgr": {
         "answer": 187,
-        "crbound": 188,
+        "crbound": 185,
         "greed": 303,
         "lpvc": 185.0,
         "m": 1060,
@@ -909,7 +909,7 @@
     },
     "vc-exact_187.hgr": {
         "answer": 1747,
-        "crbound": 1717,
+        "crbound": 1691,
         "greed": 2661,
         "lpvc": 1629.0,
         "m": 8471,
@@ -919,7 +919,7 @@
     },
     "vc-exact_189.hgr": {
         "answer": 4402,
-        "crbound": 4410,
+        "crbound": 4367,
         "greed": 7989,
         "lpvc": 4339.0,
         "m": 10158,
@@ -929,7 +929,7 @@
     },
     "vc-exact_191.hgr": {
         "answer": 6674,
-        "crbound": 6324,
+        "crbound": 6259,
         "greed": 8617,
         "lpvc": 5908.0,
         "m": 32384,
@@ -939,7 +939,7 @@
     },
     "vc-exact_193.hgr": {
         "answer": 755,
-        "crbound": 761,
+        "crbound": 742,
         "greed": 1057,
         "lpvc": 736.0,
         "m": 3411,
@@ -949,7 +949,7 @@
     },
     "vc-exact_195.hgr": {
         "answer": 6821,
-        "crbound": 6459,
+        "crbound": 6399,
         "greed": 8829,
         "lpvc": 6043.0,
         "m": 33485,
@@ -959,7 +959,7 @@
     },
     "vc-exact_197.hgr": {
         "answer": 927,
-        "crbound": 933,
+        "crbound": 909,
         "greed": 1365,
         "lpvc": 843.0,
         "m": 4152,
@@ -969,7 +969,7 @@
     },
     "vc-exact_199.hgr": {
         "answer": 211,
-        "crbound": 223,
+        "crbound": 211,
         "greed": 258,
         "lpvc": 181.5,
         "m": 864,
