@@ -13,6 +13,7 @@ class TestInfo:
         "update_surplus",
         "update_lpvc",
         "update_greed",
+        "update_crbound",
     ]
 
     def __init__(self, config, db=None):
@@ -90,6 +91,14 @@ class TestInfo:
             p = subprocess.Popen(["./build/tools/greed/greed"], stdin=test, stdout=subprocess.PIPE)
             p.wait()
             self.info["greed"] = int(p.stdout.read().decode("utf-8").rstrip())
+
+    def update_crbound(self):
+        if "crbound" in self.info:
+            return
+        with open(self.config.filename, "r") as test:
+            p = subprocess.Popen(["./build/tools/crown_bound/crown_bound"], stdin=test, stdout=subprocess.PIPE)
+            p.wait()
+            self.info["crbound"] = int(p.stdout.read().decode("utf-8").rstrip())
 
 
 class Test:

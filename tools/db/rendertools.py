@@ -19,6 +19,7 @@ class TestRepr:
         self.m = test.info["m"]
         self.surplus = test.info["surplus"]
         self.lpvc = test.info["lpvc"]
+        self.crbound = test.info["crbound"]
         self.greed = test.info["greed"]
         self.answer = test.info.get("answer", "—")
         self.solved_by = test.info.get("solved_by", "—")

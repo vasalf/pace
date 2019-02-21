@@ -49,5 +49,8 @@ data/bipartite/*
 data/graphs/*
 !data/graphs/.keep
 
+# Automatically generated HTML page
+data/analysis/db/tests.html
+
 # Run logs
 run.log
