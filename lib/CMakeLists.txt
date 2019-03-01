@@ -2,6 +2,7 @@ add_library(pacevc STATIC
     graph/boost_graph.cpp
     graph/bipartite_graph.cpp
     graph/graph.cpp
+    graph/util.cpp
 
     bipartite_maxm/augmenting_path.cpp
     bipartite_maxm/best.cpp
@@ -33,6 +34,7 @@ target_link_libraries(pacevc LINK_PUBLIC
 if(BUILD_TESTING)
     add_executable(pacevc_test
         graph/graph_ut.cpp
+        graph/util_ut.cpp
         bipartite_maxm/matching_ut.cpp
         bipartite_maxm/min_vc_ut.cpp
         surplus/surplus_ut.cpp

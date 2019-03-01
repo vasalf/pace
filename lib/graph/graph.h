@@ -66,6 +66,7 @@ public:
 
     void addSimpleReduction(const std::vector<int>& newToOld);
     void trySqueeze();
+    void span(const std::vector<int>& toSpan, const std::vector<int>& ifTook, const std::vector<int>& ifNotTook);
 
     std::vector<int> restoreSolution();
 

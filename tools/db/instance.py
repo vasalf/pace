@@ -14,6 +14,7 @@ class TestInfo:
         "update_lpvc",
         "update_greed",
         "update_crbound",
+        "update_cutpoints",
     ]
 
     def __init__(self, config, db=None):
@@ -99,6 +100,17 @@ class TestInfo:
             p = subprocess.Popen(["./build/tools/crown_bound/crown_bound"], stdin=test, stdout=subprocess.PIPE)
             p.wait()
             self.info["crbound"] = int(p.stdout.read().decode("utf-8").rstrip())
+
+    def update_cutpoints(self):
+        if "cutpoints" in self.info:
+            return
+        with tempfile.TemporaryFile() as out:
+            with open(self.config.filename, "r") as test:
+                p = subprocess.Popen(["./build/tools/cutpoints/cutpoints"], stdin=test, stdout=out)
+                p.wait()
+            out.seek(0)
+            cutpoints_str = out.readline().decode("utf-8")
+        self.info["cutpoints"] = int(cutpoints_str)
 
 
 class Test:

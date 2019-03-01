@@ -17,6 +17,7 @@ class TestRepr:
         self.name = test.config.name
         self.n = test.info["n"]
         self.m = test.info["m"]
+        self.cutpoints = test.info["cutpoints"]
         self.surplus = test.info["surplus"]
         self.lpvc = test.info["lpvc"]
         self.crbound = test.info["crbound"]

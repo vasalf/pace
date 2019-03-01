@@ -276,3 +276,22 @@ TEST(TestGraph, testGraphMarks) {
 
     ASSERT_EQ(3, g.bestSolution().size());
 }
+
+TEST(TestGraph, testSpanLongPath) {
+    Graph g(11);
+
+    g.addEdge(0, 2);
+    g.addEdge(1, 2);
+    g.addEdge(8, 9);
+    g.addEdge(8, 10);
+    for (int i = 2; i < 8; i++)
+        g.addEdge(i, i + 1);
+
+    g.span({2, 3, 4, 5, 6, 7, 8}, {2, 4, 6, 8}, {3, 5, 7});
+
+    ASSERT_EQ(5, g.size());
+
+    g.restoreSolution();
+
+    ASSERT_EQ(11, g.size());
+}

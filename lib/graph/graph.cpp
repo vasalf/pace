@@ -1,7 +1,6 @@
 #include <graph/graph.h>
 #include <reader/line_reader.h>
 #include <util/cow.h>
-
 #include <absl/container/flat_hash_set.h>
 
 #include <algorithm>
@@ -10,9 +9,27 @@
 
 namespace {
 
+struct Span {
+    int newId;
+    std::vector<int> oldIds;
+    std::vector<std::vector<int>> oldEdges;
+    std::vector<int> ifTook;
+    std::vector<int> ifNotTook;
+};
+
 struct GraphImpl {
+    enum class VertexStatus {
+        UNDECIDED,
+        TOOK,
+        REMOVED
+    };
+
     int size;
     std::vector<PaceVC::CowPtr<PaceVC::Graph::Set<int>>> graph;
+    std::vector<Span> spans;
+
+    std::vector<VertexStatus> status;
+    std::vector<int> positionInAns;
     PaceVC::Graph::Set<int> undecided;
     std::vector<int> solution;
     std::vector<int> removed;
@@ -22,7 +39,9 @@ struct GraphImpl {
 
     GraphImpl(int n) {
         size = n;
+        status.resize(n, VertexStatus::UNDECIDED);
         graph.resize(n, PaceVC::makeCow<PaceVC::Graph::Set<int>>());
+        positionInAns.resize(n, -1);
 
         for (int i = 0; i < n; i++)
             undecided.insert(i);
@@ -56,16 +75,86 @@ struct GraphImpl {
         if (!undecided.count(v))
             throw std::runtime_error("Attempt to take a decided vertex");
 
+        positionInAns[v] = solution.size();
         solution.push_back(v);
         decideVertex(v);
+        status[v] = VertexStatus::TOOK;
     }
 
     void removeVertex(int v) {
         if (!undecided.count(v))
             throw std::runtime_error("Attempt to remove a decided vertex");
 
+        positionInAns[v] = removed.size();
         removed.push_back(v);
         decideVertex(v);
+        status[v] = VertexStatus::REMOVED;
+    }
+
+    void span(const std::vector<int>& toSpan, const std::vector<int>& ifTook, const std::vector<int>& ifNotTook) {
+        graph.push_back(PaceVC::makeCow<PaceVC::Graph::Set<int>>());
+        status.push_back(VertexStatus::UNDECIDED);
+        undecided.insert(size);
+        size++;
+
+        Span info;
+        info.newId = size - 1;
+        info.oldIds = toSpan;
+        for (int u : toSpan) {
+            info.oldEdges.push_back({});
+            std::copy(graph[u]->begin(), graph[u]->end(), std::back_inserter(info.oldEdges.back()));
+            for (int v : *graph[u]) {
+                addEdge(info.newId, v);
+            }
+        }
+        info.ifTook = ifTook;
+        info.ifNotTook = ifNotTook;
+
+        for (int u : toSpan) {
+            decideVertex(u);
+        }
+
+        spans.push_back(info);
+    }
+
+    void unspan(const Span& span) {
+        for (int i = 0; i < (int)span.oldIds.size(); i++) {
+            undecided.insert(span.oldIds[i]);
+            status[span.oldIds[i]] = VertexStatus::UNDECIDED;
+            for (int v : span.oldEdges[i]) {
+                addEdge(span.oldIds[i], v);
+            }
+        }
+
+        if (status[span.newId] == VertexStatus::TOOK) {
+            std::swap(solution[positionInAns[span.newId]], solution.back());
+            solution.pop_back();
+            for (int u : span.ifTook) {
+                takeVertex(u);
+            }
+            for (int u : span.ifNotTook) {
+                removeVertex(u);
+            }
+        } else if (status[span.newId] == VertexStatus::REMOVED) {
+            std::swap(removed[positionInAns[span.newId]], removed.back());
+            removed.pop_back();
+            for (int u : span.ifNotTook) {
+                removeVertex(u);
+            }
+            for (int u : span.ifTook) {
+                takeVertex(u);
+            }
+        }
+
+        status[span.newId] = VertexStatus::REMOVED;
+        decideVertex(span.newId);
+    }
+
+    void unspan() {
+        for (int i = spans.size() - 1; i >= 0; i--) {
+            unspan(spans[i]);
+        }
+        spans.clear();
     }
 };
 
@@ -199,8 +288,13 @@ void Graph::trySqueeze() {
     }
 }
 
+void Graph::span(const std::vector<int>& toSpan, const std::vector<int>& ifTook, const std::vector<int>& ifNotTook) {
+    impl_->implStack.back().span(toSpan, ifTook, ifNotTook);
+}
+
 std::vector<int> Graph::restoreSolution() {
     GraphImpl cur = impl_->implStack.back();
+    cur.unspan();
     for (int i = impl_->reductionStack.size() - 1; i >= 0; i--) {
         Graph prevGraph(std::make_unique<Graph::TImpl>(impl_->implStack[i]));
         Graph curGraph(std::make_unique<Graph::TImpl>(cur)); 
@@ -208,6 +302,7 @@ std::vector<int> Graph::restoreSolution() {
         impl_->reductionStack[i]->reduce(prevGraph, curGraph);
 
         cur = prevGraph.impl_->implStack.back();
+        cur.unspan();
     }
 
     return cur.solution;

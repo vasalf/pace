@@ -1,4 +1,5 @@
 add_subdirectory(crown_bound)
+add_subdirectory(cutpoints)
 add_subdirectory(greed)
 add_subdirectory(lpvc)
 add_subdirectory(surplus)
