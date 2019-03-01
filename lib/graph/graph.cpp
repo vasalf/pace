@@ -139,10 +139,10 @@ struct GraphImpl {
             std::swap(removed[positionInAns[span.newId]], removed.back());
             removed.pop_back();
             for (int u : span.ifNotTook) {
-                removeVertex(u);
+                takeVertex(u);
             }
             for (int u : span.ifTook) {
-                takeVertex(u);
+                removeVertex(u);
             }
         }
 

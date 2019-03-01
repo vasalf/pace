@@ -287,11 +287,79 @@ TEST(TestGraph, testSpanLongPath) {
     for (int i = 2; i < 8; i++)
         g.addEdge(i, i + 1);
 
+    g.placeMark();
     g.span({2, 3, 4, 5, 6, 7, 8}, {2, 4, 6, 8}, {3, 5, 7});
-
     ASSERT_EQ(5, g.size());
 
-    g.restoreSolution();
-
+    g.restoreMark();
     ASSERT_EQ(11, g.size());
+}
+
+TEST(TestGraph, testSpanLongPathTook) {
+    std::vector<int> expected = {2, 4, 6, 8};
+    Graph g(11);
+
+    g.addEdge(0, 2);
+    g.addEdge(1, 2);
+    g.addEdge(8, 9);
+    g.addEdge(8, 10);
+    for (int i = 2; i < 8; i++)
+        g.addEdge(i, i + 1);
+
+    g.span({2, 3, 4, 5, 6, 7, 8}, {2, 4, 6, 8}, {3, 5, 7});
+    ASSERT_EQ(5, g.size());
+
+    g.takeVertex(11);
+
+    ASSERT_EQ(4, g.size());
+    ASSERT_EQ(expected, g.restoreSolution());
+}
+
+TEST(TestGraph, testSpanLongPathRemoved) {
+    std::vector<int> expected = {0, 1, 3, 5, 7, 9, 10};
+    Graph g(11);
+
+    g.addEdge(0, 2);
+    g.addEdge(1, 2);
+    g.addEdge(8, 9);
+    g.addEdge(8, 10);
+    for (int i = 2; i < 8; i++)
+        g.addEdge(i, i + 1);
+
+    g.span({2, 3, 4, 5, 6, 7, 8}, {2, 4, 6, 8}, {3, 5, 7});
+    ASSERT_EQ(5, g.size());
+
+    g.removeVertex(11);
+    g.takeVertex(0);
+    g.takeVertex(1);
+    g.takeVertex(9);
+    g.takeVertex(10);
+
+    ASSERT_EQ(0, g.size());
+    auto solution = g.restoreSolution();
+    std::sort(solution.begin(), solution.end());
+    ASSERT_EQ(expected, solution);
+}
+
+TEST(TestGraph, testSubsequentSpans) {
+    std::vector<int> expected = {2, 4, 6, 8};
+
+    Graph g(11);
+
+    g.addEdge(1, 2);
+    g.addEdge(8, 9);
+    g.addEdge(8, 10);
+    for (int i = 2; i < 8; i++)
+        g.addEdge(i, i + 1);
+
+    g.span({2, 3, 4, 5, 6}, {2, 4, 6}, {3, 5});
+    g.span({11, 7, 8}, {11, 8}, {7});
+    ASSERT_EQ(5, g.size());
+
+    g.takeVertex(12);
+
+    ASSERT_EQ(4, g.size());
+    auto solution = g.restoreSolution();
+    std::sort(solution.begin(), solution.end());
+    ASSERT_EQ(expected, solution);
 }
