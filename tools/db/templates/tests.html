@@ -21,7 +21,8 @@
         #content {
             display: block;
             height: 100%;
-            overflow: auto;
+            overflow-x: auto;
+            overflow-y: auto;
         }
 
         thead.fixed-headers {
@@ -32,7 +33,7 @@
             left: 10px;
         }
 
-        .test-n, .test-m, .test-cutpoints, .test-answer, .test-surplus, .test-lpvc, .test-greed, .test-crbound {
+        .test-n, .test-m, .test-cutpoints, .test-mnd, .test-mxd, .test-answer, .test-surplus, .test-lpvc, .test-greed, .test-crbound, .test-zs-n, .test-zs-m, .test-c2k-n, .test-c2k-m {
             text-align: center;
         }
 
@@ -59,6 +60,8 @@
             <th id="test-name">Test</th>
             <th id="test-n">Vertices</th>
             <th id="test-m">Edges</th>
+            <th id="test-mnd">δ</th>
+            <th id="test-mxd">Δ</th>
             <th id="test-cutpoints">Cuts</th>
             <th id="test-surplus">Surplus</th>
             <th id="test-lpvc">LPVC</th>
@@ -66,6 +69,12 @@
             <th id="test-greed">Greed</th>
             <th id="test-answer">Answer</th>
             <th id="test-solved-by">Solved by</th>
+            <th id="test-zs-n">ZS: V</th>
+            <th id="test-zs-m">ZS: E</th>
+            <th id="test-zs-comps">ZS: High-degree vertices</th>
+            <th id="test-c2k-n">C2k: V</th>
+            <th id="test-c2k-m">C2k: E</th>
+            <th id="test-c2k-comps">C2k: High-degree vertices</th>
         </tr>
     </thead>
     </table>
@@ -83,6 +92,8 @@
                 <td class="test-name">{{ test.name }}</td>
                 <td class="test-n">{{ test.n }}</td>
                 <td class="test-m">{{ test.m }}</td>
+                <td class="test-mnd">{{ test.mnd }}</td>
+                <td class="test-mxd">{{ test.mxd }}</td>
                 <td class="test-cutpoints">{{ test.cutpoints }}</td>
                 <td class="test-surplus">{{ test.surplus }}</td>
                 <td class="test-lpvc">{{ test.lpvc }}</td>
@@ -90,6 +101,12 @@
                 <td class="test-greed">{{ test.greed }}</td>
                 <td class="test-answer">{{ test.answer }}</td>
                 <td class="test-solved-by">{{ test.solved_by }}</td>
+                <td class="test-zs-n">{{ test.zs.n }}</td>
+                <td class="test-zs-m">{{ test.zs.m }}</td>
+                <td class="test-zs-comps">{{ test.zs.comps }}</td>
+                <td class="test-c2k-n">{{ test.c2k.n }}</td>
+                <td class="test-c2k-m">{{ test.c2k.m }}</td>
+                <td class="test-c2k-comps">{{ test.c2k.comps }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -101,13 +118,21 @@
         "test-name",
         "test-n",
         "test-m",
+        "test-mnd",
+        "test-mxd",
         "test-cutpoints",
         "test-surplus",
         "test-lpvc",
         "test-crbound",
         "test-greed",
         "test-answer",
-        "test-solved-by"
+        "test-solved-by",
+        "test-zs-n",
+        "test-zs-m",
+        "test-zs-comps",
+        "test-c2k-n",
+        "test-c2k-m",
+        "test-c2k-comps"
     ]
     for (i in classes) {
         c = classes[i];

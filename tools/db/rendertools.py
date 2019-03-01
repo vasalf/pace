@@ -12,18 +12,29 @@ class TestStatus(enum.Enum):
     SOLVED = 2
 
 
+class KernelStatsRepr:
+    def __init__(self, stats):
+        self.n = stats["n"]
+        self.m = stats["m"]
+        self.comps = stats["comps"]
+
+
 class TestRepr:
     def __init__(self, test):
         self.name = test.config.name
         self.n = test.info["n"]
         self.m = test.info["m"]
         self.cutpoints = test.info["cutpoints"]
+        self.mnd = test.info["mnd"]
+        self.mxd = test.info["mxd"]
         self.surplus = test.info["surplus"]
         self.lpvc = test.info["lpvc"]
         self.crbound = test.info["crbound"]
         self.greed = test.info["greed"]
         self.answer = test.info.get("answer", "—")
         self.solved_by = test.info.get("solved_by", "—")
+        self.zs = KernelStatsRepr(test.info["stat_zs"])
+        self.c2k = KernelStatsRepr(test.info["stat_c2k"])
 
     def update_status(self, database):
         self.status = TestStatus.UNSOLVED

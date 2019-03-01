@@ -1,6 +1,8 @@
 add_subdirectory(crown_bound)
 add_subdirectory(cutpoints)
+add_subdirectory(graph_stats)
 add_subdirectory(greed)
+add_subdirectory(kernel_stats)
 add_subdirectory(lpvc)
 add_subdirectory(surplus)
 add_subdirectory(validate)

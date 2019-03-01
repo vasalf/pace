@@ -8,12 +8,13 @@ import tempfile
 
 class TestInfo:
     UPDATE_OPS = [
-        "update_nm",
+        "update_graph_stats",
         "update_solution",
         "update_surplus",
         "update_lpvc",
         "update_greed",
         "update_crbound",
+        "update_kernel_stats",
         "update_cutpoints",
     ]
 
@@ -37,18 +38,20 @@ class TestInfo:
     def get(self, *args, **kwargs):
         return self.info.get(*args, **kwargs)
 
-    def update_nm(self):
-        if "n" in self.info and "m" in self.info:
+    def update_graph_stats(self):
+        if "n" in self.info and "m" in self.info and "mind" in self.info and "maxd" in self.info:
             return
         with open(self.config.filename, "r") as test:
-            s = test.readline()
-            while s != "":
-                if s[0] != 'c':
-                    p, td, n, m = s.split()
-                    self.info["n"] = int(n)
-                    self.info["m"] = int(m)
-                    return
-                s = test.readline()
+            p = subprocess.Popen(["./build/tools/graph_stats/graph_stats"], stdin=test, stdout=subprocess.PIPE)
+            p.wait()
+            nstr = p.stdout.readline().decode("utf-8").rstrip()
+            mstr = p.stdout.readline().decode("utf-8").rstrip()
+            mndstr = p.stdout.readline().decode("utf-8").rstrip()
+            mxdstr = p.stdout.readline().decode("utf-8").rstrip()
+        self.info["n"] = int(nstr.split()[1])
+        self.info["m"] = int(mstr.split()[1])
+        self.info["mnd"] = int(mndstr.split()[1])
+        self.info["mxd"] = int(mxdstr.split()[1])
 
     def update_solution(self):
         solution_filename = self.config.answer
@@ -101,6 +104,7 @@ class TestInfo:
             p.wait()
             self.info["crbound"] = int(p.stdout.read().decode("utf-8").rstrip())
 
+<<<<<<< HEAD
     def update_cutpoints(self):
         if "cutpoints" in self.info:
             return
@@ -111,6 +115,26 @@ class TestInfo:
             out.seek(0)
             cutpoints_str = out.readline().decode("utf-8")
         self.info["cutpoints"] = int(cutpoints_str)
+=======
+    def __update_kernel_stats(self, which):
+        if which in self.info:
+            return
+        with open(self.config.filename, "r") as test:
+            p = subprocess.Popen([f"./build/tools/kernel_stats/{which}/{which}"], stdin=test, stdout=subprocess.PIPE)
+            p.wait()
+            nstr = p.stdout.readline().decode("utf-8").rstrip()
+            mstr = p.stdout.readline().decode("utf-8").rstrip()
+            compstr = p.stdout.readline().decode("utf-8").rstrip()
+        self.info[which] = {
+            "n": int(nstr.split()[1]),
+            "m": int(mstr.split()[1]),
+            "comps": " ".join(compstr.split()[1:])
+        }
+
+    def update_kernel_stats(self):
+        self.__update_kernel_stats("stat_zs")
+        self.__update_kernel_stats("stat_c2k")
+>>>>>>> 37e6bd1d9b560dbb82ed160f694ff628b752472c
 
 
 class Test:

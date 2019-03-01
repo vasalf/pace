@@ -30,5 +30,14 @@ struct Exhaustive {
     }
 };
 
+void printGraphStats(const Graph& g, std::ostream& out);
+
+template<class Kernel>
+void printStats(const Graph& g, std::ostream& out) {
+    Graph h = g;
+    Kernel(h).reduce();
+    printGraphStats(h, out);
+}
+
 }
 }
