@@ -37,6 +37,7 @@ if(BUILD_TESTING)
         graph/util_ut.cpp
         bipartite_maxm/matching_ut.cpp
         bipartite_maxm/min_vc_ut.cpp
+        kernels/trivial_ut.cpp
         surplus/surplus_ut.cpp
         util/cow_ut.cpp
     )

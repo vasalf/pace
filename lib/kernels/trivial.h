@@ -1,17 +1,20 @@
 #pragma once
 
 #include <graph/graph.h>
+#include <kernels/common.h>
 
 namespace PaceVC {
 namespace Kernels {
 
-struct Trivial {
+struct TrivialImpl {
     Graph& graph;
 
-    Trivial(Graph& g);
+    TrivialImpl(Graph& g);
 
     void reduce();
 };
+
+using Trivial = Exhaustive<TrivialImpl>;
 
 }
 }
