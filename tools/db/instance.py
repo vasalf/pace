@@ -104,7 +104,6 @@ class TestInfo:
             p.wait()
             self.info["crbound"] = int(p.stdout.read().decode("utf-8").rstrip())
 
-<<<<<<< HEAD
     def update_cutpoints(self):
         if "cutpoints" in self.info:
             return
@@ -115,7 +114,7 @@ class TestInfo:
             out.seek(0)
             cutpoints_str = out.readline().decode("utf-8")
         self.info["cutpoints"] = int(cutpoints_str)
-=======
+
     def __update_kernel_stats(self, which):
         if which in self.info:
             return
@@ -134,7 +133,6 @@ class TestInfo:
     def update_kernel_stats(self):
         self.__update_kernel_stats("stat_zs")
         self.__update_kernel_stats("stat_c2k")
->>>>>>> 37e6bd1d9b560dbb82ed160f694ff628b752472c
 
 
 class Test:
