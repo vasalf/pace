@@ -94,6 +94,7 @@ struct GraphImpl {
     void span(const std::vector<int>& toSpan, const std::vector<int>& ifTook, const std::vector<int>& ifNotTook) {
         graph.push_back(PaceVC::makeCow<PaceVC::Graph::Set<int>>());
         status.push_back(VertexStatus::UNDECIDED);
+        positionInAns.push_back(-1);
         undecided.insert(size);
         size++;
 
@@ -104,6 +105,8 @@ struct GraphImpl {
             info.oldEdges.push_back({});
             std::copy(graph[u]->begin(), graph[u]->end(), std::back_inserter(info.oldEdges.back()));
             for (int v : *graph[u]) {
+                if (v == info.newId)
+                    continue;
                 addEdge(info.newId, v);
             }
         }

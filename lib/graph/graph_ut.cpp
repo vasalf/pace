@@ -363,3 +363,24 @@ TEST(TestGraph, testSubsequentSpans) {
     std::sort(solution.begin(), solution.end());
     ASSERT_EQ(expected, solution);
 }
+
+TEST(TestGraph, testCollapsingSpans) {
+    std::vector<int> expected = {0, 2, 4, 6, 8};
+
+    Graph g(10);
+    for (int i = 0; i < 5; i++) {
+        g.addEdge(i, (i + 1) % 5);
+        g.addEdge(5 + i, 5 + ((i + 1) % 5));
+    }
+    g.addEdge(0, 5);
+
+    g.span({0, 1, 2, 3, 4}, {0, 2, 4}, {1, 3});
+    g.span({5, 6, 7, 8, 9}, {5, 7, 9}, {6, 8});
+    g.takeVertex(10);
+    g.removeVertex(11);
+
+    ASSERT_EQ(0, g.size());
+    auto solution = g.restoreSolution();
+    std::sort(solution.begin(), solution.end());
+    ASSERT_EQ(expected, solution);
+}

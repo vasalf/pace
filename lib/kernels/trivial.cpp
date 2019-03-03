@@ -1,5 +1,6 @@
 #include <kernels/trivial.h>
 
+#include <algorithm>
 #include <queue>
 
 namespace PaceVC {
@@ -104,14 +105,25 @@ namespace {
                 }
             }
 
-            for (const auto& p : paths) {
-                std::vector<int> a, b;
-                if (p.size() % 2 == 1) {
-                    splitVector(p, a, b);
+            for (auto& p : paths) {
+                if (p.size() % 2 == 0) {
+                    int v = neededNeighbour(p.back());
+                    if (v != p[0]) {
+                        p.push_back(v);
+                    }
                 } else {
-                    splitVector(p, b, a);
-                    b.push_back(neededNeighbour(p[0]));
+                    if (p.size() == 1) {
+                        int u = *graph.adjacent(p[0]).begin();
+                        int v = *std::next(graph.adjacent(p[0]).begin());
+                        p = {u, p[0], v};
+                    } else if (neededNeighbour(p[0]) != neededNeighbour(p.back())) {
+                        p.push_back(neededNeighbour(p.back()));
+                        std::reverse(p.begin(), p.end());
+                        p.push_back(neededNeighbour(p.back()));
+                    }
                 }
+                std::vector<int> a, b;
+                splitVector(p, a, b);
                 graph.span(p, a, b);
             }
 
