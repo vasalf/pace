@@ -28,8 +28,8 @@ namespace {
 
 void printGraphStats(const Graph& g, std::ostream& out) {
     int edges = 0;
-    for (int i = 0; i < g.realSize(); i++) {
-        edges += g.adjacent(i).size();
+    for (int u : g.undecided()) {
+        edges += g.adjacent(u).size();
     }
     edges /= 2;
 
