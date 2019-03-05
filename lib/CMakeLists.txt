@@ -21,6 +21,7 @@ add_library(pacevc STATIC
 
     reader/line_reader.cpp
 
+    solution/greed.cpp
     solution/solution.cpp
 
     surplus/surplus.cpp
@@ -41,11 +42,14 @@ if(BUILD_TESTING)
         bipartite_maxm/min_vc_ut.cpp
         kernels/trivial_ut.cpp
         surplus/surplus_ut.cpp
+        ut/vc_exact_public_ut.cpp
         util/cow_ut.cpp
     )
 
+    target_compile_definitions(pacevc_test PUBLIC SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\")
+
     target_link_libraries(pacevc_test
-        ${GTEST_BOTH_LIBRARIES} pthread pacevc)
+        ${GTEST_BOTH_LIBRARIES} pthread pacevc stdc++fs)
 
     gtest_add_tests(pacevc_test "" AUTO)
 endif()

@@ -101,9 +101,12 @@ struct GraphImpl {
         Span info;
         info.newId = size - 1;
         info.oldIds = toSpan;
+
         for (int u : toSpan) {
             info.oldEdges.push_back({});
             std::copy(graph[u]->begin(), graph[u]->end(), std::back_inserter(info.oldEdges.back()));
+        }
+        for (int u : toSpan) {
             for (int v : *graph[u]) {
                 if (v == info.newId) {
                     continue;
