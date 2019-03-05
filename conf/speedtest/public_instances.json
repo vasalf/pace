@@ -33,12 +33,14 @@
         {
             "executable": "./build/solutions/vc/ilp_cbc/ilp_cbc",
             "name": "ILP",
-            "hidden": true
+            "hidden": true,
+            "external": true
         },
         {
             "executable": "./build/solutions/vc/ilp_cpsat/ilp_cpsat",
             "name": "CP/SAT",
-            "hidden": true
+            "hidden": true,
+            "external": true
         }
     ],
     "output": "vc",

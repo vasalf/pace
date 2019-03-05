@@ -11,7 +11,7 @@ class SolutionConfig:
         self.executable = st_config["executable"]
         self.name = st_config["name"]
         self.hidden = st_config.get("hidden", False)
-        self.external = config["solution_options"].get(self.name, {}).get("external", False)
+        self.external = st_config.get("external", False)
 
 
 

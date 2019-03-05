@@ -1,11 +1,3 @@
 {
-    "speedtest_conf": "conf/speedtest/public_instances.json",
-    "solution_options": {
-        "ILP": {
-            "external": true
-        },
-        "CP/SAT": {
-            "external": true
-        }
-    }
+    "speedtest_conf": "conf/speedtest/public_instances.json"
 }

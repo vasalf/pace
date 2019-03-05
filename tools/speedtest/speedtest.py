@@ -30,14 +30,17 @@ class Solution:
         self.executable = config["executable"]
         self.name = config.get("name", self.executable)
         self.hidden = config.get("hidden", False)
+        self.external = config.get("external", False)
+        self.forced = False
 
 
 VC_SOLUTION = re.compile(".*s vc \\d+ (\\d+).*")
 
 
 class TestResultDatabase:
-    def __init__(self, directory):
+    def __init__(self, directory, externals):
         self.directory = directory
+        self.externals = externals
         self.lock = threading.Lock()
 
     def __cur_solution(self, test):
@@ -52,24 +55,39 @@ class TestResultDatabase:
                     s = f.readline()
         return None
 
+    def __is_externally_solved(self, test):
+        sf = os.path.join(self.directory, test.name)
+        if os.path.isfile(sf):
+            with open(sf, "r") as f:
+                s = f.readline()
+            solution = s.split()[1]
+            return solution in self.externals
+        return False
+
     def __new_solution(self, result):
         m = VC_SOLUTION.match(result)
         if m is not None:
             return int(m.groups()[0])
         return None
 
+    def __write_solution(self, test, solution, result):
+        sf = os.path.join(self.directory, test.name)
+        with open(sf, "w") as f:
+            f.write("c {}\n".format(solution.name))
+            f.write(result)
+
     def process_result(self, test, solution, result):
         with self.lock:
             cs = self.__cur_solution(test)
             ns = self.__new_solution(result.replace("\n", "#"))
             if cs is None:
-                sf = os.path.join(self.directory, test.name)
-                with open(sf, "w") as f:
-                    f.write("c {}\n".format(solution.name))
-                    f.write(result)
+                self.__write_solution(test, solution, result)
                 return 1
             elif ns != cs:
                 return -1
+            elif solution not in self.externals and self.__is_externally_solved(test):
+                self.__write_solution(test, solution, result)
+                return 1
         return 0
 
 
@@ -108,8 +126,11 @@ class Config:
         if args.filter_solutions != "":
             filter_solutions = args.filter_solutions.split(",")
             self.solutions = list(filter(lambda x: x.name in filter_solutions, self.solutions))
+            for solution in self.solutions:
+                solution.forced = True
+            self.solutions.unforced_solutions = self.solutions
         else:
-            self.solutions = list(filter(lambda x: not x.hidden, self.solutions))
+            self.unforced_solutions = list(filter(lambda x: not x.hidden, self.solutions))
 
         if args.timeout > 0:
             self.timeout = args.timeout
@@ -253,7 +274,11 @@ class SpeedtestExecutor:
         self.succ_msgs = []
 
         if config.database_dir is not None:
-            self.database = TestResultDatabase(config.database_dir)
+            externals = set()
+            for solution in config.solutions:
+                if solution.external:
+                    externals.add(solution.name)
+            self.database = TestResultDatabase(config.database_dir, externals)
         else:
             self.database = None
 
@@ -262,7 +287,7 @@ class SpeedtestExecutor:
         self.futures = []
         for test in self.config.tests:
             futures = []
-            for solution in self.config.solutions:
+            for solution in self.config.unforced_solutions:
                 futures.append(self.executor.submit(run, self.config, self.database, solution, test))
             self.futures.append(futures)
 
@@ -274,7 +299,7 @@ class SpeedtestExecutor:
             headers.append("")
         for i, test in enumerate(self.config.tests):
             row = [test.name]
-            for j, solution in enumerate(self.config.solutions):
+            for j, solution in enumerate(self.config.unforced_solutions):
                 try:
                     a, b, dbres = self.futures[i][j].result()
                 except ExecutionFailureError as e:
