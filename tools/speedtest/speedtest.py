@@ -128,7 +128,7 @@ class Config:
             self.solutions = list(filter(lambda x: x.name in filter_solutions, self.solutions))
             for solution in self.solutions:
                 solution.forced = True
-            self.solutions.unforced_solutions = self.solutions
+            self.unforced_solutions = self.solutions
         else:
             self.unforced_solutions = list(filter(lambda x: not x.hidden, self.solutions))
 

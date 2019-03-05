@@ -41,6 +41,10 @@ private:
             return;
         }
 
+        if (graph.restoreSolution().size() >= graph.bestSolution().size()) {
+            return;
+        }
+
         int v = *std::max_element(graph.undecided().begin(), graph.undecided().end(),
             [this](int u, int v) {
                 return graph.adjacent(u).size() < graph.adjacent(v).size();
