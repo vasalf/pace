@@ -17,6 +17,7 @@ int main() {
         mind = std::min<int>(graph.adjacent(i).size(), mind);
         maxd = std::max<int>(graph.adjacent(i).size(), maxd);
     }
+    edges /= 2;
 
     if (graph.size() == 0) {
         mind = maxd = 0;
