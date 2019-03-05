@@ -1,10 +1,12 @@
 #include <graph/graph.h>
+#include <kernels/trivial.h>
 #include <surplus/surplus.h>
 
 #include <iostream>
 
 int main() {
     PaceVC::Graph g = PaceVC::readGraph(std::cin);
+    PaceVC::Kernels::Trivial(g).reduce();
     PaceVC::MinimalSurplusNonEmptySetFinder surplus(g);
     int ssize = surplus.find();
     std::cout << "surplus=" << ssize << std::endl;

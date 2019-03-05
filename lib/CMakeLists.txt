@@ -21,6 +21,8 @@ add_library(pacevc STATIC
 
     reader/line_reader.cpp
 
+    solution/solution.cpp
+
     surplus/surplus.cpp
 
     util/cow.h

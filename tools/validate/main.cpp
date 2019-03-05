@@ -1,5 +1,6 @@
 #include <graph/graph.h>
 #include <reader/line_reader.h>
+#include <solution/solution.h>
 
 #include <CLI11/CLI11.hpp>
 
@@ -7,11 +8,7 @@
 
 namespace {
 
-struct Solution {
-    std::vector<int> vertices;
-};
-
-Solution readSolution(std::istream& is) {
+PaceVC::Solution readSolution(std::istream& is) {
     PaceVC::LineReader reader(is);
 
     auto firstLine = reader.nextLine();
@@ -24,7 +21,7 @@ Solution readSolution(std::istream& is) {
     if (desc != "vc")
         throw std::runtime_error("this is not a solution");
 
-    Solution ret { std::vector<int>(m) };
+    PaceVC::Solution ret { std::vector<int>(m) };
     auto line = reader.nextLine();
     for (int i = 0; i < m; i++) {
         while (!(line >> ret.vertices[i])) {
@@ -37,23 +34,6 @@ Solution readSolution(std::istream& is) {
     }
 
     return ret;
-}
-
-bool validate(const PaceVC::Graph& g, const Solution& s) {
-    std::vector<bool> inSolution(g.realSize());
-    for (int u : s.vertices) {
-        inSolution[u] = true;
-    }
-
-    for (int i = 0; i < g.realSize(); i++) {
-        for (int v : g.adjacent(i)) {
-            if (!inSolution[i] && !inSolution[v]) {
-                std::cerr << "uncovered edge {" << i + 1 << "," << v + 1 << "}" << std::endl;
-                return false;
-            }
-        }
-    }
-    return true;
 }
 
 }
@@ -77,7 +57,7 @@ int main(int argc, char **argv) {
         std::ifstream graph_f(graphPath);
         PaceVC::Graph graph = PaceVC::readGraph(graph_f);
 
-        Solution solution;
+        PaceVC::Solution solution;
         if (solutionPath == "") {
             solution = readSolution(std::cin);
         } else {
@@ -85,7 +65,9 @@ int main(int argc, char **argv) {
             solution = readSolution(solution_f);
         }
 
-        if (!validate(graph, solution)) {
+        auto p = PaceVC::validate(graph, solution);
+        if (p.has_value()) {
+            std::cerr << "uncovered edge: {" << p.value().first + 1 << "," << p.value().second + 1 << "}" << std::endl;
             return 1;
         }
     } catch(std::runtime_error e) {

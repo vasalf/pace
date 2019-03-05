@@ -26,6 +26,7 @@ class TestInfo:
             self.info = db
 
     def update(self):
+        print(f"Updating {self.config.name}")
         for op in TestInfo.UPDATE_OPS:
             getattr(self, op)()
 

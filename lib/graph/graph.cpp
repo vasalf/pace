@@ -105,8 +105,9 @@ struct GraphImpl {
             info.oldEdges.push_back({});
             std::copy(graph[u]->begin(), graph[u]->end(), std::back_inserter(info.oldEdges.back()));
             for (int v : *graph[u]) {
-                if (v == info.newId)
+                if (v == info.newId) {
                     continue;
+                }
                 addEdge(info.newId, v);
             }
         }
@@ -130,7 +131,10 @@ struct GraphImpl {
         }
 
         if (status[span.newId] == VertexStatus::TOOK) {
-            std::swap(solution[positionInAns[span.newId]], solution.back());
+            if (positionInAns[span.newId] != (int)solution.size() - 1) {
+                positionInAns[solution.back()] = positionInAns[span.newId];
+                std::swap(solution[positionInAns[span.newId]], solution.back());
+            }
             solution.pop_back();
             for (int u : span.ifTook) {
                 takeVertex(u);
@@ -139,7 +143,10 @@ struct GraphImpl {
                 removeVertex(u);
             }
         } else if (status[span.newId] == VertexStatus::REMOVED) {
-            std::swap(removed[positionInAns[span.newId]], removed.back());
+            if (positionInAns[span.newId] != (int)removed.size() - 1) {
+                positionInAns[removed.back()] = positionInAns[span.newId];
+                std::swap(removed[positionInAns[span.newId]], removed.back());
+            }
             removed.pop_back();
             for (int u : span.ifNotTook) {
                 takeVertex(u);
@@ -172,18 +179,21 @@ struct GraphMark {
 namespace PaceVC {
 
 struct Graph::TImpl {
+    int sizeOnCreation;
     std::vector<GraphImpl> implStack;
     std::vector<ReductionRulePtr> reductionStack;
     std::vector<int> bestSolution;
     std::vector<GraphMark> marks;
 
     TImpl(int n) {
+        sizeOnCreation = n;
         implStack.push_back(GraphImpl(n));
         bestSolution.resize(n);
         std::iota(bestSolution.begin(), bestSolution.end(), 0);
     }
 
     TImpl(const GraphImpl& impl) {
+        sizeOnCreation = impl.size;
         implStack.push_back(impl);
         bestSolution.resize(impl.graph.size());
         std::iota(bestSolution.begin(), bestSolution.end(), 0);
@@ -226,10 +236,12 @@ const Graph::Set<int>& Graph::adjacent(int v) const {
 }
 
 void Graph::takeVertex(int v) {
+    //std::cerr << "take " << v << std::endl;
     impl_->implStack.back().takeVertex(v);
 }
 
 void Graph::removeVertex(int v) {
+    //std::cerr << "remove " << v << std::endl;
     impl_->implStack.back().removeVertex(v);
 }
 
@@ -292,6 +304,16 @@ void Graph::trySqueeze() {
 }
 
 void Graph::span(const std::vector<int>& toSpan, const std::vector<int>& ifTook, const std::vector<int>& ifNotTook) {
+    /*std::cerr << "span { ";
+    for (int u : toSpan)
+        std::cerr << u << " ";
+    std::cerr << "} { ";
+    for (int u : ifTook)
+        std::cerr << u << " ";
+    std::cerr << "} { ";
+    for (int u : ifNotTook)
+        std::cerr << u << " ";
+    std::cerr << "} -> " << realSize() << std::endl;*/
     impl_->implStack.back().span(toSpan, ifTook, ifNotTook);
 }
 
@@ -317,6 +339,10 @@ int Graph::size() const {
 
 int Graph::realSize() const {
     return impl_->implStack.back().size;
+}
+
+int Graph::sizeOnCreation() const {
+    return impl_->sizeOnCreation;
 }
 
 void Graph::placeMark() {
@@ -367,7 +393,7 @@ Graph readGraph(std::istream& is) {
 
 void printSolution(std::ostream& os, Graph& graph) {
     os << "c What are those comments for?" << std::endl
-       << "s vc " << graph.realSize() << " " << graph.bestSolution().size() << std::endl;
+       << "s vc " << graph.sizeOnCreation() << " " << graph.bestSolution().size() << std::endl;
 
     for (int u : graph.bestSolution())
         os << u + 1 << std::endl;

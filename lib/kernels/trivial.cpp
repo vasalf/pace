@@ -106,8 +106,20 @@ namespace {
             }
 
             for (auto& p : paths) {
+                bool isInvalid = false;
+                for (int u : p) {
+                    if (!graph.undecided().count(u) || graph.adjacent(u).size() != 2) {
+                        isInvalid = true;
+                        break;
+                    }
+                }
+                if (isInvalid) {
+                    continue;
+                }
                 if (p.size() % 2 == 0) {
                     int v = neededNeighbour(p.back());
+                    if (graph.adjacent(v).size() == 2)
+                        continue;
                     if (v != p[0]) {
                         p.push_back(v);
                     }
@@ -118,13 +130,27 @@ namespace {
                         p = {u, p[0], v};
                     } else if (neededNeighbour(p[0]) != neededNeighbour(p.back())) {
                         p.push_back(neededNeighbour(p.back()));
+                        if (graph.adjacent(p.back()).size() == 2)
+                            continue;
                         std::reverse(p.begin(), p.end());
                         p.push_back(neededNeighbour(p.back()));
+                        if (graph.adjacent(p.back()).size() == 2)
+                            continue;
                     }
                 }
+
+
+                bool shouldTake = false;
+                if (graph.adjacent(p[0]).count(p.back()))
+                    shouldTake = true;
+
                 std::vector<int> a, b;
                 splitVector(p, a, b);
                 graph.span(p, a, b);
+
+                if (shouldTake) {
+                    graph.takeVertex(graph.realSize() - 1);
+                }
             }
 
             for (const auto& p : cycles) {

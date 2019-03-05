@@ -72,6 +72,7 @@ public:
 
     int size() const;
     int realSize() const;
+    int sizeOnCreation() const;
 
     void placeMark();
     void restoreMark();
