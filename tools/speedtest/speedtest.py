@@ -273,10 +273,10 @@ class SpeedtestExecutor:
         self.succ_msgs = []
 
         if config.database_dir is not None:
+            externals = set()
             for solution in config.unforced_solutions:
                 if solution.external:
                     externals.add(solution.name)
-            print(externals)
             self.database = TestResultDatabase(config.database_dir, externals)
         else:
             self.database = None
