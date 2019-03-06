@@ -331,7 +331,7 @@
         "mnd": 4,
         "mxd": 4,
         "n": 150,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "{4 4} {4} {4} {4} {4} {4} {4} {4} {4}",
             "m": 300,
@@ -354,7 +354,7 @@
         "mnd": 4,
         "mxd": 4,
         "n": 150,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "{4} {4} {4} {4} {4} {4} {4} {4} {4} {4}",
             "m": 300,
@@ -515,7 +515,7 @@
         "mnd": 3,
         "mxd": 4,
         "n": 85,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "{4 4 4 4 4} {3} {3} {3} {3} {3}",
             "m": 130,
@@ -879,7 +879,7 @@
         "mnd": 3,
         "mxd": 24,
         "n": 189,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "{24 16 16 16 15 14 14 14 14} {14}",
             "m": 823,
@@ -902,7 +902,7 @@
         "mnd": 3,
         "mxd": 19,
         "n": 194,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "{19 16 16 14 14 14 14 13 13 13}",
             "m": 759,
@@ -946,7 +946,7 @@
         "mnd": 3,
         "mxd": 23,
         "n": 186,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "{23 19} {18 16 16 16 15 15 15} {17}",
             "m": 887,
@@ -1128,7 +1128,7 @@
         "mnd": 3,
         "mxd": 17,
         "n": 194,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "{17 14 13} {15} {14 14 13} {14} {14} {13}",
             "m": 787,
@@ -1174,7 +1174,7 @@
         "mnd": 3,
         "mxd": 16,
         "n": 190,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "{16 14 13 13} {14 14 14 13} {14 13}",
             "m": 749,
@@ -1197,7 +1197,7 @@
         "mnd": 3,
         "mxd": 16,
         "n": 193,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "{16 15 14 14 14 13 13} {12} {12} {12}",
             "m": 776,
@@ -1243,7 +1243,7 @@
         "mnd": 3,
         "mxd": 18,
         "n": 191,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "{18 14 12 12} {15} {15} {14 13 12 12}",
             "m": 703,
@@ -1266,7 +1266,7 @@
         "mnd": 3,
         "mxd": 19,
         "n": 192,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "{19 15 15 14} {18 18 16 14 13 13}",
             "m": 775,
@@ -1289,7 +1289,7 @@
         "mnd": 3,
         "mxd": 15,
         "n": 193,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "{15 14 14 14} {15 14} {15} {15} {14 13}",
             "m": 767,
@@ -2126,7 +2126,7 @@
         "mnd": 3,
         "mxd": 3,
         "n": 8,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "{3 3 3 3} {3 3 3 3}",
             "m": 12,
@@ -2149,7 +2149,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -2195,7 +2195,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -2241,7 +2241,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
-        "solved_by": "ILP",
+        "solved_by": "crown_2k",
         "stat_c2k": {
             "comps": "",
             "m": 0,
