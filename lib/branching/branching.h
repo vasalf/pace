@@ -65,10 +65,15 @@ private:
                     }
                 }
 
+                Graph h = g;
                 TThis(g).branch();
 
                 for (int u : g.bestSolution()) {
                     graph.takeVertex(component[u]);
+                }
+                for (int u : component) {
+                    if (graph.undecided().count(u))
+                        graph.removeVertex(u);
                 }
             }
 
