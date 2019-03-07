@@ -1,3 +1,4 @@
+add_subdirectory(comps)
 add_subdirectory(crown_bound)
 add_subdirectory(cutpoints)
 add_subdirectory(graph_stats)

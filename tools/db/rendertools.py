@@ -24,6 +24,7 @@ class TestRepr:
         self.name = test.config.name
         self.n = test.info["n"]
         self.m = test.info["m"]
+        self.comps = test.info["comps"]
         self.cutpoints = test.info["cutpoints"]
         self.mnd = test.info["mnd"]
         self.mxd = test.info["mxd"]

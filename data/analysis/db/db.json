@@ -1,6 +1,7 @@
 {
     "vc-exact_001.hgr": {
         "answer": 132,
+        "comps": 44,
         "crbound": 88,
         "cutpoints": 0,
         "greed": 132,
@@ -24,6 +25,7 @@
     },
     "vc-exact_003.hgr": {
         "answer": 120,
+        "comps": 40,
         "crbound": 80,
         "cutpoints": 0,
         "greed": 120,
@@ -47,6 +49,7 @@
     },
     "vc-exact_005.hgr": {
         "answer": 126,
+        "comps": 42,
         "crbound": 84,
         "cutpoints": 0,
         "greed": 126,
@@ -70,6 +73,7 @@
     },
     "vc-exact_007.hgr": {
         "answer": 138,
+        "comps": 9,
         "crbound": 74,
         "cutpoints": 0,
         "greed": 138,
@@ -93,8 +97,9 @@
     },
     "vc-exact_009.hgr": {
         "answer": 137,
+        "comps": 1,
         "crbound": 100,
-        "cutpoints": 14,
+        "cutpoints": 0,
         "greed": 177,
         "lpvc": 100,
         "m": 812,
@@ -116,6 +121,7 @@
     },
     "vc-exact_011.hgr": {
         "answer": 98,
+        "comps": 15,
         "crbound": 57,
         "cutpoints": 0,
         "greed": 98,
@@ -139,8 +145,9 @@
     },
     "vc-exact_013.hgr": {
         "answer": 139,
+        "comps": 13,
         "crbound": 84,
-        "cutpoints": 8,
+        "cutpoints": 3,
         "greed": 143,
         "lpvc": 76,
         "m": 1393,
@@ -162,6 +169,7 @@
     },
     "vc-exact_015.hgr": {
         "answer": 98,
+        "comps": 22,
         "crbound": 61,
         "cutpoints": 0,
         "greed": 98,
@@ -185,8 +193,9 @@
     },
     "vc-exact_017.hgr": {
         "answer": 101,
+        "comps": 1,
         "crbound": 68,
-        "cutpoints": 18,
+        "cutpoints": 0,
         "greed": 117,
         "lpvc": 67.5,
         "m": 403,
@@ -208,8 +217,9 @@
     },
     "vc-exact_019.hgr": {
         "answer": 113,
+        "comps": 1,
         "crbound": 76,
-        "cutpoints": 16,
+        "cutpoints": 0,
         "greed": 131,
         "lpvc": 71.5,
         "m": 472,
@@ -231,6 +241,7 @@
     },
     "vc-exact_021.hgr": {
         "answer": 99,
+        "comps": 11,
         "crbound": 55,
         "cutpoints": 0,
         "greed": 99,
@@ -254,8 +265,9 @@
     },
     "vc-exact_023.hgr": {
         "answer": 105,
+        "comps": 1,
         "crbound": 70,
-        "cutpoints": 27,
+        "cutpoints": 0,
         "greed": 116,
         "lpvc": 70,
         "m": 385,
@@ -277,8 +289,9 @@
     },
     "vc-exact_025.hgr": {
         "answer": 145,
+        "comps": 1,
         "crbound": 105,
-        "cutpoints": 24,
+        "cutpoints": 0,
         "greed": 184,
         "lpvc": 105,
         "m": 625,
@@ -300,8 +313,9 @@
     },
     "vc-exact_027.hgr": {
         "answer": 127,
+        "comps": 1,
         "crbound": 95,
-        "cutpoints": 36,
+        "cutpoints": 0,
         "greed": 157,
         "lpvc": 95,
         "m": 379,
@@ -323,8 +337,9 @@
     },
     "vc-exact_029.hgr": {
         "answer": 100,
+        "comps": 1,
         "crbound": 75,
-        "cutpoints": 29,
+        "cutpoints": 0,
         "greed": 124,
         "lpvc": 75,
         "m": 300,
@@ -346,8 +361,9 @@
     },
     "vc-exact_031.hgr": {
         "answer": 100,
+        "comps": 1,
         "crbound": 75,
-        "cutpoints": 27,
+        "cutpoints": 0,
         "greed": 124,
         "lpvc": 75,
         "m": 300,
@@ -369,8 +385,9 @@
     },
     "vc-exact_033.hgr": {
         "answer": 112,
+        "comps": 1,
         "crbound": 70,
-        "cutpoints": 16,
+        "cutpoints": 0,
         "greed": 124,
         "lpvc": 70,
         "m": 546,
@@ -392,8 +409,9 @@
     },
     "vc-exact_035.hgr": {
         "answer": 144,
+        "comps": 1,
         "crbound": 90,
-        "cutpoints": 20,
+        "cutpoints": 0,
         "greed": 163,
         "lpvc": 90,
         "m": 713,
@@ -415,6 +433,7 @@
     },
     "vc-exact_037.hgr": {
         "answer": 82,
+        "comps": 27,
         "crbound": 55,
         "cutpoints": 0,
         "greed": 82,
@@ -438,6 +457,7 @@
     },
     "vc-exact_039.hgr": {
         "answer": 91,
+        "comps": 30,
         "crbound": 61,
         "cutpoints": 0,
         "greed": 91,
@@ -461,6 +481,7 @@
     },
     "vc-exact_041.hgr": {
         "answer": 100,
+        "comps": 33,
         "crbound": 67,
         "cutpoints": 0,
         "greed": 100,
@@ -484,6 +505,7 @@
     },
     "vc-exact_043.hgr": {
         "answer": 109,
+        "comps": 36,
         "crbound": 73,
         "cutpoints": 0,
         "greed": 109,
@@ -507,6 +529,7 @@
     },
     "vc-exact_045.hgr": {
         "answer": 64,
+        "comps": 21,
         "crbound": 43,
         "cutpoints": 0,
         "greed": 64,
@@ -530,8 +553,9 @@
     },
     "vc-exact_047.hgr": {
         "answer": 141,
+        "comps": 21,
         "crbound": 105,
-        "cutpoints": 8,
+        "cutpoints": 0,
         "greed": 165,
         "lpvc": 93.5,
         "m": 1315,
@@ -553,8 +577,9 @@
     },
     "vc-exact_049.hgr": {
         "answer": 128,
+        "comps": 1,
         "crbound": 77,
-        "cutpoints": 11,
+        "cutpoints": 0,
         "greed": 140,
         "lpvc": 76.5,
         "m": 802,
@@ -576,8 +601,9 @@
     },
     "vc-exact_051.hgr": {
         "answer": 128,
+        "comps": 1,
         "crbound": 96,
-        "cutpoints": 31,
+        "cutpoints": 0,
         "greed": 157,
         "lpvc": 96,
         "m": 384,
@@ -599,8 +625,9 @@
     },
     "vc-exact_053.hgr": {
         "answer": 111,
+        "comps": 1,
         "crbound": 83,
-        "cutpoints": 30,
+        "cutpoints": 0,
         "greed": 136,
         "lpvc": 83,
         "m": 331,
@@ -622,8 +649,9 @@
     },
     "vc-exact_055.hgr": {
         "answer": 143,
+        "comps": 1,
         "crbound": 107,
-        "cutpoints": 41,
+        "cutpoints": 0,
         "greed": 174,
         "lpvc": 107,
         "m": 427,
@@ -645,8 +673,9 @@
     },
     "vc-exact_057.hgr": {
         "answer": 126,
+        "comps": 1,
         "crbound": 96,
-        "cutpoints": 30,
+        "cutpoints": 0,
         "greed": 159,
         "lpvc": 92,
         "m": 364,
@@ -668,8 +697,9 @@
     },
     "vc-exact_059.hgr": {
         "answer": 111,
+        "comps": 1,
         "crbound": 83,
-        "cutpoints": 34,
+        "cutpoints": 0,
         "greed": 135,
         "lpvc": 83,
         "m": 330,
@@ -691,8 +721,9 @@
     },
     "vc-exact_061.hgr": {
         "answer": 142,
+        "comps": 1,
         "crbound": 108,
-        "cutpoints": 37,
+        "cutpoints": 0,
         "greed": 172,
         "lpvc": 104,
         "m": 412,
@@ -714,8 +745,9 @@
     },
     "vc-exact_063.hgr": {
         "answer": 411,
+        "comps": 12,
         "crbound": 245,
-        "cutpoints": 23,
+        "cutpoints": 2,
         "greed": 429,
         "lpvc": 217.5,
         "m": 15911,
@@ -737,8 +769,9 @@
     },
     "vc-exact_065.hgr": {
         "answer": 343,
+        "comps": 5,
         "crbound": 199,
-        "cutpoints": 14,
+        "cutpoints": 0,
         "greed": 360,
         "lpvc": 177.5,
         "m": 17389,
@@ -759,8 +792,9 @@
         "surplus": 2
     },
     "vc-exact_067.hgr": {
+        "comps": 6,
         "crbound": 244,
-        "cutpoints": 7,
+        "cutpoints": 2,
         "greed": 470,
         "lpvc": 235.5,
         "m": 34443,
@@ -780,8 +814,9 @@
         "surplus": 4
     },
     "vc-exact_069.hgr": {
+        "comps": 15,
         "crbound": 239,
-        "cutpoints": 3,
+        "cutpoints": 0,
         "greed": 442,
         "lpvc": 213.5,
         "m": 33710,
@@ -802,6 +837,7 @@
     },
     "vc-exact_071.hgr": {
         "answer": 3422,
+        "comps": 3422,
         "crbound": 3422,
         "cutpoints": 0,
         "greed": 3422,
@@ -825,6 +861,7 @@
     },
     "vc-exact_073.hgr": {
         "answer": 3248,
+        "comps": 3248,
         "crbound": 3248,
         "cutpoints": 0,
         "greed": 3248,
@@ -848,6 +885,7 @@
     },
     "vc-exact_075.hgr": {
         "answer": 3584,
+        "comps": 3553,
         "crbound": 3584,
         "cutpoints": 0,
         "greed": 3584,
@@ -871,8 +909,9 @@
     },
     "vc-exact_077.hgr": {
         "answer": 132,
+        "comps": 1,
         "crbound": 98,
-        "cutpoints": 19,
+        "cutpoints": 0,
         "greed": 180,
         "lpvc": 94.5,
         "m": 823,
@@ -894,8 +933,9 @@
     },
     "vc-exact_079.hgr": {
         "answer": 131,
+        "comps": 1,
         "crbound": 101,
-        "cutpoints": 23,
+        "cutpoints": 0,
         "greed": 171,
         "lpvc": 97,
         "m": 759,
@@ -916,8 +956,9 @@
         "surplus": 2
     },
     "vc-exact_081.hgr": {
+        "comps": 1,
         "crbound": 102,
-        "cutpoints": 14,
+        "cutpoints": 0,
         "greed": 187,
         "lpvc": 98.5,
         "m": 1124,
@@ -938,8 +979,9 @@
     },
     "vc-exact_083.hgr": {
         "answer": 136,
+        "comps": 1,
         "crbound": 101,
-        "cutpoints": 18,
+        "cutpoints": 0,
         "greed": 174,
         "lpvc": 93,
         "m": 887,
@@ -961,8 +1003,9 @@
     },
     "vc-exact_085.hgr": {
         "answer": 140,
+        "comps": 1,
         "crbound": 105,
-        "cutpoints": 17,
+        "cutpoints": 0,
         "greed": 183,
         "lpvc": 95.5,
         "m": 914,
@@ -984,8 +1027,9 @@
     },
     "vc-exact_087.hgr": {
         "answer": 140,
+        "comps": 1,
         "crbound": 103,
-        "cutpoints": 13,
+        "cutpoints": 0,
         "greed": 181,
         "lpvc": 97,
         "m": 956,
@@ -1006,8 +1050,9 @@
         "surplus": 3
     },
     "vc-exact_089.hgr": {
+        "comps": 1,
         "crbound": 102,
-        "cutpoints": 19,
+        "cutpoints": 0,
         "greed": 181,
         "lpvc": 98.5,
         "m": 1123,
@@ -1028,8 +1073,9 @@
     },
     "vc-exact_091.hgr": {
         "answer": 135,
+        "comps": 1,
         "crbound": 102,
-        "cutpoints": 16,
+        "cutpoints": 0,
         "greed": 176,
         "lpvc": 98.5,
         "m": 913,
@@ -1051,8 +1097,9 @@
     },
     "vc-exact_093.hgr": {
         "answer": 138,
+        "comps": 1,
         "crbound": 101,
-        "cutpoints": 20,
+        "cutpoints": 0,
         "greed": 183,
         "lpvc": 99.5,
         "m": 982,
@@ -1074,8 +1121,9 @@
     },
     "vc-exact_095.hgr": {
         "answer": 138,
+        "comps": 1,
         "crbound": 103,
-        "cutpoints": 17,
+        "cutpoints": 0,
         "greed": 179,
         "lpvc": 97.5,
         "m": 906,
@@ -1097,8 +1145,9 @@
     },
     "vc-exact_097.hgr": {
         "answer": 135,
+        "comps": 1,
         "crbound": 102,
-        "cutpoints": 14,
+        "cutpoints": 0,
         "greed": 178,
         "lpvc": 96.5,
         "m": 918,
@@ -1120,8 +1169,9 @@
     },
     "vc-exact_099.hgr": {
         "answer": 130,
+        "comps": 1,
         "crbound": 100,
-        "cutpoints": 23,
+        "cutpoints": 0,
         "greed": 175,
         "lpvc": 97,
         "m": 787,
@@ -1143,8 +1193,9 @@
     },
     "vc-exact_101.hgr": {
         "answer": 138,
+        "comps": 1,
         "crbound": 103,
-        "cutpoints": 17,
+        "cutpoints": 0,
         "greed": 174,
         "lpvc": 97.5,
         "m": 904,
@@ -1166,8 +1217,9 @@
     },
     "vc-exact_103.hgr": {
         "answer": 132,
+        "comps": 1,
         "crbound": 101,
-        "cutpoints": 17,
+        "cutpoints": 0,
         "greed": 174,
         "lpvc": 95,
         "m": 749,
@@ -1189,8 +1241,9 @@
     },
     "vc-exact_105.hgr": {
         "answer": 131,
+        "comps": 1,
         "crbound": 100,
-        "cutpoints": 21,
+        "cutpoints": 0,
         "greed": 175,
         "lpvc": 96.5,
         "m": 776,
@@ -1212,8 +1265,9 @@
     },
     "vc-exact_107.hgr": {
         "answer": 134,
+        "comps": 1,
         "crbound": 99,
-        "cutpoints": 17,
+        "cutpoints": 0,
         "greed": 170,
         "lpvc": 97,
         "m": 845,
@@ -1235,8 +1289,9 @@
     },
     "vc-exact_109.hgr": {
         "answer": 126,
+        "comps": 1,
         "crbound": 100,
-        "cutpoints": 24,
+        "cutpoints": 0,
         "greed": 166,
         "lpvc": 95.5,
         "m": 703,
@@ -1258,8 +1313,9 @@
     },
     "vc-exact_111.hgr": {
         "answer": 130,
+        "comps": 1,
         "crbound": 98,
-        "cutpoints": 19,
+        "cutpoints": 0,
         "greed": 172,
         "lpvc": 96,
         "m": 775,
@@ -1281,8 +1337,9 @@
     },
     "vc-exact_113.hgr": {
         "answer": 129,
+        "comps": 1,
         "crbound": 101,
-        "cutpoints": 20,
+        "cutpoints": 0,
         "greed": 170,
         "lpvc": 96.5,
         "m": 767,
@@ -1304,6 +1361,7 @@
     },
     "vc-exact_115.hgr": {
         "answer": 5056,
+        "comps": 5017,
         "crbound": 5056,
         "cutpoints": 0,
         "greed": 5056,
@@ -1327,6 +1385,7 @@
     },
     "vc-exact_117.hgr": {
         "answer": 5111,
+        "comps": 5111,
         "crbound": 5111,
         "cutpoints": 0,
         "greed": 5111,
@@ -1350,6 +1409,7 @@
     },
     "vc-exact_119.hgr": {
         "answer": 4970,
+        "comps": 4926,
         "crbound": 4970,
         "cutpoints": 0,
         "greed": 4970,
@@ -1373,8 +1433,9 @@
     },
     "vc-exact_121.hgr": {
         "answer": 135,
+        "comps": 1,
         "crbound": 100,
-        "cutpoints": 16,
+        "cutpoints": 0,
         "greed": 176,
         "lpvc": 98.5,
         "m": 953,
@@ -1395,8 +1456,9 @@
         "surplus": 2
     },
     "vc-exact_123.hgr": {
+        "comps": 1,
         "crbound": 103,
-        "cutpoints": 16,
+        "cutpoints": 0,
         "greed": 181,
         "lpvc": 97.5,
         "m": 1063,
@@ -1417,8 +1479,9 @@
     },
     "vc-exact_125.hgr": {
         "answer": 136,
+        "comps": 1,
         "crbound": 101,
-        "cutpoints": 16,
+        "cutpoints": 0,
         "greed": 172,
         "lpvc": 97,
         "m": 891,
@@ -1440,8 +1503,9 @@
     },
     "vc-exact_127.hgr": {
         "answer": 133,
+        "comps": 1,
         "crbound": 101,
-        "cutpoints": 21,
+        "cutpoints": 0,
         "greed": 177,
         "lpvc": 98,
         "m": 844,
@@ -1463,8 +1527,9 @@
     },
     "vc-exact_129.hgr": {
         "answer": 138,
+        "comps": 1,
         "crbound": 100,
-        "cutpoints": 20,
+        "cutpoints": 0,
         "greed": 178,
         "lpvc": 98,
         "m": 1000,
@@ -1486,8 +1551,9 @@
     },
     "vc-exact_131.hgr": {
         "answer": 137,
+        "comps": 1,
         "crbound": 101,
-        "cutpoints": 12,
+        "cutpoints": 0,
         "greed": 175,
         "lpvc": 99,
         "m": 986,
@@ -1509,8 +1575,9 @@
     },
     "vc-exact_133.hgr": {
         "answer": 141,
+        "comps": 1,
         "crbound": 103,
-        "cutpoints": 18,
+        "cutpoints": 0,
         "greed": 182,
         "lpvc": 97,
         "m": 1029,
@@ -1532,8 +1599,9 @@
     },
     "vc-exact_135.hgr": {
         "answer": 140,
+        "comps": 1,
         "crbound": 101,
-        "cutpoints": 14,
+        "cutpoints": 0,
         "greed": 179,
         "lpvc": 99,
         "m": 1001,
@@ -1555,8 +1623,9 @@
     },
     "vc-exact_137.hgr": {
         "answer": 135,
+        "comps": 1,
         "crbound": 101,
-        "cutpoints": 15,
+        "cutpoints": 0,
         "greed": 182,
         "lpvc": 99,
         "m": 939,
@@ -1577,8 +1646,9 @@
         "surplus": 2
     },
     "vc-exact_139.hgr": {
+        "comps": 1,
         "crbound": 101,
-        "cutpoints": 14,
+        "cutpoints": 0,
         "greed": 184,
         "lpvc": 96.5,
         "m": 1050,
@@ -1599,8 +1669,9 @@
     },
     "vc-exact_141.hgr": {
         "answer": 140,
+        "comps": 1,
         "crbound": 102,
-        "cutpoints": 20,
+        "cutpoints": 0,
         "greed": 173,
         "lpvc": 97.5,
         "m": 1048,
@@ -1622,8 +1693,9 @@
     },
     "vc-exact_143.hgr": {
         "answer": 136,
+        "comps": 1,
         "crbound": 102,
-        "cutpoints": 20,
+        "cutpoints": 0,
         "greed": 178,
         "lpvc": 97.5,
         "m": 971,
@@ -1645,8 +1717,9 @@
     },
     "vc-exact_145.hgr": {
         "answer": 140,
+        "comps": 1,
         "crbound": 102,
-        "cutpoints": 15,
+        "cutpoints": 0,
         "greed": 176,
         "lpvc": 98.5,
         "m": 1051,
@@ -1668,6 +1741,7 @@
     },
     "vc-exact_147.hgr": {
         "answer": 10504,
+        "comps": 10451,
         "crbound": 10504,
         "cutpoints": 0,
         "greed": 10504,
@@ -1691,6 +1765,7 @@
     },
     "vc-exact_149.hgr": {
         "answer": 10100,
+        "comps": 10048,
         "crbound": 10100,
         "cutpoints": 0,
         "greed": 10100,
@@ -1714,6 +1789,7 @@
     },
     "vc-exact_151.hgr": {
         "answer": 10201,
+        "comps": 10149,
         "crbound": 10201,
         "cutpoints": 0,
         "greed": 10201,
@@ -1737,6 +1813,7 @@
     },
     "vc-exact_153.hgr": {
         "answer": 11211,
+        "comps": 11211,
         "crbound": 11211,
         "cutpoints": 0,
         "greed": 11211,
@@ -1760,6 +1837,7 @@
     },
     "vc-exact_155.hgr": {
         "answer": 11648,
+        "comps": 11588,
         "crbound": 11648,
         "cutpoints": 0,
         "greed": 11648,
@@ -1783,6 +1861,7 @@
     },
     "vc-exact_157.hgr": {
         "answer": 10918,
+        "comps": 10918,
         "crbound": 10918,
         "cutpoints": 0,
         "greed": 10918,
@@ -1806,6 +1885,7 @@
     },
     "vc-exact_159.hgr": {
         "answer": 12084,
+        "comps": 12026,
         "crbound": 12084,
         "cutpoints": 0,
         "greed": 12084,
@@ -1829,6 +1909,7 @@
     },
     "vc-exact_161.hgr": {
         "answer": 13431,
+        "comps": 13431,
         "crbound": 13431,
         "cutpoints": 0,
         "greed": 13431,
@@ -1852,6 +1933,7 @@
     },
     "vc-exact_163.hgr": {
         "answer": 12840,
+        "comps": 12840,
         "crbound": 12840,
         "cutpoints": 0,
         "greed": 12840,
@@ -1875,6 +1957,7 @@
     },
     "vc-exact_165.hgr": {
         "answer": 13338,
+        "comps": 13277,
         "crbound": 13338,
         "cutpoints": 0,
         "greed": 13338,
@@ -1897,8 +1980,9 @@
         "surplus": 0
     },
     "vc-exact_167.hgr": {
+        "comps": 1,
         "crbound": 225,
-        "cutpoints": 2,
+        "cutpoints": 0,
         "greed": 448,
         "lpvc": 225,
         "m": 17831,
@@ -1918,8 +2002,9 @@
         "surplus": 47
     },
     "vc-exact_169.hgr": {
+        "comps": 1,
         "crbound": 767,
-        "cutpoints": 7,
+        "cutpoints": 0,
         "greed": 1530,
         "lpvc": 767,
         "m": 126163,
@@ -1939,8 +2024,9 @@
         "surplus": 99
     },
     "vc-exact_171.hgr": {
+        "comps": 1,
         "crbound": 767,
-        "cutpoints": 9,
+        "cutpoints": 0,
         "greed": 1531,
         "lpvc": 767,
         "m": 127011,
@@ -1960,8 +2046,9 @@
         "surplus": 97
     },
     "vc-exact_173.hgr": {
+        "comps": 1,
         "crbound": 575,
-        "cutpoints": 7,
+        "cutpoints": 0,
         "greed": 1146,
         "lpvc": 575,
         "m": 81068,
@@ -1981,8 +2068,9 @@
         "surplus": 70
     },
     "vc-exact_175.hgr": {
+        "comps": 1,
         "crbound": 2000,
-        "cutpoints": 16,
+        "cutpoints": 0,
         "greed": 3995,
         "lpvc": 2000,
         "m": 572774,
@@ -2003,8 +2091,9 @@
     },
     "vc-exact_177.hgr": {
         "answer": 12097,
+        "comps": 26,
         "crbound": 11980,
-        "cutpoints": 18,
+        "cutpoints": 5,
         "greed": 12123,
         "lpvc": 81,
         "m": 298,
@@ -2026,8 +2115,9 @@
     },
     "vc-exact_179.hgr": {
         "answer": 11033,
+        "comps": 77,
         "crbound": 10340,
-        "cutpoints": 236,
+        "cutpoints": 25,
         "greed": 11426,
         "lpvc": 731,
         "m": 3553,
@@ -2049,6 +2139,7 @@
     },
     "vc-exact_181.hgr": {
         "answer": 36,
+        "comps": 1,
         "crbound": 36,
         "cutpoints": 0,
         "greed": 36,
@@ -2072,6 +2163,7 @@
     },
     "vc-exact_183.hgr": {
         "answer": 20,
+        "comps": 1,
         "crbound": 20,
         "cutpoints": 0,
         "greed": 20,
@@ -2095,6 +2187,7 @@
     },
     "vc-exact_185.hgr": {
         "answer": 187,
+        "comps": 2,
         "crbound": 187,
         "cutpoints": 0,
         "greed": 187,
@@ -2118,6 +2211,7 @@
     },
     "vc-exact_187.hgr": {
         "answer": 1747,
+        "comps": 21,
         "crbound": 1744,
         "cutpoints": 0,
         "greed": 1747,
@@ -2141,6 +2235,7 @@
     },
     "vc-exact_189.hgr": {
         "answer": 4402,
+        "comps": 10,
         "crbound": 4402,
         "cutpoints": 0,
         "greed": 4402,
@@ -2164,8 +2259,9 @@
     },
     "vc-exact_191.hgr": {
         "answer": 6674,
+        "comps": 83,
         "crbound": 6402,
-        "cutpoints": 84,
+        "cutpoints": 22,
         "greed": 6756,
         "lpvc": 244,
         "m": 952,
@@ -2187,6 +2283,7 @@
     },
     "vc-exact_193.hgr": {
         "answer": 755,
+        "comps": 28,
         "crbound": 755,
         "cutpoints": 0,
         "greed": 755,
@@ -2210,8 +2307,9 @@
     },
     "vc-exact_195.hgr": {
         "answer": 6821,
+        "comps": 63,
         "crbound": 6568,
-        "cutpoints": 71,
+        "cutpoints": 20,
         "greed": 6903,
         "lpvc": 240.5,
         "m": 935,
@@ -2233,6 +2331,7 @@
     },
     "vc-exact_197.hgr": {
         "answer": 927,
+        "comps": 15,
         "crbound": 927,
         "cutpoints": 0,
         "greed": 927,
@@ -2256,6 +2355,7 @@
     },
     "vc-exact_199.hgr": {
         "answer": 211,
+        "comps": 21,
         "crbound": 211,
         "cutpoints": 0,
         "greed": 211,

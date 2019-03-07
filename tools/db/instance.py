@@ -16,6 +16,7 @@ class TestInfo:
         "update_crbound",
         "update_kernel_stats",
         "update_cutpoints",
+        "update_comps",
     ]
 
     def __init__(self, config, db=None):
@@ -134,6 +135,15 @@ class TestInfo:
     def update_kernel_stats(self):
         self.__update_kernel_stats("stat_zs")
         self.__update_kernel_stats("stat_c2k")
+
+    def update_comps(self):
+        if "comps" in self.info:
+            return
+        with open(self.config.filename, "r") as test:
+            p = subprocess.Popen(["./build/tools/comps/comps"], stdin=test, stdout=subprocess.PIPE)
+            p.wait()
+            compsstr = p.stdout.readline().decode("utf-8")
+        self.info["comps"] = int(compsstr)
 
 
 class Test:

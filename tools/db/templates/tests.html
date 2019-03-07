@@ -33,7 +33,7 @@
             left: 10px;
         }
 
-        .test-n, .test-m, .test-cutpoints, .test-mnd, .test-mxd, .test-answer, .test-surplus, .test-lpvc, .test-greed, .test-crbound, .test-zs-n, .test-zs-m, .test-c2k-n, .test-c2k-m {
+        .test-n, .test-m, .test-comps, .test-cutpoints, .test-mnd, .test-mxd, .test-answer, .test-surplus, .test-lpvc, .test-greed, .test-crbound, .test-zs-n, .test-zs-m, .test-c2k-n, .test-c2k-m {
             text-align: center;
         }
 
@@ -62,6 +62,7 @@
             <th id="test-m">Edges</th>
             <th id="test-mnd">δ</th>
             <th id="test-mxd">Δ</th>
+            <th id="test-comps">Comps</th>
             <th id="test-cutpoints">Cuts</th>
             <th id="test-surplus">Surplus</th>
             <th id="test-lpvc">LPVC</th>
@@ -94,6 +95,7 @@
                 <td class="test-m">{{ test.m }}</td>
                 <td class="test-mnd">{{ test.mnd }}</td>
                 <td class="test-mxd">{{ test.mxd }}</td>
+                <td class="test-comps">{{ test.comps }}</td>
                 <td class="test-cutpoints">{{ test.cutpoints }}</td>
                 <td class="test-surplus">{{ test.surplus }}</td>
                 <td class="test-lpvc">{{ test.lpvc }}</td>
@@ -120,6 +122,7 @@
         "test-m",
         "test-mnd",
         "test-mxd",
+        "test-comps",
         "test-cutpoints",
         "test-surplus",
         "test-lpvc",

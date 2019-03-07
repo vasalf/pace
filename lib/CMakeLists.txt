@@ -9,6 +9,8 @@ add_library(pacevc STATIC
     bipartite_maxm/matching.cpp
     bipartite_maxm/min_vc.cpp
 
+    branching/branching.cpp
+    branching/cutpoints.cpp
     branching/max_degree.cpp
 
     kernels/bound.cpp
@@ -40,6 +42,8 @@ if(BUILD_TESTING)
         graph/util_ut.cpp
         bipartite_maxm/matching_ut.cpp
         bipartite_maxm/min_vc_ut.cpp
+        branching/max_degree_ut.cpp
+        branching/cutpoints_ut.cpp
         kernels/trivial_ut.cpp
         surplus/surplus_ut.cpp
         ut/vc_exact_public_ut.cpp

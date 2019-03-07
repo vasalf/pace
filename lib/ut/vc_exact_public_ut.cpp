@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
+#include <branching/cutpoints.h>
 #include <graph/graph.h>
+#include <graph/util.h>
 #include <solution/greed.h>
 #include <solution/solution.h>
 
@@ -37,3 +39,22 @@ TEST_P(TestVCPublic, testGreedCoversAll) {
     ASSERT_FALSE(validate(h, {g.bestSolution()}).has_value());
 }
 
+/*
+TEST_P(TestVCPublic, testCutpointsSplitIntoComponents) {
+    Graph g = testGraph();
+    auto cuts = cutpoints(g);
+    for (int u : cuts) {
+        g.placeMark();
+        g.takeVertex(u);
+        ASSERT_TRUE(connectedComponents(g).size() > 1);
+        g.restoreMark();
+    }
+}
+*/
+
+TEST_P(TestVCPublic, testCutpointsBranchingWithTrivialKernel) {
+    Graph g = testGraph();
+    Graph h = g;
+    CutpointsBranching<Kernels::Trivial>(g).branch();
+    ASSERT_FALSE(validate(h, {g.bestSolution()}).has_value());
+}

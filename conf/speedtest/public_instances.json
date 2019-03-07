@@ -41,6 +41,10 @@
             "name": "CP/SAT",
             "hidden": true,
             "external": true
+        },
+        {
+            "executable": "./build/solutions/vc/cuts_trivial/cuts_trivial",
+            "name": "trivial+cuts"
         }
     ],
     "output": "vc",
