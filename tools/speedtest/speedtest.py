@@ -117,7 +117,7 @@ class Config:
         else:
             self.database_dir = None
 
-        self.solutions = list(map(Solution, data["solutions"]))
+        self.unforced_solutions = list(map(Solution, data["solutions"]))
 
         if args.filter_tests != "":
             filter_tests = args.filter_tests.split(",")
@@ -125,12 +125,11 @@ class Config:
 
         if args.filter_solutions != "":
             filter_solutions = args.filter_solutions.split(",")
-            self.solutions = list(filter(lambda x: x.name in filter_solutions, self.solutions))
+            self.solutions = list(filter(lambda x: x.name in filter_solutions, self.unforced_solutions))
             for solution in self.solutions:
                 solution.forced = True
-            self.unforced_solutions = self.solutions
         else:
-            self.unforced_solutions = list(filter(lambda x: not x.hidden, self.solutions))
+            self.solutions = list(filter(lambda x: not x.hidden, self.unforced_solutions))
 
         if args.timeout > 0:
             self.timeout = args.timeout
@@ -275,7 +274,7 @@ class SpeedtestExecutor:
 
         if config.database_dir is not None:
             externals = set()
-            for solution in config.solutions:
+            for solution in config.unforced_solutions:
                 if solution.external:
                     externals.add(solution.name)
             self.database = TestResultDatabase(config.database_dir, externals)
@@ -287,7 +286,7 @@ class SpeedtestExecutor:
         self.futures = []
         for test in self.config.tests:
             futures = []
-            for solution in self.config.unforced_solutions:
+            for solution in self.config.solutions:
                 futures.append(self.executor.submit(run, self.config, self.database, solution, test))
             self.futures.append(futures)
 
@@ -299,7 +298,7 @@ class SpeedtestExecutor:
             headers.append("")
         for i, test in enumerate(self.config.tests):
             row = [test.name]
-            for j, solution in enumerate(self.config.unforced_solutions):
+            for j, solution in enumerate(self.config.solutions):
                 try:
                     a, b, dbres = self.futures[i][j].result()
                 except ExecutionFailureError as e:
