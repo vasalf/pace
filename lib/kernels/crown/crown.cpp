@@ -70,6 +70,7 @@ void CrownKernel::reduce() {
         if (vc.maxm.pair[i] != -1 && inVC[idOfLeft[vc.maxm.pair[i]]])
             graph.removeVertex(idOfRight[i]);
 
+    lowerBound = (graph.size() + 2) / 3;
     cleanUp(graph);
 }
 

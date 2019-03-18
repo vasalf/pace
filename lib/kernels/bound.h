@@ -5,8 +5,6 @@
 namespace PaceVC {
 namespace Kernels {
 
-namespace {
-
 template<class K, class U = int>
 struct IsBoundedKernel : std::false_type {};
 
@@ -23,6 +21,36 @@ typename std::enable_if<!IsBoundedKernel<K>::value, int>::type getKernelBound(co
     return -1;
 }
 
+template<class K, class U = int>
+struct IsLowerBoundedKernel : std::false_type {};
+
+template<class K>
+struct IsLowerBoundedKernel<K, decltype((void)K::lowerBound, 0)> : std::true_type {};
+
+template<class K>
+typename std::enable_if<IsLowerBoundedKernel<K>::value, decltype(K::lowerBound)>::type getKernelLowerBound(const K& kernel) {
+    return kernel.lowerBound;
+}
+
+template<class K>
+typename std::enable_if<!IsLowerBoundedKernel<K>::value, int>::type getKernelLowerBound(const K&) {
+    return 0;
+}
+
+template<class K, class U = int>
+struct IsSpanningKernel : std::false_type {};
+
+template<class K>
+struct IsSpanningKernel<K, decltype((void)K::spans, 0)> : std::true_type {};
+
+template<class K>
+typename std::enable_if<IsSpanningKernel<K>::value, decltype(K::spans)>::type getKernelSpans(const K& kernel) {
+    return kernel.spans;
+}
+
+template<class K>
+typename std::enable_if<!IsSpanningKernel<K>::value, int>::type getKernelSpans(const K&) {
+    return 0;
 }
 
 }

@@ -8,6 +8,7 @@ namespace Kernels {
 
 struct TrivialImpl {
     Graph& graph;
+    int spans = 0;
 
     TrivialImpl(Graph& g);
 

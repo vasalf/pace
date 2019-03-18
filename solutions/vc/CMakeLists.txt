@@ -1,4 +1,6 @@
+add_subdirectory(cuts_cr2k)
 add_subdirectory(cuts_trivial)
+add_subdirectory(cuts_zs)
 add_subdirectory(mxd_cr)
 add_subdirectory(mxd_cr2k)
 add_subdirectory(mxd_excr)

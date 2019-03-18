@@ -12,6 +12,8 @@ template<class Kernel>
 struct Exhaustive {
     Graph& graph;
     int bound = -1;
+    int lowerBound = 0;
+    int spans = 0;
 
     Exhaustive(Graph& g)
         : graph(g)
@@ -26,6 +28,8 @@ struct Exhaustive {
             Kernel k(graph);
             k.reduce();
             bound = getKernelBound(k);
+            lowerBound = getKernelLowerBound(k);
+            spans += getKernelSpans(k);
         }
     }
 };

@@ -84,7 +84,8 @@ namespace {
             : graph(g)
         {}
 
-        void handle() {
+        int handle() {
+            int ret = 0;
             used.resize(graph.realSize(), false);
 
             std::vector<std::vector<int>> paths;
@@ -147,6 +148,7 @@ namespace {
                 std::vector<int> a, b;
                 splitVector(p, a, b);
                 graph.span(p, a, b);
+                ret += (p.size() - 1) / 2;
 
                 if (shouldTake) {
                     graph.takeVertex(graph.realSize() - 1);
@@ -161,6 +163,8 @@ namespace {
                         graph.removeVertex(p[i]);
                 }
             }
+
+            return ret;
         }
     };
 
@@ -180,7 +184,7 @@ TrivialImpl::TrivialImpl(Graph& g)
 
 void TrivialImpl::reduce() {
     handleLeaves(graph);
-    Degree2Handler(graph).handle();
+    spans = Degree2Handler(graph).handle();
     handleIsolated(graph);
 }
 

@@ -27,24 +27,31 @@ public:
 
 private:
     Graph& graph;
+    int currentSpans = 0;
 
     void doBranch(int bound) {
         graph.trySqueeze();
+
+        int lowerBound = 0;
 
         if (bound >= graph.size() || bound < 0) {
             IntermediateReducer k(graph);
             k.reduce();
             bound = Kernels::getKernelBound(k);
+            currentSpans += Kernels::getKernelSpans(k);
+            lowerBound = graph.restoreSolution().size() + Kernels::getKernelLowerBound(k) + currentSpans;
         }
 
-        Kernels::Trivial(graph).reduce();
+        Kernels::Trivial trivial(graph);
+        trivial.reduce();
+        currentSpans += Kernels::getKernelSpans(trivial);
 
         if (graph.size() == 0) {
             graph.saveSolution(graph.restoreSolution());
             return;
         }
 
-        if (graph.restoreSolution().size() >= graph.bestSolution().size()) {
+        if (std::max<int>(graph.restoreSolution().size(), lowerBound) >= graph.bestSolution().size()) {
             return;
         }
 
@@ -85,7 +92,9 @@ private:
 
         graph.placeMark();
         graph.takeVertex(v);
+        int oldSpans = currentSpans;
         doBranch(bound);
+        currentSpans = oldSpans;
         graph.restoreMark();
 
         graph.placeMark();
@@ -93,7 +102,9 @@ private:
         for (int u : adjCopy) {
             graph.takeVertex(u);
         }
+        oldSpans = currentSpans;
         doBranch(bound);
+        currentSpans = oldSpans;
         graph.restoreMark();
     }
 };

@@ -1,4 +1,5 @@
 #include <kernels/crown/crown_2k.h>
+#include <kernels/common.h>
 
 #include <graph/boost_graph.h>
 
@@ -89,6 +90,7 @@ namespace Kernels {
 
 struct Crown2kKernel::TImpl {
     Graph& graph;
+    int lowerBound = 0;
 
     TImpl(Graph& g)
         : graph(g)
@@ -231,6 +233,8 @@ struct Crown2kKernel::TImpl {
                 return;
             }
         }
+        lowerBound = (graph.size() + 1) / 2;
+        cleanUp(graph);
     }
 };
 
@@ -242,6 +246,7 @@ Crown2kKernel::~Crown2kKernel() = default;
 
 void Crown2kKernel::reduce() {
     impl_->reduce();
+    lowerBound = impl_->lowerBound;
 }
 
 }

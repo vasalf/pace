@@ -45,6 +45,14 @@
         {
             "executable": "./build/solutions/vc/cuts_trivial/cuts_trivial",
             "name": "trivial+cuts"
+        },
+        {
+            "executable": "./build/solutions/vc/cuts_cr2k/cuts_cr2k",
+            "name": "crown_2k+cuts"
+        },
+        {
+            "executable": "./build/solutions/vc/cuts_zs/cuts_zs",
+            "name": "zs+cuts"
         }
     ],
     "output": "vc",

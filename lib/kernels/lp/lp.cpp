@@ -28,11 +28,14 @@ void LPKernel::reduce() {
 
     if (val > 0) {
         bound = graph.size() - val;
+        lowerBound = (graph.size() + 1) / 2;
         return;
     }
 
     bound = -1;
     reduceImpl(graph, surplus);
+
+    lowerBound = (graph.size() + 1) / 2;
 }
 
 ZeroSurplusLPKernel::ZeroSurplusLPKernel(Graph& g)
@@ -45,6 +48,7 @@ void ZeroSurplusLPKernel::reduce() {
 
     if (val > 0) {
         bound = graph.size() - val;
+        lowerBound = (graph.size() + 1) / 2;
         return;
     }
 
@@ -52,6 +56,7 @@ void ZeroSurplusLPKernel::reduce() {
 
     if (val < 0) {
         reduceImpl(graph, surplus);
+        lowerBound = graph.size() / 2;
         return;
     }
 
@@ -75,6 +80,8 @@ void ZeroSurplusLPKernel::reduce() {
             reduceImpl(graph, surplusCopy);
         }
     }
+
+    lowerBound = (graph.size() + 1) / 2;
 }
 
 }

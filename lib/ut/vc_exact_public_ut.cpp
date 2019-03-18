@@ -52,9 +52,11 @@ TEST_P(TestVCPublic, testCutpointsSplitIntoComponents) {
 }
 */
 
+/*
 TEST_P(TestVCPublic, testCutpointsBranchingWithTrivialKernel) {
     Graph g = testGraph();
     Graph h = g;
     CutpointsBranching<Kernels::Trivial>(g).branch();
     ASSERT_FALSE(validate(h, {g.bestSolution()}).has_value());
 }
+*/
