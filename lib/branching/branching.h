@@ -72,7 +72,6 @@ private:
                     }
                 }
 
-                Graph h = g;
                 TThis(g).branch();
 
                 for (int u : g.bestSolution()) {

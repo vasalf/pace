@@ -7,7 +7,7 @@
 
 int main() {
     PaceVC::Graph graph = PaceVC::readGraph(std::cin);
-    PaceVC::Kernels::Trivial(graph).reduce();
+    //PaceVC::Kernels::Trivial(graph).reduce();
 
     int edges = 0;
     int mind = std::numeric_limits<int>::max();
