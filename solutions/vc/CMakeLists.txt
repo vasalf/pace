@@ -1,3 +1,4 @@
+add_subdirectory(clj_3dvc)
 add_subdirectory(cuts_trivial)
 add_subdirectory(mxd_cr)
 add_subdirectory(mxd_cr2k)

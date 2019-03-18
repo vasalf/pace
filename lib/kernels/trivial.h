@@ -6,6 +6,9 @@
 namespace PaceVC {
 namespace Kernels {
 
+void handleIsolated(Graph& graph);
+void handleLeaves(Graph& graph);
+
 struct TrivialImpl {
     Graph& graph;
 

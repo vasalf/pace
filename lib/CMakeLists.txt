@@ -10,6 +10,7 @@ add_library(pacevc STATIC
     bipartite_maxm/min_vc.cpp
 
     branching/branching.cpp
+    branching/chen_liu_jia_3dvc.cpp
     branching/cutpoints.cpp
     branching/max_degree.cpp
 
