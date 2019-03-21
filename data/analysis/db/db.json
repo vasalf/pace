@@ -1,5 +1,6 @@
 {
     "vc-exact_001.gr": {
+        "answer": 2586,
         "comps": 70,
         "crbound": 2481,
         "cutpoints": 0,
@@ -9,6 +10,7 @@
         "mnd": 3,
         "mxd": 6,
         "n": 350,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{6} {6} {6} {6} {6} {6} {6} {6} {6} {6}",
             "m": 765,
@@ -46,6 +48,7 @@
         "surplus": 2
     },
     "vc-exact_003.gr": {
+        "answer": 12190,
         "comps": 0,
         "crbound": 12190,
         "cutpoints": 0,
@@ -55,6 +58,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -92,6 +96,7 @@
         "surplus": 2
     },
     "vc-exact_005.gr": {
+        "answer": 129,
         "comps": 1,
         "crbound": 98,
         "cutpoints": 0,
@@ -101,6 +106,7 @@
         "mnd": 3,
         "mxd": 16,
         "n": 196,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{16} {15 14 14 14} {15 14} {15} {15} {14}",
             "m": 793,
@@ -138,6 +144,7 @@
         "surplus": 2
     },
     "vc-exact_007.gr": {
+        "answer": 4397,
         "comps": 1,
         "crbound": 4375,
         "cutpoints": 0,
@@ -147,6 +154,7 @@
         "mnd": 3,
         "mxd": 5,
         "n": 7,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{5 4 4 4 3 3 3}",
             "m": 13,
@@ -230,6 +238,7 @@
         "surplus": 3
     },
     "vc-exact_011.gr": {
+        "answer": 4981,
         "comps": 102,
         "crbound": 4802,
         "cutpoints": 13,
@@ -239,6 +248,7 @@
         "mnd": 3,
         "mxd": 26,
         "n": 605,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{26 26 26 26 26 26 26 26 26 26}",
             "m": 1929,
@@ -276,6 +286,7 @@
         "surplus": 5
     },
     "vc-exact_013.gr": {
+        "answer": 8610,
         "comps": 0,
         "crbound": 8610,
         "cutpoints": 0,
@@ -285,6 +296,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -322,6 +334,7 @@
         "surplus": 2
     },
     "vc-exact_015.gr": {
+        "answer": 10670,
         "comps": 0,
         "crbound": 10670,
         "cutpoints": 0,
@@ -331,6 +344,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -368,6 +382,7 @@
         "surplus": 2
     },
     "vc-exact_017.gr": {
+        "answer": 12082,
         "comps": 19,
         "crbound": 11954,
         "cutpoints": 5,
@@ -377,6 +392,7 @@
         "mnd": 3,
         "mxd": 12,
         "n": 158,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{12 8} {8 6} {7} {6 6} {6} {6} {6}",
             "m": 294,
@@ -414,6 +430,7 @@
         "surplus": 3
     },
     "vc-exact_019.gr": {
+        "answer": 130,
         "comps": 1,
         "crbound": 98,
         "cutpoints": 0,
@@ -423,6 +440,7 @@
         "mnd": 3,
         "mxd": 19,
         "n": 196,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{19 16 16 16 16 15 14} {19 16} {14}",
             "m": 857,
@@ -460,6 +478,7 @@
         "surplus": 3
     },
     "vc-exact_021.gr": {
+        "answer": 5110,
         "comps": 0,
         "crbound": 5110,
         "cutpoints": 0,
@@ -469,6 +488,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -552,6 +572,7 @@
         "surplus": 4
     },
     "vc-exact_025.gr": {
+        "answer": 4899,
         "comps": 0,
         "crbound": 4899,
         "cutpoints": 0,
@@ -561,6 +582,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -598,6 +620,7 @@
         "surplus": 4
     },
     "vc-exact_027.gr": {
+        "answer": 13431,
         "comps": 0,
         "crbound": 13431,
         "cutpoints": 0,
@@ -607,6 +630,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -644,6 +668,7 @@
         "surplus": 2
     },
     "vc-exact_029.gr": {
+        "answer": 6622,
         "comps": 1,
         "crbound": 6619,
         "cutpoints": 0,
@@ -653,6 +678,7 @@
         "mnd": 3,
         "mxd": 3,
         "n": 4,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{3 3 3 3}",
             "m": 6,
@@ -690,6 +716,7 @@
         "surplus": 3
     },
     "vc-exact_031.gr": {
+        "answer": 136,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -699,6 +726,7 @@
         "mnd": 3,
         "mxd": 13,
         "n": 200,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{13 12} {13} {12 12 12 12} {12 12} {12}",
             "m": 813,
@@ -736,6 +764,7 @@
         "surplus": 3
     },
     "vc-exact_033.gr": {
+        "answer": 2725,
         "comps": 1,
         "crbound": 1560,
         "cutpoints": 0,
@@ -745,6 +774,7 @@
         "mnd": 3,
         "mxd": 22,
         "n": 3120,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{22 22 22} {20 20} {20} {20} {20} {20} {20}",
             "m": 5595,
@@ -782,6 +812,7 @@
         "surplus": 5
     },
     "vc-exact_035.gr": {
+        "answer": 133,
         "comps": 1,
         "crbound": 99,
         "cutpoints": 0,
@@ -791,6 +822,7 @@
         "mnd": 3,
         "mxd": 18,
         "n": 198,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{18 17 17 17 15 15 15 15 14} {14}",
             "m": 861,
@@ -828,6 +860,7 @@
         "surplus": 6
     },
     "vc-exact_037.gr": {
+        "answer": 131,
         "comps": 1,
         "crbound": 98,
         "cutpoints": 0,
@@ -837,6 +870,7 @@
         "mnd": 3,
         "mxd": 16,
         "n": 196,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{16 15 14 14 14 14 13} {12} {12} {12}",
             "m": 806,
@@ -920,6 +954,7 @@
         "surplus": 2
     },
     "vc-exact_041.gr": {
+        "answer": 139,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -929,6 +964,7 @@
         "mnd": 3,
         "mxd": 22,
         "n": 200,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{22 20 18 17 16 16 16} {18} {18} {17}",
             "m": 1023,
@@ -966,6 +1002,7 @@
         "surplus": 2
     },
     "vc-exact_043.gr": {
+        "answer": 139,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -975,6 +1012,7 @@
         "mnd": 3,
         "mxd": 15,
         "n": 200,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{15} {14 12 12} {14} {12} {12} {12} {12} {12}",
             "m": 841,
@@ -1012,6 +1050,7 @@
         "surplus": 2
     },
     "vc-exact_045.gr": {
+        "answer": 137,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -1021,6 +1060,7 @@
         "mnd": 3,
         "mxd": 24,
         "n": 200,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{24 19 18 18 18 17 17 16 16 16}",
             "m": 1020,
@@ -1058,6 +1098,7 @@
         "surplus": 2
     },
     "vc-exact_047.gr": {
+        "answer": 140,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -1067,6 +1108,7 @@
         "mnd": 4,
         "mxd": 21,
         "n": 198,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{21 21 20 19 19 19 18 18 17} {17}",
             "m": 1080,
@@ -1104,6 +1146,7 @@
         "surplus": 2
     },
     "vc-exact_049.gr": {
+        "answer": 136,
         "comps": 1,
         "crbound": 99,
         "cutpoints": 0,
@@ -1113,6 +1156,7 @@
         "mnd": 3,
         "mxd": 19,
         "n": 198,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{19} {17 16} {16 15 14} {16 14} {16} {15}",
             "m": 930,
@@ -1150,6 +1194,7 @@
         "surplus": 5
     },
     "vc-exact_051.gr": {
+        "answer": 140,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -1159,6 +1204,7 @@
         "mnd": 4,
         "mxd": 24,
         "n": 200,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{24 19} {21 19 19 19 18} {19 18 17}",
             "m": 1098,
@@ -1196,6 +1242,7 @@
         "surplus": 3
     },
     "vc-exact_053.gr": {
+        "answer": 139,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -1205,6 +1252,7 @@
         "mnd": 4,
         "mxd": 21,
         "n": 200,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{21 19 17 17 17 17 16} {17 16} {17}",
             "m": 1026,
@@ -1242,6 +1290,7 @@
         "surplus": 2
     },
     "vc-exact_055.gr": {
+        "answer": 134,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -1251,6 +1300,7 @@
         "mnd": 3,
         "mxd": 21,
         "n": 198,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{21 20 18 17 16 16 15 15} {17} {15}",
             "m": 931,
@@ -1288,6 +1338,7 @@
         "surplus": 2
     },
     "vc-exact_057.gr": {
+        "answer": 142,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -1297,6 +1348,7 @@
         "mnd": 3,
         "mxd": 20,
         "n": 200,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{20 20 19 19 19 19 19 19 19} {20}",
             "m": 1160,
@@ -1334,6 +1386,7 @@
         "surplus": 2
     },
     "vc-exact_059.gr": {
+        "answer": 137,
         "comps": 1,
         "crbound": 99,
         "cutpoints": 0,
@@ -1343,6 +1396,7 @@
         "mnd": 3,
         "mxd": 18,
         "n": 198,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{18 18 17 17 17 16 15} {18} {18} {16}",
             "m": 959,
@@ -1380,6 +1434,7 @@
         "surplus": 2
     },
     "vc-exact_061.gr": {
+        "answer": 135,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -1389,6 +1444,7 @@
         "mnd": 3,
         "mxd": 17,
         "n": 198,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{17 16 14 14} {16} {16} {15 14} {15} {14}",
             "m": 914,
@@ -1426,6 +1482,7 @@
         "surplus": 2
     },
     "vc-exact_063.gr": {
+        "answer": 138,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -1435,6 +1492,7 @@
         "mnd": 4,
         "mxd": 20,
         "n": 200,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{20 19 17} {19} {18 18 17 16 15} {16}",
             "m": 1011,
@@ -1472,6 +1530,7 @@
         "surplus": -7
     },
     "vc-exact_065.gr": {
+        "answer": 138,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -1481,6 +1540,7 @@
         "mnd": 4,
         "mxd": 18,
         "n": 200,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{18 17} {17 17 17 15} {17} {16 16} {16}",
             "m": 1011,
@@ -1518,6 +1578,7 @@
         "surplus": 2
     },
     "vc-exact_067.gr": {
+        "answer": 143,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -1527,6 +1588,7 @@
         "mnd": 4,
         "mxd": 23,
         "n": 200,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{23} {21 18} {20 19 18} {20} {19} {18 18}",
             "m": 1174,
@@ -1564,6 +1626,7 @@
         "surplus": 4
     },
     "vc-exact_069.gr": {
+        "answer": 140,
         "comps": 1,
         "crbound": 98,
         "cutpoints": 0,
@@ -1573,6 +1636,7 @@
         "mnd": 3,
         "mxd": 28,
         "n": 196,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{28 25 19 18 18 17 17} {18 17} {17}",
             "m": 1077,
@@ -1610,6 +1674,7 @@
         "surplus": 2
     },
     "vc-exact_071.gr": {
+        "answer": 136,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -1619,6 +1684,7 @@
         "mnd": 4,
         "mxd": 18,
         "n": 200,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{18 16 16 14} {16} {16} {15 14 14} {14}",
             "m": 952,
@@ -1656,6 +1722,7 @@
         "surplus": 0
     },
     "vc-exact_073.gr": {
+        "answer": 139,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -1665,6 +1732,7 @@
         "mnd": 3,
         "mxd": 21,
         "n": 200,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{21 19 18 18 17 17} {19} {19} {18} {17}",
             "m": 1078,
@@ -1748,6 +1816,7 @@
         "surplus": 0
     },
     "vc-exact_077.gr": {
+        "answer": 137,
         "comps": 1,
         "crbound": 99,
         "cutpoints": 0,
@@ -1757,6 +1826,7 @@
         "mnd": 3,
         "mxd": 18,
         "n": 198,
+        "solved_by": "ILP",
         "stat_c2k": {
             "comps": "{18 18 17 17 17 16 15} {18} {18} {16}",
             "m": 959,

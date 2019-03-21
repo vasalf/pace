@@ -1,0 +1,66 @@
+{
+    "testsets": [
+        {
+            "testdir": "data/vc-exact-public-v2"
+        }
+    ],
+    "solutions": [
+        {
+            "executable": "./build/solutions/vc/mxd_lp/mxd_lp",
+            "name": "lp"
+        },
+        {
+            "executable": "./build/solutions/vc/mxd_zs/mxd_zs",
+            "name": "zero_surplus"
+        },
+        {
+            "executable": "./build/solutions/vc/mxd_exzs/mxd_exzs",
+            "name": "ex_zero_surplus"
+        },
+        {
+            "executable": "./build/solutions/vc/mxd_cr/mxd_cr",
+            "name": "crown"
+        },
+        {
+            "executable": "./build/solutions/vc/mxd_excr/mxd_excr",
+            "name": "ex_crown"
+        },
+        {
+            "executable": "./build/solutions/vc/mxd_cr2k/mxd_cr2k",
+            "name": "crown_2k"
+        },
+        {
+            "executable": "./build/solutions/vc/mxd_trivial/mxd_trivial",
+            "name": "trivial",
+            "hidden": true
+        },
+        {
+            "executable": "./build/solutions/vc/ilp_cbc/ilp_cbc",
+            "name": "ILP",
+            "hidden": true,
+            "external": true
+        },
+        {
+            "executable": "./build/solutions/vc/ilp_cpsat/ilp_cpsat",
+            "name": "CP/SAT",
+            "hidden": true,
+            "external": true
+        },
+        {
+            "executable": "./build/solutions/vc/cuts_trivial/cuts_trivial",
+            "name": "trivial+cuts"
+        },
+        {
+            "executable": "./build/solutions/vc/cuts_cr2k/cuts_cr2k",
+            "name": "crown_2k+cuts"
+        },
+        {
+            "executable": "./build/solutions/vc/cuts_zs/cuts_zs",
+            "name": "zs+cuts"
+        }
+    ],
+    "output": "vc",
+    "database_dir": "./data/analysis/db",
+    "validate": "./build/tools/validate/validate",
+    "timeout": 1800
+}
