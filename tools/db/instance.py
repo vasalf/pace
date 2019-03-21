@@ -41,7 +41,7 @@ class TestInfo:
         return self.info.get(*args, **kwargs)
 
     def update_graph_stats(self):
-        if "n" in self.info and "m" in self.info and "mind" in self.info and "maxd" in self.info:
+        if "n" in self.info and "m" in self.info and "mnd" in self.info and "mxd" in self.info:
             return
         with open(self.config.filename, "r") as test:
             p = subprocess.Popen(["./build/tools/graph_stats/graph_stats"], stdin=test, stdout=subprocess.PIPE)
