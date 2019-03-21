@@ -22,6 +22,24 @@ class TestConfig:
         self.answer = config["answer"]
 
 
+class Testset:
+    def __init__(self, config, database_dir):
+        if "tests" in config.keys():
+            for test in config["tests"]:
+                test["answer"] = os.path.join(database_dir, test["name"])
+            self.tests = list(map(TestConfig, config["tests"]))
+        else:
+            tests = [f for f in os.listdir(config["testdir"]) if os.path.isfile(os.path.join(config["testdir"], f))]
+            self.tests = []
+            for test in tests:
+                test_cfg = {}
+                test_cfg["filename"] = os.path.join(config["testdir"], test)
+                test_cfg["name"] = test
+                test_cfg["answer"] = os.path.join(database_dir, test)
+                self.tests.append(TestConfig(test_cfg))
+            self.tests.sort(key=lambda x: x.filename)
+
+
 class Config:
     def __init__(self, filename):
         with open(filename, "r") as config:
@@ -30,18 +48,9 @@ class Config:
             st_data = json.load(st_config)
         self.database_dir = st_data["database_dir"]
         self.solutions = [SolutionConfig(data, solution) for solution in st_data["solutions"]]
-        if "tests" in st_data.keys():
-            for test in st_data["tests"]:
-                test["answer"] = os.path.join(database_dir, test["name"])
-            self.tests = list(map(TestConfig, st_data["tests"]))
+        if "testsets" in st_data:
+            self.testsets = list(map(lambda x: Testset(x, self.database_dir), st_data["testsets"]))
         else:
-            tests = [f for f in os.listdir(st_data["testdir"]) if os.path.isfile(os.path.join(st_data["testdir"], f))]
-            self.tests = []
-            for test in tests:
-                test_cfg = {}
-                test_cfg["filename"] = os.path.join(st_data["testdir"], test)
-                test_cfg["name"] = test
-                test_cfg["answer"] = os.path.join(self.database_dir, test)
-                self.tests.append(TestConfig(test_cfg))
-            self.tests.sort(key=lambda x: x.filename)
+            self.testsets = [Testset(st_data, self.database_dir)]
+        self.tests = sum(map(lambda x: x.tests, self.testsets), [])
 

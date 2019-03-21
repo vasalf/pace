@@ -91,14 +91,8 @@ class TestResultDatabase:
         return 0
 
 
-class Config:
-    def __init__(self, args, data):
-        self.timeout = data.get("timeout", -1)
-        self.output = data.get("output", "plain")
-        self.memory_limit = data.get("memory_limit", 1024 ** 3)
-        self.validate = data.get("validate", None)
-        self.threads = args.threads
-
+class Testset:
+    def __init__(self, data):
         if "tests" in data:
             self.tests = list(map(Test, data["tests"]))
         else:
@@ -111,6 +105,21 @@ class Config:
                 test_cfg["name"] = test
                 self.tests.append(Test(test_cfg))
             self.tests.sort(key=lambda x: x.filename)
+
+class Config:
+    def __init__(self, args, data):
+        self.timeout = data.get("timeout", -1)
+        self.output = data.get("output", "plain")
+        self.memory_limit = data.get("memory_limit", 1024 ** 3)
+        self.validate = data.get("validate", None)
+        self.threads = args.threads
+
+
+        if "testsets" in data:
+            self.testsets = list(map(Testset, data["testsets"]))
+        else:
+            self.testsets = [Testset(data)]
+        self.tests = sum(map(lambda x: x.tests, self.testsets), [])
 
         if "database_dir" in data:
             self.database_dir = data["database_dir"]

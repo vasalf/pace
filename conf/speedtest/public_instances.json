@@ -1,5 +1,12 @@
 {
-    "testdir": "data/vc-exact-public",
+    "testsets": [
+        {
+            "testdir": "data/vc-exact-public"
+        },
+        {
+            "testdir": "data/vc-exact-public-v2"
+        }
+    ],
     "solutions": [
         {
             "executable": "./build/solutions/vc/mxd_lp/mxd_lp",

@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 
+import functools
 import instance
 import json
 import os.path
+import multiprocessing as mp
 
 
 class Database:
@@ -22,10 +24,17 @@ class Database:
         for test in self.tests:
             test.load_info(self.db)
 
-    def update_all(self):
+    @staticmethod
+    def do_update(test):
+        test.update_info()
+        return test 
+
+    def update_all(self, threads=1):
+        pool = mp.Pool(threads)
+        self.tests = list(pool.map(Database.do_update, self.tests))
         for test in self.tests:
-            test.update_info()
             test.store_info(self.db)
+
 
     def write(self):
         with open(self.db_filename, "w") as db:
