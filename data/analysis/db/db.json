@@ -10,7 +10,7 @@
         "mnd": 3,
         "mxd": 6,
         "n": 350,
-        "solved_by": "ILP",
+        "solved_by": "trivial+cuts",
         "stat_c2k": {
             "comps": "{6} {6} {6} {6} {6} {6} {6} {6} {6} {6}",
             "m": 765,
@@ -58,7 +58,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
-        "solved_by": "ILP",
+        "solved_by": "trivial+cuts",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -106,7 +106,7 @@
         "mnd": 3,
         "mxd": 16,
         "n": 196,
-        "solved_by": "ILP",
+        "solved_by": "trivial+cuts",
         "stat_c2k": {
             "comps": "{16} {15 14 14 14} {15 14} {15} {15} {14}",
             "m": 793,
@@ -154,7 +154,7 @@
         "mnd": 3,
         "mxd": 5,
         "n": 7,
-        "solved_by": "ILP",
+        "solved_by": "trivial+cuts",
         "stat_c2k": {
             "comps": "{5 4 4 4 3 3 3}",
             "m": 13,
@@ -248,7 +248,7 @@
         "mnd": 3,
         "mxd": 26,
         "n": 605,
-        "solved_by": "ILP",
+        "solved_by": "trivial+cuts",
         "stat_c2k": {
             "comps": "{26 26 26 26 26 26 26 26 26 26}",
             "m": 1929,
@@ -296,7 +296,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
-        "solved_by": "ILP",
+        "solved_by": "trivial+cuts",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -344,7 +344,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
-        "solved_by": "ILP",
+        "solved_by": "trivial+cuts",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -392,7 +392,7 @@
         "mnd": 3,
         "mxd": 12,
         "n": 158,
-        "solved_by": "ILP",
+        "solved_by": "trivial+cuts",
         "stat_c2k": {
             "comps": "{12 8} {8 6} {7} {6 6} {6} {6} {6}",
             "m": 294,
@@ -440,7 +440,7 @@
         "mnd": 3,
         "mxd": 19,
         "n": 196,
-        "solved_by": "ILP",
+        "solved_by": "trivial+cuts",
         "stat_c2k": {
             "comps": "{19 16 16 16 16 15 14} {19 16} {14}",
             "m": 857,
@@ -488,7 +488,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
-        "solved_by": "ILP",
+        "solved_by": "trivial+cuts",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -582,7 +582,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
-        "solved_by": "ILP",
+        "solved_by": "trivial+cuts",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -630,7 +630,7 @@
         "mnd": 0,
         "mxd": 0,
         "n": 0,
-        "solved_by": "ILP",
+        "solved_by": "trivial+cuts",
         "stat_c2k": {
             "comps": "",
             "m": 0,
@@ -678,7 +678,7 @@
         "mnd": 3,
         "mxd": 3,
         "n": 4,
-        "solved_by": "ILP",
+        "solved_by": "trivial+cuts",
         "stat_c2k": {
             "comps": "{3 3 3 3}",
             "m": 6,
