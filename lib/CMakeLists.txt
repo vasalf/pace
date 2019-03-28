@@ -12,6 +12,7 @@ add_library(pacevc STATIC
     branching/branching.cpp
     branching/chen_liu_jia_3dvc.cpp
     branching/cutpoints.cpp
+    branching/debug_branching.cpp
     branching/max_degree.cpp
 
     kernels/bound.cpp

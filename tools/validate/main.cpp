@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
             std::cerr << "uncovered edge: {" << p.value().first + 1 << "," << p.value().second + 1 << "}" << std::endl;
             return 1;
         }
-    } catch(std::runtime_error e) {
+    } catch(std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
         return 1;
     }
