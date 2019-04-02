@@ -38,6 +38,10 @@ target_link_libraries(pacevc LINK_PUBLIC
     absl::hash absl::node_hash_set
     pthread)
 
+if (BUILD_PROFILE)
+    target_link_libraries(pacevc LINK_PUBLIC ${GPERFTOOLS_PROFILER})
+endif()
+
 if(BUILD_TESTING)
     add_executable(pacevc_test
         graph/graph_ut.cpp
