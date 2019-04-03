@@ -9,6 +9,14 @@
 struct Graph {
     struct Edge {
         int u, v;
+
+        bool operator<(const Edge& other) const {
+            return std::make_pair(u, v) < std::make_pair(other.u, other.v);
+        }
+
+        bool operator==(const Edge& other) const {
+            return u == other.u && v == other.v;
+        }
     };
 
     int n;
@@ -46,8 +54,6 @@ struct Graph {
         }
     }
 
-    std::vector<int> removed;
-
     void removeEdge(int u, int id) {
         if (id == lastEdge[u] - 1) {
             lastEdge[u]--;
@@ -62,7 +68,6 @@ struct Graph {
     }
 
     void removeVertex(int v) {
-        removed.push_back(v);
         for (int i = firstEdge[v]; i < lastEdge[v]; i++) {
             assert(edges[i] != v);
             removeEdge(edges[i], revId[i]);
@@ -70,8 +75,6 @@ struct Graph {
     }
 
     void revertVertexRemoval(int v) {
-        assert(removed.back() == v);
-        removed.pop_back();
         for (int i = firstEdge[v]; i < lastEdge[v]; i++) {
             revId[i] = lastEdge[edges[i]];
             revId[lastEdge[edges[i]]] = i;
@@ -111,6 +114,8 @@ class Brancher {
     std::vector<int> bestSolution;
     std::vector<int> curSolution;
 
+    int curDepth = -1;
+
 public:
     Brancher(Graph& g, std::vector<int> aprior)
             : graph(g)
@@ -136,10 +141,16 @@ public:
         return bestSolution;
     }
 
+    void setMaxDepth(int depth) {
+        curDepth = depth;
+    }
+
 private:
     void branch(GraphViewRef& graphView) {
         removed.push_back(-1);
+        curDepth--;
         wrapBranch(graphView);
+        curDepth++;
         while (removed.back() != -1) {
             graph.revertVertexRemoval(removed.back());
             graphView.addVertex(removed.back());
@@ -149,7 +160,6 @@ private:
     }
 
     void wrapBranch(GraphViewRef& graphView) {
-        std::cerr << graphView.leftVertices.size() << std::endl;
         for (int i = 0; i < (int)graphView.leftVertices.size(); ) {
             if (graph.getDegree(graphView.leftVertices[i]) == 0) {
                 removed.push_back(graphView.leftVertices[i]);
@@ -160,6 +170,10 @@ private:
             }
         }
 
+        if (curSolution.size() > bestSolution.size()) {
+            return;
+        }
+
         if (graphView.leftVertices.empty()) {
             if (bestSolution.size() > curSolution.size()) {
                 bestSolution.resize(curSolution.size());
@@ -167,6 +181,11 @@ private:
             }
             return;
         }
+
+        if (curDepth == 0) {
+            return;
+        }
+
 
         int v = graphView.leftVertices[0];
         int mxd = graph.getDegree(v);
@@ -241,16 +260,22 @@ int main() {
         if (u == v) {
             aprior.push_back(u);
         } else {
+            if (u > v) {
+                std::swap(u, v);
+            }
             edges.push_back(Graph::Edge {u, v});
         }
         es++;
     }
     std::sort(aprior.begin(), aprior.end());
     aprior.resize(std::unique(aprior.begin(), aprior.end()) - aprior.begin());
+    std::sort(edges.begin(), edges.end());
+    edges.resize(std::unique(edges.begin(), edges.end()) - edges.begin());
 
     g.setEdges(edges);
 
     Brancher b(g, aprior);
+    b.setMaxDepth(15);
     b.branch();
     auto solution = b.getBestSolution();
 

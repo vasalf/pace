@@ -60,6 +60,10 @@
         {
             "executable": "./build/solutions/vc/cuts_zs/cuts_zs",
             "name": "zs+cuts"
+        },
+        {
+            "executable": "./build/solutions/vc/opt/smth/smth",
+            "name": "smth"
         }
     ],
     "output": "vc",
