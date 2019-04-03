@@ -107,8 +107,56 @@ struct GraphViewRef {
     }
 };
 
+struct ComponentSplitter {
+    Graph& graph;
+
+    std::vector<int> order;
+    std::vector<int> compSizes;
+    std::vector<int> componentOf;
+
+    ComponentSplitter(Graph& g)
+        : graph(g)
+        , componentOf(g.n)
+    {
+        order.reserve(g.n);
+        compSizes.reserve(g.n);
+    }
+
+    void split(const GraphViewRef& graphView) {
+        int compId = 0;
+        order.clear();
+        compSizes.clear();
+        for (int u : graphView.leftVertices) {
+            componentOf[u] = -1;
+        }
+        for (int u : graphView.leftVertices) {
+            if (componentOf[u] != -1) {
+                continue;
+            }
+            componentOf[u] = compId;
+            order.push_back(u);
+            int ci = order.size() - 1;
+            compSizes.push_back(0);
+            while (ci < (int)order.size()) {
+                int a = order[ci++];
+                compSizes.back()++;
+                for (int i = graph.firstEdge[a]; i < graph.lastEdge[a]; i++) {
+                    int v = graph.edges[i];
+                    if (componentOf[v] == -1) {
+                        componentOf[v] = compId;
+                        order.push_back(v);
+                    }
+                }
+            }
+            compId++;
+        }
+    }
+};
+
 class Brancher {
     Graph& graph;
+
+    ComponentSplitter compSplitter;
 
     std::vector<int> removed;
     std::vector<int> bestSolution;
@@ -118,9 +166,10 @@ class Brancher {
 
 public:
     Brancher(Graph& g, std::vector<int> aprior)
-            : graph(g)
-              , bestSolution(graph.n)
-              , curSolution(aprior)
+        : graph(g)
+        , compSplitter(g)
+        , bestSolution(graph.n)
+        , curSolution(aprior)
     {
         std::iota(bestSolution.begin(), bestSolution.end(), 0);
     }
@@ -146,6 +195,21 @@ public:
     }
 
 private:
+    void branchAside(GraphViewRef& graphView) {
+        std::vector<int> bestSolutionCopy = graphView.leftVertices;
+        std::vector<int> curSolutionCopy = {};
+        bestSolution.swap(bestSolutionCopy);
+        curSolution.swap(curSolutionCopy);
+
+        branch(graphView);
+        int n = curSolutionCopy.size();
+        curSolutionCopy.resize(n + bestSolution.size());
+        std::memcpy(curSolutionCopy.data() + n, bestSolution.data(), sizeof(int) * bestSolution.size());
+
+        curSolution.swap(curSolutionCopy);
+        bestSolution.swap(bestSolutionCopy);
+    }
+
     void branch(GraphViewRef& graphView) {
         removed.push_back(-1);
         curDepth--;
@@ -186,6 +250,31 @@ private:
             return;
         }
 
+        compSplitter.split(graphView);
+        if (compSplitter.compSizes.size() > 1) {
+            std::vector<int> buffer;
+            std::vector<int> compOrder = compSplitter.order;
+            std::vector<int> compSizes = compSplitter.compSizes;
+            int cstart = 0;
+            for (int sz : compSizes) {
+                buffer.resize(sz);
+                std::memcpy(buffer.data(), compOrder.data() + cstart, sizeof(int) * sz);
+                for (int i = 0; i < sz; i++) {
+                    graphView.which[buffer[i]] = i;
+                }
+                GraphViewRef tmp { buffer, graphView.which };
+                branchAside(tmp);
+                cstart += sz;
+            }
+            for (int i = 0; i < (int)graphView.leftVertices.size(); i++) {
+                graphView.which[graphView.leftVertices[i]] = i;
+            }
+            if (curSolution.size() < bestSolution.size()) {
+                bestSolution.resize(curSolution.size());
+                std::memcpy(bestSolution.data(), curSolution.data(), sizeof(int) * curSolution.size());
+            }
+            return;
+        }
 
         int v = graphView.leftVertices[0];
         int mxd = graph.getDegree(v);
