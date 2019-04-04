@@ -156,12 +156,16 @@ struct ComponentSplitter {
 struct LeafHandler {
     Graph& graph;
 
+    int iteration = 0;
+
     std::vector<int> qbuf;
+    std::vector<int> removedOnIteration;
     std::vector<int>& removed;
     std::vector<int>& curSolution;
 
     LeafHandler(Graph& g, std::vector<int>& removed, std::vector<int>& curSolution)
         : graph(g)
+        , removedOnIteration(graph.n)
         , removed(removed)
         , curSolution(curSolution)
     {
@@ -169,6 +173,7 @@ struct LeafHandler {
     }
 
     void handle(GraphViewRef& graphView) {
+        ++iteration;
         qbuf.clear();
         for (int u : graphView.leftVertices) {
             if (graph.getDegree(u) == 1) {
@@ -178,10 +183,14 @@ struct LeafHandler {
         int qhead = 0;
         while (qhead < (int)qbuf.size()) {
             int a = qbuf[qhead++];
-            if (graph.getDegree(a) != 1) {
+            if (graph.getDegree(a) != 1 || removedOnIteration[a] == iteration) {
                 continue;
             }
             int b = graph.edges[graph.firstEdge[a]];
+            if (removedOnIteration[b] == iteration)
+                continue;
+            removedOnIteration[a] = iteration;
+            removedOnIteration[b] = iteration;
             graph.removeVertex(b);
             graphView.removeVertex(b);
             curSolution.push_back(b);
@@ -439,7 +448,7 @@ int main() {
             if (u > v) {
                 std::swap(u, v);
             }
-            edges.push_back(Graph::Edge {u, v});
+            edges.push_back(Graph::Edge{u, v});
         }
         es++;
     }
