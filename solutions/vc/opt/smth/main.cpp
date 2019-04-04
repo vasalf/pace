@@ -153,10 +153,53 @@ struct ComponentSplitter {
     }
 };
 
+struct LeafHandler {
+    Graph& graph;
+
+    std::vector<int> qbuf;
+    std::vector<int>& removed;
+    std::vector<int>& curSolution;
+
+    LeafHandler(Graph& g, std::vector<int>& removed, std::vector<int>& curSolution)
+        : graph(g)
+        , removed(removed)
+        , curSolution(curSolution)
+    {
+        qbuf.reserve(g.n);
+    }
+
+    void handle(GraphViewRef& graphView) {
+        qbuf.clear();
+        for (int u : graphView.leftVertices) {
+            if (graph.getDegree(u) == 1) {
+                qbuf.push_back(u);
+            }
+        }
+        int qhead = 0;
+        while (qhead < (int)qbuf.size()) {
+            int a = qbuf[qhead++];
+            if (graph.getDegree(a) != 1) {
+                continue;
+            }
+            int b = graph.edges[graph.firstEdge[a]];
+            graph.removeVertex(b);
+            graphView.removeVertex(b);
+            curSolution.push_back(b);
+            removed.push_back(b);
+            for (int i = graph.firstEdge[b]; i < graph.lastEdge[b]; i++) {
+                if (graph.getDegree(graph.edges[i]) == 1) {
+                    qbuf.push_back(graph.edges[i]);
+                }
+            }
+        }
+    }
+};
+
 class Brancher {
     Graph& graph;
 
     ComponentSplitter compSplitter;
+    LeafHandler leafHandler;
 
     std::vector<int> removed;
     std::vector<int> bestSolution;
@@ -164,10 +207,15 @@ class Brancher {
 
     int curDepth = -1;
 
+#ifdef DEBUG_BRANCHING
+    std::string spaces;
+#endif
+
 public:
     Brancher(Graph& g, std::vector<int> aprior)
         : graph(g)
         , compSplitter(g)
+        , leafHandler(g, removed, curSolution)
         , bestSolution(graph.n)
         , curSolution(aprior)
     {
@@ -213,9 +261,18 @@ private:
     void branch(GraphViewRef& graphView) {
         removed.push_back(-1);
         curDepth--;
+#ifdef DEBUG_BRANCHING
+        spaces.push_back(' ');
+#endif
         wrapBranch(graphView);
+#ifdef DEBUG_BRANCHING
+        spaces.pop_back();
+#endif
         curDepth++;
         while (removed.back() != -1) {
+            if (!curSolution.empty() && curSolution.back() == removed.back()) {
+                curSolution.pop_back();
+            }
             graph.revertVertexRemoval(removed.back());
             graphView.addVertex(removed.back());
             removed.pop_back();
@@ -224,6 +281,8 @@ private:
     }
 
     void wrapBranch(GraphViewRef& graphView) {
+        leafHandler.handle(graphView);
+
         for (int i = 0; i < (int)graphView.leftVertices.size(); ) {
             if (graph.getDegree(graphView.leftVertices[i]) == 0) {
                 removed.push_back(graphView.leftVertices[i]);
@@ -235,18 +294,31 @@ private:
         }
 
         if (curSolution.size() > bestSolution.size()) {
+#ifdef DEBUG_BRANCHING
+            std::cout << spaces << "cutoff(cur=" << curSolution.size() << ",best=" << bestSolution.size() << ")" << std::endl;
+#endif
             return;
         }
 
         if (graphView.leftVertices.empty()) {
             if (bestSolution.size() > curSolution.size()) {
+#ifdef DEBUG_BRANCHING
+                std::cout << spaces << "solution(size=" << curSolution.size() << ")" << std::endl;
+#endif
                 bestSolution.resize(curSolution.size());
                 std::memcpy(bestSolution.data(), curSolution.data(), sizeof(int) * curSolution.size());
+#ifdef DEBUG_BRANCHING
+            } else {
+                std::cout << spaces << "solution of same size" << std::endl;
+#endif
             }
             return;
         }
 
         if (curDepth == 0) {
+#ifdef DEBUG_BRANCHING
+            std::cout << spaces << "leaf(finalSize=" << graphView.leftVertices.size() << ")" << std::endl;
+#endif
             return;
         }
 
@@ -256,7 +328,11 @@ private:
             std::vector<int> compOrder = compSplitter.order;
             std::vector<int> compSizes = compSplitter.compSizes;
             int cstart = 0;
+            int rem = curSolution.size();
             for (int sz : compSizes) {
+#ifdef DEBUG_BRANCHING
+                std::cout << spaces << "component" << std::endl;
+#endif
                 buffer.resize(sz);
                 std::memcpy(buffer.data(), compOrder.data() + cstart, sizeof(int) * sz);
                 for (int i = 0; i < sz; i++) {
@@ -273,6 +349,7 @@ private:
                 bestSolution.resize(curSolution.size());
                 std::memcpy(bestSolution.data(), curSolution.data(), sizeof(int) * curSolution.size());
             }
+            curSolution.resize(rem);
             return;
         }
 
@@ -286,7 +363,14 @@ private:
             }
         }
 
+#ifdef DEBUG_BRANCHING
+            std::cout << spaces << "inner(size=" << graphView.leftVertices.size() << ")" << std::endl;
+#endif
+
         {
+#ifdef DEBUG_BRANCHING
+            std::cout << spaces << "take(" << v << ")" << std::endl;
+#endif
             curSolution.push_back(v);
             graph.removeVertex(v);
             graphView.removeVertex(v);
@@ -299,6 +383,9 @@ private:
         }
 
         {
+#ifdef DEBUG_BRANCHING
+            std::cout << spaces << "takeNeighbours(" << v << ")" << std::endl;
+#endif
             int rem = removed.size();
             for (int i = graph.firstEdge[v]; i < graph.lastEdge[v]; i++) {
                 removed.push_back(graph.edges[i]);
@@ -364,7 +451,7 @@ int main() {
     g.setEdges(edges);
 
     Brancher b(g, aprior);
-    b.setMaxDepth(15);
+    //b.setMaxDepth(15);
     b.branch();
     auto solution = b.getBestSolution();
 
