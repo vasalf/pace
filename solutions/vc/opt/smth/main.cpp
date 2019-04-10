@@ -19,19 +19,36 @@ struct Graph {
         }
     };
 
+    struct EdgePosInfo {
+        int uid, vid;
+
+        inline int& that(int id) {
+            assert(uid == id || vid == id);
+            return id == uid ? uid : vid;
+        }
+
+        inline int& other(int id) {
+            assert(uid == id || vid == id);
+            return id == uid ? vid : uid;
+        }
+    };
+
     int n;
     std::vector<int> firstEdge;
     std::vector<int> lastEdge;
     std::vector<int> edges;
-    std::vector<int> revId;
+    std::vector<int> id;
+    std::vector<EdgePosInfo> edgeInfos;
 
     Graph(int n, int m)
             : n(n)
               , firstEdge(n)
               , lastEdge(n)
               , edges(2 * m)
-              , revId(2 * m)
-    {}
+              , id(2 * m)
+    {
+        edgeInfos.reserve(m);
+    }
 
     Graph(const Graph&) = delete;
     Graph& operator=(const Graph&) = delete;
@@ -47,22 +64,23 @@ struct Graph {
         std::partial_sum(degree.begin(), degree.end() - 1, firstEdge.begin() + 1);
         std::memcpy(lastEdge.data(), firstEdge.data(), sizeof(int) * n);
         for (const auto& edge : setTo) {
-            revId[lastEdge[edge.u]] = lastEdge[edge.v];
-            revId[lastEdge[edge.v]] = lastEdge[edge.u];
+            edgeInfos.push_back({lastEdge[edge.v], lastEdge[edge.u]});
+            id[lastEdge[edge.u]] = edgeInfos.size() - 1;
+            id[lastEdge[edge.v]] = edgeInfos.size() - 1;
             edges[lastEdge[edge.u]++] = edge.v;
             edges[lastEdge[edge.v]++] = edge.u;
         }
     }
 
-    void removeEdge(int u, int id) {
-        if (id == lastEdge[u] - 1) {
+    void removeEdge(int u, int eid) {
+        if (eid == lastEdge[u] - 1) {
             lastEdge[u]--;
         } else {
             int lastId = lastEdge[u] - 1;
-            int revLastId = revId[lastId];
-            revId[revLastId] = id;
-            revId[id] = revLastId;
-            std::swap(edges[id], edges[lastId]);
+            edgeInfos[id[eid]].that(eid) = lastId;
+            edgeInfos[id[lastId]].that(lastId) = eid;
+            std::swap(edges[eid], edges[lastId]);
+            std::swap(id[eid], id[lastId]);
             lastEdge[u]--;
         }
     }
@@ -70,14 +88,14 @@ struct Graph {
     void removeVertex(int v) {
         for (int i = firstEdge[v]; i < lastEdge[v]; i++) {
             assert(edges[i] != v);
-            removeEdge(edges[i], revId[i]);
+            removeEdge(edges[i], edgeInfos[id[i]].other(i));
         }
     }
 
     void revertVertexRemoval(int v) {
         for (int i = firstEdge[v]; i < lastEdge[v]; i++) {
-            revId[i] = lastEdge[edges[i]];
-            revId[lastEdge[edges[i]]] = i;
+            edgeInfos[id[i]].other(i) = lastEdge[edges[i]];
+            id[lastEdge[edges[i]]] = id[i];
             edges[lastEdge[edges[i]]++] = v;
         }
     }
@@ -511,7 +529,7 @@ int main() {
     g.setEdges(edges);
 
     Brancher b(g, aprior);
-    //b.setMaxDepth(15);
+    b.setMaxDepth(15);
     b.branch();
     auto solution = b.getBestSolution();
 
