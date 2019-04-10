@@ -107,6 +107,61 @@ struct GraphViewRef {
     }
 };
 
+class SolutionStorage {
+public:
+    SolutionStorage(int expectedMaxSize, const std::vector<int>& aprior)
+        : curSolution(aprior)
+    {
+        curSolution.reserve(expectedMaxSize);
+    }
+
+    inline void push(int v) {
+        curSolution.push_back(v);
+    }
+
+    inline std::size_t size() const {
+        return curSolution.size();
+    }
+
+    inline void pop() {
+        curSolution.pop_back();
+    }
+
+    inline void saveTo(std::vector<int>& to) const {
+        to.resize(curSolution.size());
+        std::memcpy(to.data(), curSolution.data(), sizeof(int) * curSolution.size());
+    }
+
+    inline const std::vector<int>& getSolution() const {
+        return curSolution;
+    }
+
+    inline void swap(SolutionStorage& with) {
+        curSolution.swap(with.curSolution);
+    }
+
+    inline void append(const std::vector<int>& vertices) {
+        int n = curSolution.size();
+        curSolution.resize(n + vertices.size());
+        std::memcpy(curSolution.data() + n, vertices.data(), sizeof(int) * vertices.size());
+    }
+
+    inline bool empty() const {
+        return curSolution.empty();
+    }
+
+    inline int back() const {
+        return curSolution.back();
+    }
+
+    inline void shrinkToSize(int sz) {
+        curSolution.resize(sz);
+    }
+
+private:
+    std::vector<int> curSolution;
+};
+
 struct ComponentSplitter {
     Graph& graph;
 
@@ -161,9 +216,9 @@ struct LeafHandler {
     std::vector<int> qbuf;
     std::vector<int> removedOnIteration;
     std::vector<int>& removed;
-    std::vector<int>& curSolution;
+    SolutionStorage& curSolution;
 
-    LeafHandler(Graph& g, std::vector<int>& removed, std::vector<int>& curSolution)
+    LeafHandler(Graph& g, std::vector<int>& removed, SolutionStorage& curSolution)
         : graph(g)
         , removedOnIteration(graph.n)
         , removed(removed)
@@ -193,7 +248,7 @@ struct LeafHandler {
             removedOnIteration[b] = iteration;
             graph.removeVertex(b);
             graphView.removeVertex(b);
-            curSolution.push_back(b);
+            curSolution.push(b);
             removed.push_back(b);
             for (int i = graph.firstEdge[b]; i < graph.lastEdge[b]; i++) {
                 if (graph.getDegree(graph.edges[i]) == 1) {
@@ -212,7 +267,7 @@ class Brancher {
 
     std::vector<int> removed;
     std::vector<int> bestSolution;
-    std::vector<int> curSolution;
+    SolutionStorage curSolution;
 
     int curDepth = -1;
 
@@ -226,7 +281,7 @@ public:
         , compSplitter(g)
         , leafHandler(g, removed, curSolution)
         , bestSolution(graph.n)
-        , curSolution(aprior)
+        , curSolution(g.n, aprior)
     {
         std::iota(bestSolution.begin(), bestSolution.end(), 0);
     }
@@ -236,7 +291,7 @@ public:
         std::iota(leftVertices.begin(), leftVertices.end(), 0);
         std::vector<int> which = leftVertices;
         GraphViewRef graphView { leftVertices, which };
-        for (int u : curSolution) {
+        for (int u : curSolution.getSolution()) {
             graphView.removeVertex(u);
             graph.removeVertex(u);
         }
@@ -254,14 +309,12 @@ public:
 private:
     void branchAside(GraphViewRef& graphView) {
         std::vector<int> bestSolutionCopy = graphView.leftVertices;
-        std::vector<int> curSolutionCopy = {};
+        SolutionStorage curSolutionCopy(graphView.leftVertices.size(), {});
         bestSolution.swap(bestSolutionCopy);
         curSolution.swap(curSolutionCopy);
 
         branch(graphView);
-        int n = curSolutionCopy.size();
-        curSolutionCopy.resize(n + bestSolution.size());
-        std::memcpy(curSolutionCopy.data() + n, bestSolution.data(), sizeof(int) * bestSolution.size());
+        curSolutionCopy.append(bestSolution);
 
         curSolution.swap(curSolutionCopy);
         bestSolution.swap(bestSolutionCopy);
@@ -280,7 +333,7 @@ private:
         curDepth++;
         while (removed.back() != -1) {
             if (!curSolution.empty() && curSolution.back() == removed.back()) {
-                curSolution.pop_back();
+                curSolution.pop();
             }
             graph.revertVertexRemoval(removed.back());
             graphView.addVertex(removed.back());
@@ -314,8 +367,7 @@ private:
 #ifdef DEBUG_BRANCHING
                 std::cout << spaces << "solution(size=" << curSolution.size() << ")" << std::endl;
 #endif
-                bestSolution.resize(curSolution.size());
-                std::memcpy(bestSolution.data(), curSolution.data(), sizeof(int) * curSolution.size());
+                curSolution.saveTo(bestSolution);
 #ifdef DEBUG_BRANCHING
             } else {
                 std::cout << spaces << "solution of same size" << std::endl;
@@ -355,10 +407,9 @@ private:
                 graphView.which[graphView.leftVertices[i]] = i;
             }
             if (curSolution.size() < bestSolution.size()) {
-                bestSolution.resize(curSolution.size());
-                std::memcpy(bestSolution.data(), curSolution.data(), sizeof(int) * curSolution.size());
+                curSolution.saveTo(bestSolution);
             }
-            curSolution.resize(rem);
+            curSolution.shrinkToSize(rem);
             return;
         }
 
@@ -380,7 +431,7 @@ private:
 #ifdef DEBUG_BRANCHING
             std::cout << spaces << "take(" << v << ")" << std::endl;
 #endif
-            curSolution.push_back(v);
+            curSolution.push(v);
             graph.removeVertex(v);
             graphView.removeVertex(v);
 
@@ -388,7 +439,7 @@ private:
 
             graphView.addVertex(v);
             graph.revertVertexRemoval(v);
-            curSolution.pop_back();
+            curSolution.pop();
         }
 
         {
@@ -402,13 +453,13 @@ private:
             for (int i = rem; i < (int)removed.size(); i++) {
                 graphView.removeVertex(removed[i]);
                 graph.removeVertex(removed[i]);
-                curSolution.push_back(removed[i]);
+                curSolution.push(removed[i]);
             }
 
             branch(graphView);
 
             for (int i = removed.size() - 1; i >= rem; i--) {
-                curSolution.pop_back();
+                curSolution.pop();
             }
             // State of graph and graphView will be restored in branch() subroutine
         }

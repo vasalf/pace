@@ -12,7 +12,7 @@ namespace PaceVC {
 
 class IDebugLogger {
 public:
-    virtual void onInnerVertex(int sizeAtStart, int reducedSize) = 0;
+    virtual void onInnerVertex(int sizeAtStart, int reducedSize, int neigh) = 0;
     virtual void onDisconnectedGraph(const std::vector<int>& sizes) = 0;
     virtual void onBoundLeaf(int finalSize) = 0;
     virtual void onSolution(int solutionSize) = 0;
@@ -23,7 +23,7 @@ public:
 using DebugLoggerPtr = std::shared_ptr<IDebugLogger>;
 
 class EmptyLogger final: public IDebugLogger {
-    void onInnerVertex(int, int) override;
+    void onInnerVertex(int, int, int) override;
     void onDisconnectedGraph(const std::vector<int>&) override;
     void onBoundLeaf(int) override;
     void onSolution(int) override;
@@ -124,9 +124,9 @@ private:
             return;
         }
 
-        logger->onInnerVertex(sizeAtStart, reducedSize);
-
         int v = VertexSelector(graph).select();
+
+        logger->onInnerVertex(sizeAtStart, reducedSize, graph.adjacent(v).size());
 
         graph.placeMark();
         graph.takeVertex(v);

@@ -26,9 +26,9 @@ namespace {
         StdoutLogger()
         {}
 
-        void onInnerVertex(int sizeAtStart, int reducedSize) {
+        void onInnerVertex(int sizeAtStart, int reducedSize, int neigh) {
             writeSpaces();
-            std::cout << "inner(start=" << sizeAtStart << ", reduced=" << reducedSize << ")" << std::endl;
+            std::cout << "inner(start=" << sizeAtStart << ", reduced=" << reducedSize << ", neighbors=" << neigh << ")" << std::endl;
         }
 
         void onDisconnectedGraph(const std::vector<int>& sizes) {
