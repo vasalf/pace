@@ -47,6 +47,8 @@ struct Graph {
               , edges(2 * m)
               , id(2 * m)
     {
+        firstEdge.reserve(2 * n);
+        lastEdge.reserve(2 * n);
         edgeInfos.reserve(m);
     }
 
@@ -103,6 +105,48 @@ struct Graph {
     inline int getDegree(int v) {
         return lastEdge[v] - firstEdge[v];
     }
+
+    int addFakeVertex() {
+        firstEdge.push_back(edges.size());
+        lastEdge.push_back(edges.size());
+        return n++;
+    }
+
+    void delegateVertexToFake(int v) {
+        int last = n - 1;
+        edges.resize(edges.size() + getDegree(v));
+        std::memcpy(edges.data() + edges.size() - getDegree(v),
+                    edges.data() + firstEdge[v], sizeof(int) * getDegree(v));
+        id.resize(id.size() + getDegree(v));
+        std::memcpy(id.data() + id.size() - getDegree(v),
+                    id.data() + firstEdge[v], sizeof(int) * getDegree(v));
+        lastEdge[last] = edges.size();
+        for (int i = firstEdge[v]; i < lastEdge[v]; i++) {
+            edgeInfos[id[i]].that(i) = edges.size() - getDegree(v) + i - firstEdge[v];
+        }
+    }
+
+    void revertVertexDelegation(int v) {
+        for (int i = firstEdge[v]; i < lastEdge[v]; i++) {
+            int u = edges[i];
+            if (firstEdge[u] <= edgeInfos[id[i]].uid && edgeInfos[id[i]].uid < lastEdge[u]) {
+                edgeInfos[id[i]].vid = i;
+                edges[edgeInfos[id[i]].uid] = v;
+            } else {
+                edgeInfos[id[i]].uid = i;
+                edges[edgeInfos[id[i]].vid] = v;
+            }
+        }
+    }
+
+    void removeFakeVertex() {
+        int last = n - 1;
+        edges.resize(firstEdge[last]);
+        id.resize(firstEdge[last]);
+        firstEdge.pop_back();
+        lastEdge.pop_back();
+        n--;
+    }
 };
 
 struct GraphViewRef {
@@ -123,14 +167,32 @@ struct GraphViewRef {
             leftVertices.pop_back();
         }
     }
+
+    inline void addFakeVertex() {
+        which.push_back(leftVertices.size());
+        leftVertices.push_back(which.size() - 1);
+    }
+
+    inline void removeFakeVertex() {
+        removeVertex(which.size() - 1);
+        which.pop_back();
+    }
 };
 
 class SolutionStorage {
 public:
-    SolutionStorage(int expectedMaxSize, const std::vector<int>& aprior)
-        : curSolution(aprior)
+    SolutionStorage(int n, const std::vector<int>& aprior)
+        : initialSize(n)
+        , curSolution(aprior)
+        , next(n)
+        , last(n)
+        , delegatedSize(n, 1)
     {
-        curSolution.reserve(expectedMaxSize);
+        next.reserve(2 * n);
+        delegatedSize.reserve(2 * n);
+        curSolution.reserve(n);
+        std::iota(next.begin(), next.end(), 0);
+        std::iota(last.begin(), last.end(), 0);
     }
 
     inline void push(int v) {
@@ -138,7 +200,7 @@ public:
     }
 
     inline std::size_t size() const {
-        return curSolution.size();
+        return curSolution.size() + above;
     }
 
     inline void pop() {
@@ -146,16 +208,30 @@ public:
     }
 
     inline void saveTo(std::vector<int>& to) const {
-        to.resize(curSolution.size());
-        std::memcpy(to.data(), curSolution.data(), sizeof(int) * curSolution.size());
+        to.reserve(curSolution.size() + above);
+        to.clear();
+        for (int u : curSolution) {
+            int v = u;
+            for (int i = 0; i < delegatedSize[u]; i++) {
+                if (v < initialSize)
+                    to.push_back(v);
+            }
+        }
     }
 
-    inline const std::vector<int>& getSolution() const {
-        return curSolution;
+    inline std::vector<int> getSolution() const {
+        std::vector<int> ret;
+        saveTo(ret);
+        return ret;
     }
 
     inline void swap(SolutionStorage& with) {
+        std::swap(above, with.above);
+        std::swap(initialSize, with.initialSize);
         curSolution.swap(with.curSolution);
+        next.swap(with.next);
+        last.swap(with.last);
+        delegatedSize.swap(with.delegatedSize);
     }
 
     inline void append(const std::vector<int>& vertices) {
@@ -173,11 +249,54 @@ public:
     }
 
     inline void shrinkToSize(int sz) {
-        curSolution.resize(sz);
+        curSolution.resize(sz - above);
+    }
+
+    inline void addFakeVertex() {
+        next.push_back(next.size());
+        last.push_back(last.size());
+        delegatedSize.push_back(0);
+        above--;
+    }
+
+    inline void delegateVertexToFake(int v) {
+        if (last.back() == (int)last.size() - 1) {
+            next.back() = v;
+            last.back() = last[v];
+        } else {
+            next[last[v]] = next.back();
+            next.back() = v;
+        }
+        delegatedSize.back() += delegatedSize[v];
+        above++;
+    }
+
+    inline void revertVertexDelegation(int v) {
+        if (last.back() == last[v]) {
+            next.back() = next.size() - 1;
+            last.back() = last.size() - 1;
+        } else {
+            next.back() = next[last[v]];
+            next[last[v]] = last[v];
+        }
+        delegatedSize.back() -= delegatedSize[v];
+        above--;
+    }
+
+    inline void removeFakeVertex() {
+        next.pop_back();
+        last.pop_back();
+        delegatedSize.pop_back();
+        above++;
     }
 
 private:
+    int above = 0;
+    int initialSize;
     std::vector<int> curSolution;
+    std::vector<int> next;
+    std::vector<int> last;
+    std::vector<int> delegatedSize;
 };
 
 struct ComponentSplitter {
@@ -191,8 +310,8 @@ struct ComponentSplitter {
         : graph(g)
         , componentOf(g.n)
     {
-        order.reserve(g.n);
-        compSizes.reserve(g.n);
+        order.reserve(2 * g.n);
+        compSizes.reserve(2 * g.n);
     }
 
     void split(const GraphViewRef& graphView) {
@@ -242,7 +361,8 @@ struct LeafHandler {
         , removed(removed)
         , curSolution(curSolution)
     {
-        qbuf.reserve(g.n);
+        removedOnIteration.reserve(2 * graph.n);
+        qbuf.reserve(2 * g.n);
     }
 
     void handle(GraphViewRef& graphView) {
@@ -274,6 +394,14 @@ struct LeafHandler {
                 }
             }
         }
+    }
+
+    void addFakeVertex() {
+        removedOnIteration.push_back(0);
+    }
+
+    void removeFakeVertex() {
+        removedOnIteration.pop_back();
     }
 };
 
