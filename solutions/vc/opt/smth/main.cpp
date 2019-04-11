@@ -112,17 +112,16 @@ struct Graph {
         return n++;
     }
 
-    void delegateVertexToFake(int v) {
+    void delegateVertexToFake(int v, int igu) {
         int last = n - 1;
-        edges.resize(edges.size() + getDegree(v));
-        std::memcpy(edges.data() + edges.size() - getDegree(v),
-                    edges.data() + firstEdge[v], sizeof(int) * getDegree(v));
-        id.resize(id.size() + getDegree(v));
-        std::memcpy(id.data() + id.size() - getDegree(v),
-                    id.data() + firstEdge[v], sizeof(int) * getDegree(v));
-        lastEdge[last] = edges.size();
         for (int i = firstEdge[v]; i < lastEdge[v]; i++) {
-            edgeInfos[id[i]].that(i) = edges.size() - getDegree(v) + i - firstEdge[v];
+            if (edges[i] == igu)
+                continue;
+            edges.push_back(edges[i]);
+            id.push_back(id[i]);
+            edges[edgeInfos[id[i]].other(i)] = last;
+            edgeInfos[id[i]].that(i) = edges.size() - 1;
+            lastEdge[last]++;
         }
     }
 
@@ -130,9 +129,15 @@ struct Graph {
         for (int i = firstEdge[v]; i < lastEdge[v]; i++) {
             int u = edges[i];
             if (firstEdge[u] <= edgeInfos[id[i]].uid && edgeInfos[id[i]].uid < lastEdge[u]) {
+                if (edges[edgeInfos[id[i]].uid] != n - 1) {
+                    continue;
+                }
                 edgeInfos[id[i]].vid = i;
                 edges[edgeInfos[id[i]].uid] = v;
             } else {
+                if (edges[edgeInfos[id[i]].vid] != n - 1) {
+                    continue;
+                }
                 edgeInfos[id[i]].uid = i;
                 edges[edgeInfos[id[i]].vid] = v;
             }
@@ -146,6 +151,16 @@ struct Graph {
         firstEdge.pop_back();
         lastEdge.pop_back();
         n--;
+    }
+
+    bool areAdjacent(int u, int v) {
+        if (getDegree(u) > getDegree(v))
+            std::swap(u, v);
+        for (int i = firstEdge[u]; i < lastEdge[u]; i++) {
+            if (edges[i] == v)
+                return true;
+        }
+        return false;
     }
 };
 
@@ -177,126 +192,155 @@ struct GraphViewRef {
         removeVertex(which.size() - 1);
         which.pop_back();
     }
+
+    inline bool isIn(int v) {
+        return 0 <= which[v] && which[v] < (int)leftVertices.size() && leftVertices[which[v]] == v;
+    }
 };
 
 class SolutionStorage {
 public:
     SolutionStorage(int n, const std::vector<int>& aprior)
-        : initialSize(n)
+        : status(n, VertexStatus::FREE)
+        , delegationList(n)
+        , delegationListStart(n + 1)
         , curSolution(aprior)
-        , next(n)
-        , last(n)
-        , delegatedSize(n, 1)
     {
-        next.reserve(2 * n);
-        delegatedSize.reserve(2 * n);
+        status.reserve(2 * n);
+        delegationList.reserve(2 * n);
+        std::iota(delegationList.begin(), delegationList.end(), 0);
+        std::iota(delegationListStart.begin(), delegationListStart.end(), 0);
+        delegationListStart.reserve(2 * n + 1);
         curSolution.reserve(n);
-        std::iota(next.begin(), next.end(), 0);
-        std::iota(last.begin(), last.end(), 0);
+        for (int u : curSolution) {
+            status[u] = VertexStatus::TOOK;
+        }
     }
 
-    inline void push(int v) {
+    void push(int v) {
         curSolution.push_back(v);
+        status[v] = VertexStatus::TOOK;
     }
 
-    inline std::size_t size() const {
+    std::size_t size() const {
         return curSolution.size() + above;
     }
 
-    inline void pop() {
+    void pop() {
+        status[curSolution.back()] = VertexStatus::FREE;
         curSolution.pop_back();
     }
 
-    inline void saveTo(std::vector<int>& to) const {
-        to.reserve(curSolution.size() + above);
+    void saveTo(std::vector<int>& to) const {
         to.clear();
-        for (int u : curSolution) {
-            int v = u;
-            for (int i = 0; i < delegatedSize[u]; i++) {
-                if (v < initialSize)
-                    to.push_back(v);
+        to.reserve(size());
+        std::vector<VertexStatus> statusCopy = status;
+        for (int i = status.size() - 1; i >= 0; i--) {
+            assert(statusCopy[i] != VertexStatus::DELEGATED);
+            for (int j = delegationListStart[i]; j < delegationListStart[i + 1]; j++) {
+                if ((statusCopy[i] == VertexStatus::TOOK && (j - delegationListStart[i]) % 2 == 0)
+                        || (statusCopy[i] == VertexStatus::FREE && (j - delegationListStart[i]) % 2 == 1)) {
+                    if (delegationList[j] == i) {
+                        to.push_back(i);
+                    } else {
+                        statusCopy[delegationList[j]] = VertexStatus::TOOK;
+                    }
+                } else {
+                    statusCopy[delegationList[j]] = VertexStatus::FREE;
+                }
             }
         }
     }
 
-    inline std::vector<int> getSolution() const {
+    SolutionStorage makeEmptyCopy() const {
+        SolutionStorage copy = *this;
+        copy.curSolution.clear();
+        copy.above = 0;
+        for (auto& s : copy.status) {
+            if (s == VertexStatus::TOOK)
+                s = VertexStatus::FREE;
+        }
+        return copy;
+    }
+
+    std::vector<int> getSolution() const {
         std::vector<int> ret;
         saveTo(ret);
         return ret;
     }
 
-    inline void swap(SolutionStorage& with) {
+    void swap(SolutionStorage& with) {
         std::swap(above, with.above);
-        std::swap(initialSize, with.initialSize);
+        status.swap(with.status);
+        delegationList.swap(with.delegationList);
+        delegationListStart.swap(with.delegationListStart);
         curSolution.swap(with.curSolution);
-        next.swap(with.next);
-        last.swap(with.last);
-        delegatedSize.swap(with.delegatedSize);
     }
 
-    inline void append(const std::vector<int>& vertices) {
-        int n = curSolution.size();
-        curSolution.resize(n + vertices.size());
-        std::memcpy(curSolution.data() + n, vertices.data(), sizeof(int) * vertices.size());
+    void append(const std::vector<int>& v) {
+        curSolution.resize(curSolution.size() + v.size());
+        std::memcpy(curSolution.data() + curSolution.size() - v.size(), v.data(), sizeof(int) * v.size());
+        for (int u : v) {
+            status[u] = VertexStatus::TOOK;
+        }
     }
 
-    inline bool empty() const {
+    void shrinkToSize(int sz) {
+        sz -= above;
+        for (int i = sz; i < (int)curSolution.size(); i++) {
+            status[curSolution[i]] = VertexStatus::FREE;
+        }
+        curSolution.resize(sz);
+    }
+
+    bool empty() const {
         return curSolution.empty();
     }
 
-    inline int back() const {
+    int back() const {
         return curSolution.back();
     }
 
-    inline void shrinkToSize(int sz) {
-        curSolution.resize(sz - above);
-    }
-
     inline void addFakeVertex() {
-        next.push_back(next.size());
-        last.push_back(last.size());
-        delegatedSize.push_back(0);
-        above--;
+        status.push_back(VertexStatus::FREE);
+        delegationListStart.push_back(delegationList.size());
     }
 
     inline void delegateVertexToFake(int v) {
-        if (last.back() == (int)last.size() - 1) {
-            next.back() = v;
-            last.back() = last[v];
-        } else {
-            next[last[v]] = next.back();
-            next.back() = v;
+        assert(status[v] == VertexStatus::FREE);
+        delegationList.push_back(v);
+        delegationListStart.back()++;
+        if ((delegationListStart.back() - delegationListStart[delegationListStart.size() - 2]) % 2 == 0) {
+            above++;
         }
-        delegatedSize.back() += delegatedSize[v];
-        above++;
+        status[v] = VertexStatus::DELEGATED;
     }
 
-    inline void revertVertexDelegation(int v) {
-        if (last.back() == last[v]) {
-            next.back() = next.size() - 1;
-            last.back() = last.size() - 1;
-        } else {
-            next.back() = next[last[v]];
-            next[last[v]] = last[v];
+    inline void removeFakeVertex(GraphViewRef& graphView) {
+        status.pop_back();
+        for (int i = delegationListStart[delegationListStart.size() - 2]; i < (int)delegationList.size(); i++) {
+            if ((i - delegationListStart[delegationListStart.size() - 2]) % 2 == 1) {
+                above--;
+            }
+            status[delegationList[i]] = VertexStatus::FREE;
+            graphView.addVertex(delegationList[i]);
         }
-        delegatedSize.back() -= delegatedSize[v];
-        above--;
-    }
-
-    inline void removeFakeVertex() {
-        next.pop_back();
-        last.pop_back();
-        delegatedSize.pop_back();
-        above++;
+        delegationList.resize(delegationListStart[delegationListStart.size() - 2]);
+        delegationListStart.pop_back();
     }
 
 private:
+    enum class VertexStatus {
+        FREE,
+        TOOK,
+        DELEGATED
+    };
+
     int above = 0;
-    int initialSize;
+    std::vector<VertexStatus> status;
+    std::vector<int> delegationList;
+    std::vector<int> delegationListStart;
     std::vector<int> curSolution;
-    std::vector<int> next;
-    std::vector<int> last;
-    std::vector<int> delegatedSize;
 };
 
 struct ComponentSplitter {
@@ -343,6 +387,14 @@ struct ComponentSplitter {
             compId++;
         }
     }
+
+    void addFakeVertex() {
+        componentOf.push_back(0);
+    }
+
+    void removeFakeVertex() {
+        componentOf.pop_back();
+    }
 };
 
 struct LeafHandler {
@@ -351,17 +403,17 @@ struct LeafHandler {
     int iteration = 0;
 
     std::vector<int> qbuf;
-    std::vector<int> removedOnIteration;
+    std::vector<int> removedAtIteration;
     std::vector<int>& removed;
     SolutionStorage& curSolution;
 
     LeafHandler(Graph& g, std::vector<int>& removed, SolutionStorage& curSolution)
         : graph(g)
-        , removedOnIteration(graph.n)
+        , removedAtIteration(graph.n)
         , removed(removed)
         , curSolution(curSolution)
     {
-        removedOnIteration.reserve(2 * graph.n);
+        removedAtIteration.reserve(2 * graph.n);
         qbuf.reserve(2 * g.n);
     }
 
@@ -376,14 +428,14 @@ struct LeafHandler {
         int qhead = 0;
         while (qhead < (int)qbuf.size()) {
             int a = qbuf[qhead++];
-            if (graph.getDegree(a) != 1 || removedOnIteration[a] == iteration) {
+            if (graph.getDegree(a) != 1 || removedAtIteration[a] == iteration) {
                 continue;
             }
             int b = graph.edges[graph.firstEdge[a]];
-            if (removedOnIteration[b] == iteration)
+            if (removedAtIteration[b] == iteration)
                 continue;
-            removedOnIteration[a] = iteration;
-            removedOnIteration[b] = iteration;
+            removedAtIteration[a] = iteration;
+            removedAtIteration[b] = iteration;
             graph.removeVertex(b);
             graphView.removeVertex(b);
             curSolution.push(b);
@@ -397,11 +449,108 @@ struct LeafHandler {
     }
 
     void addFakeVertex() {
-        removedOnIteration.push_back(0);
+        removedAtIteration.push_back(0);
     }
 
     void removeFakeVertex() {
-        removedOnIteration.pop_back();
+        removedAtIteration.pop_back();
+    }
+};
+
+struct PassageHandler {
+    Graph& graph;
+    ComponentSplitter& componentSplitter;
+    LeafHandler& leafHandler;
+    SolutionStorage& solutionStorage;
+    std::vector<int>& removed;
+
+    std::vector<int> leftVBuf;
+
+    PassageHandler(Graph& graph,
+                   ComponentSplitter& cs,
+                   LeafHandler& lh,
+                   SolutionStorage& ss,
+                   std::vector<int>& removed)
+        : graph(graph)
+        , componentSplitter(cs)
+        , leafHandler(lh)
+        , solutionStorage(ss)
+        , removed(removed)
+    {
+        leftVBuf.reserve(graph.n);
+    }
+
+    inline bool isStartVertex(int v) {
+        return graph.getDegree(v) == 2
+            && (graph.getDegree(graph.edges[graph.firstEdge[v]]) > 2
+                || graph.getDegree(graph.edges[graph.firstEdge[v] + 1]) > 2);
+    }
+
+    inline int otherNeighbour(int v, int notThat) {
+        return graph.edges[graph.firstEdge[v]] == notThat
+            ? graph.edges[graph.firstEdge[v] + 1]
+            : graph.edges[graph.firstEdge[v]];
+    }
+
+    void handle(GraphViewRef& graphView) {
+        leftVBuf.resize(graphView.leftVertices.size());
+        std::memcpy(leftVBuf.data(), graphView.leftVertices.data(), sizeof(int) * graphView.leftVertices.size());
+        for (int u : leftVBuf) {
+            if (graphView.isIn(u) && isStartVertex(u)) {
+                int vs = graph.getDegree(graph.edges[graph.firstEdge[u]]) > 2
+                       ? graph.edges[graph.firstEdge[u]]
+                       : graph.edges[graph.firstEdge[u] + 1];
+                int v = vs;
+                int vp = u;
+                int w = u;
+                u = otherNeighbour(vp, v);
+                while (graph.getDegree(v) == 2 && graph.getDegree(otherNeighbour(v, vp)) == 2) {
+                    vp = otherNeighbour(v, vp);
+                    v = otherNeighbour(vp, v);
+                }
+                if (v == u || graph.areAdjacent(u, v)) {
+                    solutionStorage.push(v);
+                    removed.push_back(v);
+                    graph.removeVertex(v);
+                    graphView.removeVertex(v);
+                    if (v != u) {
+                        solutionStorage.push(u);
+                        removed.push_back(u);
+                        graph.removeVertex(u);
+                        graphView.removeVertex(u);
+                    }
+                    continue;
+                }
+                // graphView && solutionStorage
+                graphView.addFakeVertex();
+                solutionStorage.addFakeVertex();
+                vp = w;
+                graphView.removeVertex(u);
+                solutionStorage.delegateVertexToFake(u);
+                while (graph.getDegree(vs) == 2 && graph.getDegree(otherNeighbour(vs, vp)) == 2) {
+                    graphView.removeVertex(vp);
+                    solutionStorage.delegateVertexToFake(vp);
+                    graphView.removeVertex(vs);
+                    solutionStorage.delegateVertexToFake(vs);
+                    vp = otherNeighbour(vs, vp);
+                    vs = otherNeighbour(vp, vs);
+                }
+                graphView.removeVertex(vp);
+                solutionStorage.delegateVertexToFake(vp);
+                graphView.removeVertex(v);
+                solutionStorage.delegateVertexToFake(v);
+                // others
+                graph.addFakeVertex();
+                graph.delegateVertexToFake(u, w);
+                graph.delegateVertexToFake(v, vp);
+                removed.push_back(-2);
+                removed.push_back(u);
+                removed.push_back(v);
+                removed.push_back(-2);
+                componentSplitter.addFakeVertex();
+                leafHandler.addFakeVertex();
+            }
+        }
     }
 };
 
@@ -414,6 +563,8 @@ class Brancher {
     std::vector<int> removed;
     std::vector<int> bestSolution;
     SolutionStorage curSolution;
+
+    PassageHandler passageHandler;
 
     int curDepth = -1;
 
@@ -428,6 +579,7 @@ public:
         , leafHandler(g, removed, curSolution)
         , bestSolution(graph.n)
         , curSolution(g.n, aprior)
+        , passageHandler(graph, compSplitter, leafHandler, curSolution, removed)
     {
         std::iota(bestSolution.begin(), bestSolution.end(), 0);
     }
@@ -455,7 +607,7 @@ public:
 private:
     void branchAside(GraphViewRef& graphView) {
         std::vector<int> bestSolutionCopy = graphView.leftVertices;
-        SolutionStorage curSolutionCopy(graphView.leftVertices.size(), {});
+        SolutionStorage curSolutionCopy = curSolution.makeEmptyCopy();
         bestSolution.swap(bestSolutionCopy);
         curSolution.swap(curSolutionCopy);
 
@@ -478,6 +630,20 @@ private:
 #endif
         curDepth++;
         while (removed.back() != -1) {
+            if (removed.back() == -2) {
+                removed.pop_back();
+                while (removed.back() != -2) {
+                    graph.revertVertexDelegation(removed.back());
+                    removed.pop_back();
+                }
+                removed.pop_back();
+                graph.removeFakeVertex();
+                graphView.removeFakeVertex();
+                leafHandler.removeFakeVertex();
+                compSplitter.removeFakeVertex();
+                curSolution.removeFakeVertex(graphView);
+                continue;
+            }
             if (!curSolution.empty() && curSolution.back() == removed.back()) {
                 curSolution.pop();
             }
@@ -559,6 +725,8 @@ private:
             return;
         }
 
+        passageHandler.handle(graphView);
+
         int v = graphView.leftVertices[0];
         int mxd = graph.getDegree(v);
         for (int i = 0; i < (int)graphView.leftVertices.size(); i++) {
@@ -594,10 +762,12 @@ private:
 #endif
             int rem = removed.size();
             for (int i = graph.firstEdge[v]; i < graph.lastEdge[v]; i++) {
+                if (!graphView.isIn(graph.edges[i]))
+                    continue;
+                graphView.removeVertex(graph.edges[i]);
                 removed.push_back(graph.edges[i]);
             }
             for (int i = rem; i < (int)removed.size(); i++) {
-                graphView.removeVertex(removed[i]);
                 graph.removeVertex(removed[i]);
                 curSolution.push(removed[i]);
             }
