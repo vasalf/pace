@@ -6,6 +6,21 @@
 #include <sstream>
 #include <vector>
 
+namespace utility {
+    template<class It, class Eq>
+    It unique_swap(It b, It e, const Eq& equal) {
+        It ret = b++;
+        while (b != e) {
+            if (!equal(*ret, *b)) {
+                ret++;
+                std::swap(*ret, *b);
+            }
+            b++;
+        }
+        return ret;
+    }
+}
+
 struct Graph {
     struct Edge {
         int u, v;
@@ -34,22 +49,31 @@ struct Graph {
     };
 
     int n;
+    std::vector<int> initialFirstEdge;
     std::vector<int> firstEdge;
     std::vector<int> lastEdge;
     std::vector<int> edges;
     std::vector<int> id;
     std::vector<EdgePosInfo> edgeInfos;
+    std::vector<int> ubuf, rbuf;
+    std::vector<int> ebuf, idbuf;
 
     Graph(int n, int m)
             : n(n)
+              , initialFirstEdge(n)
               , firstEdge(n)
               , lastEdge(n)
               , edges(2 * m)
               , id(2 * m)
     {
+        initialFirstEdge.reserve(2 * n);
         firstEdge.reserve(2 * n);
         lastEdge.reserve(2 * n);
         edgeInfos.reserve(m);
+        ubuf.reserve(m);
+        rbuf.reserve(m);
+        ebuf.reserve(m);
+        idbuf.reserve(m);
     }
 
     Graph(const Graph&) = delete;
@@ -65,6 +89,7 @@ struct Graph {
         }
         std::partial_sum(degree.begin(), degree.end() - 1, firstEdge.begin() + 1);
         std::memcpy(lastEdge.data(), firstEdge.data(), sizeof(int) * n);
+        std::memcpy(initialFirstEdge.data(), firstEdge.data(), sizeof(int) * n);
         for (const auto& edge : setTo) {
             edgeInfos.push_back({lastEdge[edge.v], lastEdge[edge.u]});
             id[lastEdge[edge.u]] = edgeInfos.size() - 1;
@@ -107,6 +132,7 @@ struct Graph {
     }
 
     int addFakeVertex() {
+        initialFirstEdge.push_back(edges.size());
         firstEdge.push_back(edges.size());
         lastEdge.push_back(edges.size());
         return n++;
@@ -146,8 +172,9 @@ struct Graph {
 
     void removeFakeVertex() {
         int last = n - 1;
-        edges.resize(firstEdge[last]);
-        id.resize(firstEdge[last]);
+        edges.resize(initialFirstEdge[last]);
+        id.resize(initialFirstEdge[last]);
+        initialFirstEdge.pop_back();
         firstEdge.pop_back();
         lastEdge.pop_back();
         n--;
@@ -161,6 +188,46 @@ struct Graph {
                 return true;
         }
         return false;
+    }
+
+    void uniqueizeEdgesOfFake() {
+        ubuf.resize(getDegree(n - 1));
+        std::iota(ubuf.begin(), ubuf.end(), firstEdge[n - 1]);
+        std::sort(ubuf.rbegin(), ubuf.rend(),
+            [this](int i, int j) {
+                return edges[i] < edges[j];
+            }
+        );
+        int mid = ubuf.rend() - utility::unique_swap(ubuf.rbegin(), ubuf.rend(),
+            [this](int i, int j) {
+                return edges[i] == edges[j];
+            }
+        );
+        rbuf.resize(getDegree(n - 1));
+        for (int i = 0; i < getDegree(n - 1); i++)
+            rbuf[ubuf[i] - firstEdge[n - 1]] = i;
+        ebuf.resize(getDegree(n - 1));
+        idbuf.resize(getDegree(n - 1));
+        std::memcpy(ebuf.data(), edges.data() + firstEdge[n - 1], getDegree(n - 1) * sizeof(int));
+        std::memcpy(idbuf.data(), id.data() + firstEdge[n - 1], getDegree(n - 1) * sizeof(int));
+        for (int i = 0; i < getDegree(n - 1); i++) {
+            edges[rbuf[i] + firstEdge[n - 1]] = ebuf[i];
+            id[rbuf[i] + firstEdge[n - 1]] = idbuf[i];
+            edgeInfos[idbuf[i]].that(i + firstEdge[n - 1]) = rbuf[i] + firstEdge[n - 1];
+        }
+        firstEdge[n - 1] += mid;
+        for (int i = initialFirstEdge[n - 1]; i < firstEdge[n - 1]; i++) {
+            removeEdge(edges[i], edgeInfos[id[i]].other(i));
+        }
+    }
+
+    void revertUniqueization() {
+        for (int i = initialFirstEdge[n - 1]; i < firstEdge[n - 1]; i++) {
+            edges[lastEdge[edges[i]]] = n - 1;
+            id[lastEdge[edges[i]]] = id[i];
+            edgeInfos[id[i]].other(i) = lastEdge[edges[i]]++;
+        }
+        firstEdge[n - 1] = initialFirstEdge[n - 1];
     }
 };
 
@@ -552,6 +619,7 @@ struct PassageHandler {
                 graph.addFakeVertex();
                 graph.delegateVertexToFake(u, w);
                 graph.delegateVertexToFake(v, vp);
+                graph.uniqueizeEdgesOfFake();
                 removed.push_back(-2);
                 removed.push_back(u);
                 removed.push_back(v);
@@ -641,6 +709,7 @@ private:
         while (removed.back() != -1) {
             if (removed.back() == -2) {
                 removed.pop_back();
+                graph.revertUniqueization();
                 while (removed.back() != -2) {
                     graph.revertVertexDelegation(removed.back());
                     removed.pop_back();
@@ -681,6 +750,18 @@ private:
             std::cout << spaces << "cutoff(cur=" << curSolution.size() << ",best=" << bestSolution.size() << ")" << std::endl;
 #endif
             return;
+        }
+
+        for (int i = 0; i < (int)graphView.leftVertices.size(); ) {
+            int v = graphView.leftVertices[i];
+            if (graph.getDegree(v) > (int)bestSolution.size() - (int)curSolution.size()) {
+                curSolution.push(v);
+                removed.push_back(v);
+                graph.removeVertex(v);
+                graphView.removeVertex(v);
+            } else {
+                i++;
+            }
         }
 
         if (graphView.leftVertices.empty()) {
@@ -751,7 +832,7 @@ private:
         }
 
 #ifdef DEBUG_BRANCHING
-            std::cout << spaces << "inner(size=" << graphView.leftVertices.size() << ")" << std::endl;
+        std::cout << spaces << "inner(size=" << graphView.leftVertices.size() << ")" << std::endl;
 #endif
 
         {
@@ -844,7 +925,7 @@ int main() {
     b.branch();
     auto solution = b.getBestSolution();
 
-    //std::cout << "s vc " << n << " " << solution.size() << std::endl;
+    std::cout << "s vc " << n << " " << solution.size() << std::endl;
     for (int u : solution) {
         std::cout << u + 1 << std::endl;
     }
