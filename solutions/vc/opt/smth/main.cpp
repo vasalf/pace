@@ -206,6 +206,7 @@ public:
         , delegationListStart(n + 1)
         , curSolution(aprior)
     {
+        qbuf.reserve(2 * n);
         status.reserve(2 * n);
         delegationList.reserve(2 * n);
         std::iota(delegationList.begin(), delegationList.end(), 0);
@@ -237,6 +238,8 @@ public:
         std::vector<VertexStatus> statusCopy = status;
         for (int i = status.size() - 1; i >= 0; i--) {
             assert(statusCopy[i] != VertexStatus::DELEGATED);
+            if (statusCopy[i] == VertexStatus::IGNORED)
+                continue;
             for (int j = delegationListStart[i]; j < delegationListStart[i + 1]; j++) {
                 if ((statusCopy[i] == VertexStatus::TOOK && (j - delegationListStart[i]) % 2 == 0)
                         || (statusCopy[i] == VertexStatus::FREE && (j - delegationListStart[i]) % 2 == 1)) {
@@ -252,13 +255,26 @@ public:
         }
     }
 
-    SolutionStorage makeEmptyCopy() const {
+    SolutionStorage makeEmptyCopy(GraphViewRef& graphView) const {
         SolutionStorage copy = *this;
         copy.curSolution.clear();
         copy.above = 0;
-        for (auto& s : copy.status) {
-            if (s == VertexStatus::TOOK)
-                s = VertexStatus::FREE;
+        for (auto& s : copy.status)
+            s = VertexStatus::IGNORED;
+        for (int u : graphView.leftVertices) {
+            copy.status[u] = VertexStatus::FREE;
+            qbuf.clear();
+            qbuf.push_back(u);
+            int qit = 0;
+            while (qit < (int)qbuf.size()) {
+                int a = qbuf[qit++];
+                copy.above += (delegationListStart[a + 1] - delegationListStart[a]) / 2;
+                for (int i = delegationListStart[a]; i < delegationListStart[a + 1]; i++) {
+                    if (delegationList[i] != a) {
+                        qbuf.push_back(delegationList[i]);
+                    }
+                }
+            }
         }
         return copy;
     }
@@ -321,6 +337,7 @@ public:
         for (int i = delegationListStart[delegationListStart.size() - 2]; i < (int)delegationList.size(); i++) {
             if ((i - delegationListStart[delegationListStart.size() - 2]) % 2 == 1) {
                 above--;
+                assert(above >= 0);
             }
             status[delegationList[i]] = VertexStatus::FREE;
             graphView.addVertex(delegationList[i]);
@@ -329,11 +346,19 @@ public:
         delegationListStart.pop_back();
     }
 
+    inline std::vector<int> ifTookAll(GraphViewRef& graphView) {
+        append(graphView.leftVertices);
+        std::vector<int> ret = getSolution();
+        shrinkToSize(above);
+        return ret;
+    }
+
 private:
     enum class VertexStatus {
         FREE,
         TOOK,
-        DELEGATED
+        DELEGATED,
+        IGNORED
     };
 
     int above = 0;
@@ -341,6 +366,7 @@ private:
     std::vector<int> delegationList;
     std::vector<int> delegationListStart;
     std::vector<int> curSolution;
+    mutable std::vector<int> qbuf;
 };
 
 struct ComponentSplitter {
@@ -498,8 +524,8 @@ struct PassageHandler {
         for (int u : leftVBuf) {
             if (graphView.isIn(u) && isStartVertex(u)) {
                 int vs = graph.getDegree(graph.edges[graph.firstEdge[u]]) > 2
-                       ? graph.edges[graph.firstEdge[u]]
-                       : graph.edges[graph.firstEdge[u] + 1];
+                       ? graph.edges[graph.firstEdge[u] + 1]
+                       : graph.edges[graph.firstEdge[u]];
                 int v = vs;
                 int vp = u;
                 int w = u;
@@ -606,8 +632,8 @@ public:
 
 private:
     void branchAside(GraphViewRef& graphView) {
-        std::vector<int> bestSolutionCopy = graphView.leftVertices;
-        SolutionStorage curSolutionCopy = curSolution.makeEmptyCopy();
+        SolutionStorage curSolutionCopy = curSolution.makeEmptyCopy(graphView);
+        std::vector<int> bestSolutionCopy = curSolutionCopy.ifTookAll(graphView);
         bestSolution.swap(bestSolutionCopy);
         curSolution.swap(curSolutionCopy);
 
@@ -681,6 +707,7 @@ private:
 #endif
                 curSolution.saveTo(bestSolution);
 #ifdef DEBUG_BRANCHING
+                std::cout << spaces << bestSolution.size() << std::endl;
             } else {
                 std::cout << spaces << "solution of same size" << std::endl;
 #endif
@@ -827,7 +854,7 @@ int main() {
     g.setEdges(edges);
 
     Brancher b(g, aprior);
-    b.setMaxDepth(15);
+    //b.setMaxDepth(15);
     b.branch();
     auto solution = b.getBestSolution();
 
