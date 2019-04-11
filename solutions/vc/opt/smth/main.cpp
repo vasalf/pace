@@ -206,7 +206,6 @@ public:
         , delegationListStart(n + 1)
         , curSolution(aprior)
     {
-        qbuf.reserve(2 * n);
         status.reserve(2 * n);
         delegationList.reserve(2 * n);
         std::iota(delegationList.begin(), delegationList.end(), 0);
@@ -256,27 +255,12 @@ public:
     }
 
     SolutionStorage makeEmptyCopy(GraphViewRef& graphView) const {
-        SolutionStorage copy = *this;
-        copy.curSolution.clear();
-        copy.above = 0;
-        for (auto& s : copy.status)
+        SolutionStorage ret(status.size(), {});
+        for (auto& s : ret.status)
             s = VertexStatus::IGNORED;
-        for (int u : graphView.leftVertices) {
-            copy.status[u] = VertexStatus::FREE;
-            qbuf.clear();
-            qbuf.push_back(u);
-            int qit = 0;
-            while (qit < (int)qbuf.size()) {
-                int a = qbuf[qit++];
-                copy.above += (delegationListStart[a + 1] - delegationListStart[a]) / 2;
-                for (int i = delegationListStart[a]; i < delegationListStart[a + 1]; i++) {
-                    if (delegationList[i] != a) {
-                        qbuf.push_back(delegationList[i]);
-                    }
-                }
-            }
-        }
-        return copy;
+        for (int u : graphView.leftVertices)
+            ret.status[u] = VertexStatus::FREE;
+        return ret;
     }
 
     std::vector<int> getSolution() const {
@@ -366,7 +350,6 @@ private:
     std::vector<int> delegationList;
     std::vector<int> delegationListStart;
     std::vector<int> curSolution;
-    mutable std::vector<int> qbuf;
 };
 
 struct ComponentSplitter {
@@ -707,7 +690,6 @@ private:
 #endif
                 curSolution.saveTo(bestSolution);
 #ifdef DEBUG_BRANCHING
-                std::cout << spaces << bestSolution.size() << std::endl;
             } else {
                 std::cout << spaces << "solution of same size" << std::endl;
 #endif
@@ -731,7 +713,7 @@ private:
             int rem = curSolution.size();
             for (int sz : compSizes) {
 #ifdef DEBUG_BRANCHING
-                std::cout << spaces << "component" << std::endl;
+                std::cout << spaces << "component, currently took " << curSolution.size() << std::endl;
 #endif
                 buffer.resize(sz);
                 std::memcpy(buffer.data(), compOrder.data() + cstart, sizeof(int) * sz);
@@ -746,7 +728,11 @@ private:
                 graphView.which[graphView.leftVertices[i]] = i;
             }
             if (curSolution.size() < bestSolution.size()) {
+#ifdef DEBUG_BRANCHING
+                std::cout << spaces << "components: better solution(" << curSolution.size() << ")" << std::endl;
+#endif
                 curSolution.saveTo(bestSolution);
+                assert(bestSolution.size() == curSolution.size());
             }
             curSolution.shrinkToSize(rem);
             return;
@@ -854,11 +840,11 @@ int main() {
     g.setEdges(edges);
 
     Brancher b(g, aprior);
-    //b.setMaxDepth(15);
+    b.setMaxDepth(15);
     b.branch();
     auto solution = b.getBestSolution();
 
-    std::cout << "s vc " << n << " " << solution.size() << std::endl;
+    //std::cout << "s vc " << n << " " << solution.size() << std::endl;
     for (int u : solution) {
         std::cout << u + 1 << std::endl;
     }
