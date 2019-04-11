@@ -9,6 +9,9 @@
 namespace utility {
     template<class It, class Eq>
     It unique_swap(It b, It e, const Eq& equal) {
+        if (b == e) {
+            return e;
+        }
         It ret = b++;
         while (b != e) {
             if (!equal(*ret, *b)) {
@@ -17,7 +20,7 @@ namespace utility {
             }
             b++;
         }
-        return ret;
+        return ++ret;
     }
 }
 
@@ -190,9 +193,9 @@ struct Graph {
         return false;
     }
 
-    void uniqueizeEdgesOfFake() {
-        ubuf.resize(getDegree(n - 1));
-        std::iota(ubuf.begin(), ubuf.end(), firstEdge[n - 1]);
+    void uniqueizeEdgesOf(int v) {
+        ubuf.resize(getDegree(v));
+        std::iota(ubuf.begin(), ubuf.end(), firstEdge[v]);
         std::sort(ubuf.rbegin(), ubuf.rend(),
             [this](int i, int j) {
                 return edges[i] < edges[j];
@@ -203,25 +206,25 @@ struct Graph {
                 return edges[i] == edges[j];
             }
         );
-        rbuf.resize(getDegree(n - 1));
-        for (int i = 0; i < getDegree(n - 1); i++)
-            rbuf[ubuf[i] - firstEdge[n - 1]] = i;
-        ebuf.resize(getDegree(n - 1));
-        idbuf.resize(getDegree(n - 1));
-        std::memcpy(ebuf.data(), edges.data() + firstEdge[n - 1], getDegree(n - 1) * sizeof(int));
-        std::memcpy(idbuf.data(), id.data() + firstEdge[n - 1], getDegree(n - 1) * sizeof(int));
-        for (int i = 0; i < getDegree(n - 1); i++) {
-            edges[rbuf[i] + firstEdge[n - 1]] = ebuf[i];
-            id[rbuf[i] + firstEdge[n - 1]] = idbuf[i];
-            edgeInfos[idbuf[i]].that(i + firstEdge[n - 1]) = rbuf[i] + firstEdge[n - 1];
+        rbuf.resize(getDegree(v));
+        for (int i = 0; i < getDegree(v); i++)
+            rbuf[ubuf[i] - firstEdge[v]] = i;
+        ebuf.resize(getDegree(v));
+        idbuf.resize(getDegree(v));
+        std::memcpy(ebuf.data(), edges.data() + firstEdge[v], getDegree(v) * sizeof(int));
+        std::memcpy(idbuf.data(), id.data() + firstEdge[v], getDegree(v) * sizeof(int));
+        for (int i = 0; i < getDegree(v); i++) {
+            edges[rbuf[i] + firstEdge[v]] = ebuf[i];
+            id[rbuf[i] + firstEdge[v]] = idbuf[i];
+            edgeInfos[idbuf[i]].that(i + firstEdge[v]) = rbuf[i] + firstEdge[v];
         }
-        firstEdge[n - 1] += mid;
-        for (int i = initialFirstEdge[n - 1]; i < firstEdge[n - 1]; i++) {
+        firstEdge[v] += mid;
+        for (int i = initialFirstEdge[v]; i < firstEdge[v]; i++) {
             removeEdge(edges[i], edgeInfos[id[i]].other(i));
         }
     }
 
-    void revertUniqueization() {
+    void revertFakeVertexUniqueization() {
         for (int i = initialFirstEdge[n - 1]; i < firstEdge[n - 1]; i++) {
             edges[lastEdge[edges[i]]] = n - 1;
             id[lastEdge[edges[i]]] = id[i];
@@ -619,7 +622,7 @@ struct PassageHandler {
                 graph.addFakeVertex();
                 graph.delegateVertexToFake(u, w);
                 graph.delegateVertexToFake(v, vp);
-                graph.uniqueizeEdgesOfFake();
+                graph.uniqueizeEdgesOf(graph.n - 1);
                 removed.push_back(-2);
                 removed.push_back(u);
                 removed.push_back(v);
@@ -709,7 +712,7 @@ private:
         while (removed.back() != -1) {
             if (removed.back() == -2) {
                 removed.pop_back();
-                graph.revertUniqueization();
+                graph.revertFakeVertexUniqueization();
                 while (removed.back() != -2) {
                     graph.revertVertexDelegation(removed.back());
                     removed.pop_back();
@@ -919,9 +922,12 @@ int main() {
     edges.resize(std::unique(edges.begin(), edges.end()) - edges.begin());
 
     g.setEdges(edges);
+    for (int i = 0; i < n; i++) {
+        g.uniqueizeEdgesOf(i);
+    }
 
     Brancher b(g, aprior);
-    b.setMaxDepth(15);
+    //b.setMaxDepth(15);
     b.branch();
     auto solution = b.getBestSolution();
 
