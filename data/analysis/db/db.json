@@ -224,7 +224,7 @@
         "mnd": 4,
         "mxd": 15,
         "n": 200,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{15} {13} {12 12 12} {12} {12} {12} {11} {11}",
             "m": 812,
@@ -416,7 +416,7 @@
         "mnd": 4,
         "mxd": 6,
         "n": 135,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{6 6 6 6} {6 6} {6} {6} {6} {6}",
             "m": 403,
@@ -558,7 +558,7 @@
         "mnd": 5,
         "mxd": 6,
         "n": 140,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{6 6} {6} {6} {6} {6} {6} {6} {6} {6}",
             "m": 385,
@@ -1276,7 +1276,7 @@
         "mnd": 3,
         "mxd": 4,
         "n": 166,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{4 4} {4} {4} {4} {4} {4} {4} {4} {4}",
             "m": 331,
@@ -1372,7 +1372,7 @@
         "mnd": 3,
         "mxd": 4,
         "n": 184,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{4 4} {4 4} {4 4} {4} {4} {4} {4}",
             "m": 364,
@@ -1420,7 +1420,7 @@
         "mnd": 3,
         "mxd": 4,
         "n": 166,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{4} {4} {4} {4} {4} {4} {4} {4} {4} {4}",
             "m": 330,
@@ -1934,6 +1934,7 @@
         "surplus": 4
     },
     "vc-exact_081.hgr": {
+        "answer": 145,
         "comps": 1,
         "crbound": 102,
         "cutpoints": 0,
@@ -1943,6 +1944,7 @@
         "mnd": 4,
         "mxd": 22,
         "n": 197,
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{22 19 19 18 18 17 17 17} {21} {17}",
             "m": 1124,
@@ -2036,7 +2038,7 @@
         "mnd": 4,
         "mxd": 17,
         "n": 191,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{17 16 16 15 15} {17 16 16} {16} {15}",
             "m": 914,
@@ -2082,7 +2084,7 @@
         "mnd": 4,
         "mxd": 20,
         "n": 194,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{20} {18 17} {16 16 16} {16 16} {16} {16}",
             "m": 956,
@@ -2118,6 +2120,7 @@
         "surplus": 2
     },
     "vc-exact_089.hgr": {
+        "answer": 143,
         "comps": 1,
         "crbound": 102,
         "cutpoints": 0,
@@ -2127,6 +2130,7 @@
         "mnd": 3,
         "mxd": 24,
         "n": 197,
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{24 24 20 19 19 18} {23 18} {22} {18}",
             "m": 1123,
@@ -2174,7 +2178,7 @@
         "mnd": 3,
         "mxd": 19,
         "n": 197,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{19 15 15} {16} {15 14} {15} {15} {15} {14}",
             "m": 913,
@@ -2222,7 +2226,7 @@
         "mnd": 3,
         "mxd": 18,
         "n": 199,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{18 17 16} {18 17 16} {16} {16} {16} {16}",
             "m": 982,
@@ -2268,7 +2272,7 @@
         "mnd": 3,
         "mxd": 18,
         "n": 195,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{18 17 16 16 16 16 15 15 15} {14}",
             "m": 906,
@@ -2314,7 +2318,7 @@
         "mnd": 3,
         "mxd": 19,
         "n": 193,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{19 17 16 15 15} {17 16 16 15} {17}",
             "m": 918,
@@ -2406,7 +2410,7 @@
         "mnd": 3,
         "mxd": 18,
         "n": 195,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{18} {17 16 16 15 15 15} {16} {15} {15}",
             "m": 904,
@@ -2544,7 +2548,7 @@
         "mnd": 3,
         "mxd": 17,
         "n": 194,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{17 17 16 16 15 15 15 14 14} {15}",
             "m": 845,
@@ -2866,7 +2870,7 @@
         "mnd": 3,
         "mxd": 21,
         "n": 197,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{21 17 16 16 16} {18 17 16} {17} {17}",
             "m": 953,
@@ -2902,6 +2906,7 @@
         "surplus": 2
     },
     "vc-exact_123.hgr": {
+        "answer": 143,
         "comps": 1,
         "crbound": 103,
         "cutpoints": 0,
@@ -2911,6 +2916,7 @@
         "mnd": 3,
         "mxd": 21,
         "n": 195,
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{21} {20} {19 18 18 18 16} {19 17} {18}",
             "m": 1063,
@@ -2956,7 +2962,7 @@
         "mnd": 3,
         "mxd": 18,
         "n": 194,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{18} {17 16 16 14} {16} {15 14} {14} {14}",
             "m": 891,
@@ -3048,7 +3054,7 @@
         "mnd": 3,
         "mxd": 21,
         "n": 196,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{21 18 17 16} {19} {18 17 16} {16} {16}",
             "m": 1000,
@@ -3094,7 +3100,7 @@
         "mnd": 3,
         "mxd": 17,
         "n": 198,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{17 17 15 15} {17 15} {15} {15} {15} {15}",
             "m": 986,
@@ -3140,7 +3146,7 @@
         "mnd": 4,
         "mxd": 24,
         "n": 194,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{24 19 16} {19 19 19 18 18 17 16}",
             "m": 1029,
@@ -3186,7 +3192,7 @@
         "mnd": 3,
         "mxd": 22,
         "n": 198,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{22 19 18 17 16 16} {18} {18} {16} {16}",
             "m": 1001,
@@ -3232,7 +3238,7 @@
         "mnd": 3,
         "mxd": 20,
         "n": 198,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{20 18 17 17 17 16} {20} {18 17} {16}",
             "m": 939,
@@ -3268,6 +3274,7 @@
         "surplus": 2
     },
     "vc-exact_139.hgr": {
+        "answer": 142,
         "comps": 1,
         "crbound": 101,
         "cutpoints": 0,
@@ -3277,6 +3284,7 @@
         "mnd": 5,
         "mxd": 25,
         "n": 193,
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{25 20 19 19 18 18 17 17} {18} {17}",
             "m": 1050,
@@ -3322,7 +3330,7 @@
         "mnd": 4,
         "mxd": 21,
         "n": 195,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{21 21 19 19 19 18 18 17 17 17}",
             "m": 1048,
@@ -3368,7 +3376,7 @@
         "mnd": 3,
         "mxd": 20,
         "n": 195,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{20} {19 18 16} {18 16} {17 16 16} {17}",
             "m": 971,
@@ -3414,7 +3422,7 @@
         "mnd": 3,
         "mxd": 21,
         "n": 197,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{21 19 18 17 17 17 17} {19} {19} {18}",
             "m": 1051,
