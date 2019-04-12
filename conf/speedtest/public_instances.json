@@ -1,7 +1,8 @@
 {
     "testsets": [
         {
-            "testdir": "data/vc-exact-public"
+            "testdir": "data/vc-exact-public",
+            "testdir": "data/vc-exact-public-v2"
         }
     ],
     "solutions": [
