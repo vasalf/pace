@@ -726,7 +726,7 @@
         "mnd": 3,
         "mxd": 13,
         "n": 200,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{13 12} {13} {12 12 12 12} {12 12} {12}",
             "m": 813,
@@ -964,7 +964,7 @@
         "mnd": 3,
         "mxd": 22,
         "n": 200,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{22 20 18 17 16 16 16} {18} {18} {17}",
             "m": 1023,
@@ -1012,7 +1012,7 @@
         "mnd": 3,
         "mxd": 15,
         "n": 200,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{15} {14 12 12} {14} {12} {12} {12} {12} {12}",
             "m": 841,
@@ -1108,7 +1108,7 @@
         "mnd": 4,
         "mxd": 21,
         "n": 198,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{21 21 20 19 19 19 18 18 17} {17}",
             "m": 1080,
@@ -1204,7 +1204,7 @@
         "mnd": 4,
         "mxd": 24,
         "n": 200,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{24 19} {21 19 19 19 18} {19 18 17}",
             "m": 1098,
@@ -1252,7 +1252,7 @@
         "mnd": 4,
         "mxd": 21,
         "n": 200,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{21 19 17 17 17 17 16} {17 16} {17}",
             "m": 1026,
@@ -1348,7 +1348,7 @@
         "mnd": 3,
         "mxd": 20,
         "n": 200,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{20 20 19 19 19 19 19 19 19} {20}",
             "m": 1160,
@@ -1492,7 +1492,7 @@
         "mnd": 4,
         "mxd": 20,
         "n": 200,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{20 19 17} {19} {18 18 17 16 15} {16}",
             "m": 1011,
@@ -1540,7 +1540,7 @@
         "mnd": 4,
         "mxd": 18,
         "n": 200,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{18 17} {17 17 17 15} {17} {16 16} {16}",
             "m": 1011,
@@ -1588,7 +1588,7 @@
         "mnd": 4,
         "mxd": 23,
         "n": 200,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{23} {21 18} {20 19 18} {20} {19} {18 18}",
             "m": 1174,
@@ -1684,7 +1684,7 @@
         "mnd": 4,
         "mxd": 18,
         "n": 200,
-        "solved_by": "ILP",
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{18 16 16 14} {16} {16} {15 14 14} {14}",
             "m": 952,
@@ -1910,6 +1910,7 @@
         "surplus": 2
     },
     "vc-exact_081.gr": {
+        "answer": 141,
         "comps": 1,
         "crbound": 99,
         "cutpoints": 0,
@@ -1919,6 +1920,7 @@
         "mnd": 5,
         "mxd": 25,
         "n": 197,
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{25 18} {20 19 19 18 18 17} {18} {17}",
             "m": 1087,
@@ -1954,6 +1956,7 @@
         "surplus": 3
     },
     "vc-exact_083.gr": {
+        "answer": 144,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -1963,6 +1966,7 @@
         "mnd": 3,
         "mxd": 20,
         "n": 200,
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{20 20 19 18 17} {19 18} {19} {18} {17}",
             "m": 1172,
@@ -2136,6 +2140,7 @@
         "surplus": 2
     },
     "vc-exact_091.gr": {
+        "answer": 145,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -2145,6 +2150,7 @@
         "mnd": 4,
         "mxd": 22,
         "n": 200,
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{22 19 19 18 18 18 17 17} {21 17}",
             "m": 1163,
@@ -2182,6 +2188,7 @@
         "surplus": 2
     },
     "vc-exact_093.gr": {
+        "answer": 143,
         "comps": 1,
         "crbound": 100,
         "cutpoints": 0,
@@ -2191,6 +2198,7 @@
         "mnd": 3,
         "mxd": 24,
         "n": 200,
+        "solved_by": "smth",
         "stat_c2k": {
             "comps": "{24 24 20 19 19 18} {23} {22} {18 18}",
             "m": 1162,
