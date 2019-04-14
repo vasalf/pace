@@ -33,7 +33,7 @@
             left: 10px;
         }
 
-        .test-n, .test-m, .test-comps, .test-cutpoints, .test-mnd, .test-mxd, .test-answer, .test-surplus, .test-lpvc, .test-greed, .test-crbound, .test-zs-n, .test-zs-m, .test-c2k-n, .test-c2k-m {
+        .test-n, .test-m, .test-comps, .test-cutpoints, .test-mnd, .test-mxd, .test-answer, .test-surplus, .test-lpvc, .test-greed, .test-crbound, .test-zs-n, .test-zs-m, .test-zs-greed {
             text-align: center;
         }
 
@@ -72,10 +72,8 @@
             <th id="test-solved-by">Solved by</th>
             <th id="test-zs-n">ZS: V</th>
             <th id="test-zs-m">ZS: E</th>
+            <th id="test-zs-greed">ZS: Greed</th>
             <th id="test-zs-comps">ZS: High-degree vertices</th>
-            <th id="test-c2k-n">C2k: V</th>
-            <th id="test-c2k-m">C2k: E</th>
-            <th id="test-c2k-comps">C2k: High-degree vertices</th>
         </tr>
     </thead>
     </table>
@@ -105,10 +103,8 @@
                 <td class="test-solved-by">{{ test.solved_by }}</td>
                 <td class="test-zs-n">{{ test.zs.n }}</td>
                 <td class="test-zs-m">{{ test.zs.m }}</td>
+                <td class="test-zs-greed">{{ test.zs.greed }}</td>
                 <td class="test-zs-comps">{{ test.zs.comps }}</td>
-                <td class="test-c2k-n">{{ test.c2k.n }}</td>
-                <td class="test-c2k-m">{{ test.c2k.m }}</td>
-                <td class="test-c2k-comps">{{ test.c2k.comps }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -132,10 +128,8 @@
         "test-solved-by",
         "test-zs-n",
         "test-zs-m",
+        "test-zs-greed",
         "test-zs-comps",
-        "test-c2k-n",
-        "test-c2k-m",
-        "test-c2k-comps"
     ]
     for (i in classes) {
         c = classes[i];

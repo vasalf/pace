@@ -5,6 +5,7 @@
 namespace PaceVC {
 
 void saveGreedSolution(Graph& graph) {
+    graph.placeMark();
     Kernels::Trivial(graph).reduce();
 
     for (int i = 0; i < graph.realSize(); i++) {
@@ -19,6 +20,7 @@ void saveGreedSolution(Graph& graph) {
     }
 
     graph.saveSolution(graph.restoreSolution());
+    graph.restoreMark();
 }
 
 }

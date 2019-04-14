@@ -28,5 +28,13 @@ struct ZeroSurplusLPKernel {
 
 using ExhaustiveZeroSurplusLPKernel = Exhaustive<ZeroSurplusLPKernel>;
 
+struct FastZeroSurplusLPKernel {
+    Graph& graph;
+
+    FastZeroSurplusLPKernel(Graph& g);
+
+    void reduce();
+};
+
 }
 }

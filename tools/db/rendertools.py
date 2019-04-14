@@ -16,6 +16,7 @@ class KernelStatsRepr:
     def __init__(self, stats):
         self.n = stats["n"]
         self.m = stats["m"]
+        self.greed = stats["greed"]
         self.comps = stats["comps"]
 
 

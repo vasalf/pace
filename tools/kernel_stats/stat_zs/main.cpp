@@ -8,6 +8,6 @@
 int main() {
     PaceVC::Graph g = PaceVC::readGraph(std::cin);
     PaceVC::Kernels::Trivial(g).reduce();
-    PaceVC::Kernels::printStats<PaceVC::Kernels::ZeroSurplusLPKernel>(g, std::cout);
+    PaceVC::Kernels::printStats<PaceVC::Kernels::FastZeroSurplusLPKernel>(g, std::cout);
     return 0;
 }

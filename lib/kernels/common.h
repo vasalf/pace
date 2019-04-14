@@ -34,7 +34,7 @@ struct Exhaustive {
     }
 };
 
-void printGraphStats(const Graph& g, std::ostream& out);
+void printGraphStats(Graph& g, std::ostream& out);
 
 template<class Kernel>
 void printStats(const Graph& g, std::ostream& out) {

@@ -1,5 +1,7 @@
 #include <kernels/common.h>
 
+#include <solution/greed.h>
+
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -26,7 +28,7 @@ namespace {
     }
 }
 
-void printGraphStats(const Graph& g, std::ostream& out) {
+void printGraphStats(Graph& g, std::ostream& out) {
     int edges = 0;
     for (int u : g.undecided()) {
         edges += g.adjacent(u).size();
@@ -67,8 +69,15 @@ void printGraphStats(const Graph& g, std::ostream& out) {
     }
     std::sort(comps.rbegin(), comps.rend());
 
+    Graph h(g.realSize());
+    for (int u : g.undecided())
+        for (int v : g.adjacent(u))
+            h.addEdge(u, v);
+    saveGreedSolution(h);
+
     out << "n: " << g.size() << std::endl;
     out << "m: " << edges << std::endl;
+    out << "greed: " << h.bestSolution().size() << std::endl;
     out << "hi-deg: ";
     for (auto& v: comps) {
         out << "{";

@@ -125,10 +125,12 @@ class TestInfo:
             p.wait()
             nstr = p.stdout.readline().decode("utf-8").rstrip()
             mstr = p.stdout.readline().decode("utf-8").rstrip()
+            greedstr = p.stdout.readline().decode("utf-8").rstrip()
             compstr = p.stdout.readline().decode("utf-8").rstrip()
         self.info[which] = {
             "n": int(nstr.split()[1]),
             "m": int(mstr.split()[1]),
+            "greed": int(greedstr.split()[1]),
             "comps": " ".join(compstr.split()[1:])
         }
 

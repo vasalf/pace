@@ -51,6 +51,7 @@ if(BUILD_TESTING)
         branching/max_degree_ut.cpp
         branching/cutpoints_ut.cpp
         kernels/trivial_ut.cpp
+        kernels/lp/lp_ut.cpp
         surplus/surplus_ut.cpp
         ut/vc_exact_public_ut.cpp
         util/cow_ut.cpp
