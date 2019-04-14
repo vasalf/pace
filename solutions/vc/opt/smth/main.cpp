@@ -536,11 +536,236 @@ struct LeafHandler {
     }
 };
 
+struct FastLPKernel {
+    Graph& graph;
+
+    std::vector<int> pairOfLeft;
+    std::vector<int> pairOfRight;
+
+    FastLPKernel(Graph& g)
+        : graph(g)
+        , pairOfLeft(g.n, -1)
+        , pairOfRight(g.n, -1)
+        , dist(g.n)
+        , edgeptr(g.n)
+        , rightEndInVC(g.n)
+        , vis(g.n)
+        , compId(g.n, -1)
+    {
+        pairOfLeft.reserve(2 * g.n);
+        pairOfRight.reserve(2 * g.n);
+        dist.reserve(2 * g.n);
+        qbuf.reserve(2 * g.n);
+        edgeptr.reserve(2 * g.n);
+        rightEndInVC.reserve(2 * g.n);
+        vis.reserve(2 * g.n);
+        compId.reserve(2 * g.n);
+        topsort.reserve(2 * g.n);
+    }
+
+    std::vector<int> dist;
+    std::vector<int> qbuf;
+    std::vector<int> edgeptr;
+
+    inline bool hasPairOfLeft(GraphViewRef& graphView, int v) {
+        return !(pairOfLeft[v] == -1 || pairOfLeft[v] >= graph.n || !graphView.isIn(pairOfLeft[v]));
+    }
+
+    inline bool hasPairOfRight(GraphViewRef& graphView, int v) {
+        return !(pairOfRight[v] == -1 || pairOfRight[v] >= graph.n || !graphView.isIn(pairOfRight[v]));
+    }
+
+    bool hopcroftKarpBfs(GraphViewRef& graphView) {
+        qbuf.clear();
+        int qhead = 0;
+        for (int u : graphView.leftVertices) {
+            dist[u] = -1;
+            if (!hasPairOfLeft(graphView, u)) {
+                dist[u] = 0;
+                qbuf.push_back(u);
+            }
+        }
+        bool ret = false;
+        while (qhead < (int)qbuf.size()) {
+            int a = qbuf[qhead++];
+            for (int i = graph.firstEdge[a]; i < graph.lastEdge[a]; i++) {
+                int v = graph.edges[i];
+                if (!hasPairOfRight(graphView, v)) {
+                    ret = true;
+                    continue;
+                }
+                if (dist[pairOfRight[v]] == -1) {
+                    dist[pairOfRight[v]] = dist[a] + 1;
+                    qbuf.push_back(pairOfRight[v]);
+                }
+            }
+        }
+        return ret;
+    }
+
+    bool hopcroftKarpDfs(GraphViewRef& graphView, int u) {
+        // TODO: Rewrite non-recursively && compare performance
+        for (; edgeptr[u] < graph.lastEdge[u]; edgeptr[u]++) {
+            int v = graph.edges[edgeptr[u]];
+            if (!hasPairOfRight(graphView, v) || (dist[pairOfRight[v]] == dist[u] + 1 && hopcroftKarpDfs(graphView, pairOfRight[v]))) {
+                pairOfRight[v] = u;
+                pairOfLeft[u] = v;
+                edgeptr[u]++;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    std::vector<bool> rightEndInVC;
+    std::vector<bool> vis;
+
+    void konig(GraphViewRef& graphView) {
+        qbuf.clear();
+        int qhead = 0;
+        for (int u : graphView.leftVertices) {
+            vis[u] = false;
+            if (!hasPairOfLeft(graphView, u)) {
+                qbuf.push_back(u);
+                vis[u] = true;
+            }
+        }
+        while (qhead < (int)qbuf.size()) {
+            int a = qbuf[qhead++];
+            for (int i = graph.firstEdge[a]; i < graph.lastEdge[a]; i++) {
+                int v = graph.edges[i];
+                rightEndInVC[pairOfRight[v]] = true;
+                if (!vis[pairOfRight[v]]) {
+                    vis[pairOfRight[v]] = true;
+                    qbuf.push_back(pairOfRight[v]);
+                }
+            }
+        }
+    }
+
+    inline bool isUndecided(int u) {
+        return pairOfLeft[u] != -1 && !rightEndInVC[u] && pairOfRight[u] != -1 && !rightEndInVC[pairOfRight[u]];
+    }
+
+    std::vector<int> topsort;
+    void topsortDfs(int v) {
+        vis[v] = true;
+        for (int i = graph.firstEdge[v]; i < graph.lastEdge[v]; i++) {
+            if (graph.edges[i] == pairOfLeft[v])
+                continue;
+            int u = pairOfRight[graph.edges[i]];
+            if (!isUndecided(u))
+                continue;
+            if (!vis[u])
+                topsortDfs(u);
+        }
+        topsort.push_back(v);
+    }
+
+    std::vector<int> compId;
+    void markDfs(int v, int mark) {
+        compId[v] = mark;
+        int vh = pairOfLeft[v];
+        for (int i = graph.firstEdge[vh]; i < graph.lastEdge[vh]; i++) {
+            if (graph.edges[i] == v)
+                continue;
+            if (!isUndecided(graph.edges[i]))
+                continue;
+            if (compId[graph.edges[i]] == -1) {
+                markDfs(graph.edges[i], mark);
+            }
+        }
+    }
+
+    int update(GraphViewRef& graphView) {
+        // TODO: Reuse old values
+        for (int u : graphView.leftVertices) {
+            pairOfLeft[u] = -1;
+            pairOfRight[u] = -1;
+        }
+        int ans = 0;
+        while (ans < (int)graphView.leftVertices.size() && hopcroftKarpBfs(graphView)) {
+            for (int u : graphView.leftVertices) {
+                edgeptr[u] = graph.firstEdge[u];
+            }
+            for (int u : graphView.leftVertices) {
+                if (!hasPairOfLeft(graphView, u)) {
+                    if (hopcroftKarpDfs(graphView, u))
+                        ans++;
+                }
+            }
+        }
+        for (int u : graphView.leftVertices) {
+            rightEndInVC[u] = false;
+        }
+        konig(graphView);
+        for (int u : graphView.leftVertices) {
+            vis[u] = false;
+            compId[u] = -1;
+        }
+        topsort.clear();
+        for (int u : graphView.leftVertices) {
+            if (hasPairOfLeft(graphView, u) && !rightEndInVC[u]
+                    && hasPairOfRight(graphView, u) && !rightEndInVC[pairOfRight[u]]) {
+                if (!vis[u])
+                    topsortDfs(u);
+            }
+        }
+        std::reverse(topsort.begin(), topsort.end());
+        int comp = 0;
+        for (int u : topsort) {
+            if (compId[u] == -1 && vis[u])
+                markDfs(u, comp++);
+        }
+        return ans;
+    }
+
+    void addFakeVertex() {
+        pairOfLeft.push_back(-1);
+        pairOfRight.push_back(-1);
+        dist.push_back(-1);
+        edgeptr.push_back(0);
+        rightEndInVC.push_back(false);
+        vis.push_back(false);
+        compId.push_back(false);
+    }
+
+    void removeFakeVertex() {
+        pairOfLeft.pop_back();
+        pairOfRight.pop_back();
+        dist.pop_back();
+        edgeptr.pop_back();
+        rightEndInVC.pop_back();
+        vis.pop_back();
+        compId.pop_back();
+    }
+
+    enum class VertexResolution {
+        TAKE,
+        REMOVE,
+        LEAVE
+    };
+
+    inline VertexResolution vertexResolution(int v) {
+        if (pairOfLeft[v] == -1 || pairOfRight[v] == -1) {
+            return VertexResolution::REMOVE;
+        } else if (!rightEndInVC[v] && rightEndInVC[pairOfRight[v]]) {
+            return VertexResolution::TAKE;
+        } else if (compId[v] < compId[pairOfLeft[v]]) {
+            return VertexResolution::TAKE;
+        } else if (compId[v] > compId[pairOfLeft[v]]) {
+            return VertexResolution::REMOVE;
+        }
+        return VertexResolution::LEAVE;
+    }
+};
+
 struct PassageHandler {
     Graph& graph;
     ComponentSplitter& componentSplitter;
     LeafHandler& leafHandler;
     SolutionStorage& solutionStorage;
+    FastLPKernel& fastLPKernel;
     std::vector<int>& removed;
 
     std::vector<int> leftVBuf;
@@ -549,11 +774,13 @@ struct PassageHandler {
                    ComponentSplitter& cs,
                    LeafHandler& lh,
                    SolutionStorage& ss,
+                   FastLPKernel& flk,
                    std::vector<int>& removed)
         : graph(graph)
         , componentSplitter(cs)
         , leafHandler(lh)
         , solutionStorage(ss)
+        , fastLPKernel(flk)
         , removed(removed)
     {
         leftVBuf.reserve(graph.n);
@@ -629,6 +856,7 @@ struct PassageHandler {
                 removed.push_back(-2);
                 componentSplitter.addFakeVertex();
                 leafHandler.addFakeVertex();
+                fastLPKernel.addFakeVertex();
             }
         }
     }
@@ -644,12 +872,14 @@ class Brancher {
     std::vector<int> bestSolution;
     SolutionStorage curSolution;
 
+    FastLPKernel fastLPKernel;
+
     PassageHandler passageHandler;
 
     int curDepth = -1;
 
 #ifdef DEBUG_BRANCHING
-    std::string spaces;
+    std::string spaces = "c  ";
 #endif
 
 public:
@@ -659,7 +889,8 @@ public:
         , leafHandler(g, removed, curSolution)
         , bestSolution(graph.n)
         , curSolution(g.n, aprior)
-        , passageHandler(graph, compSplitter, leafHandler, curSolution, removed)
+        , fastLPKernel(g)
+        , passageHandler(graph, compSplitter, leafHandler, curSolution, fastLPKernel, removed)
     {
         std::iota(bestSolution.begin(), bestSolution.end(), 0);
     }
@@ -723,6 +954,7 @@ private:
                 leafHandler.removeFakeVertex();
                 compSplitter.removeFakeVertex();
                 curSolution.removeFakeVertex(graphView);
+                fastLPKernel.removeFakeVertex();
                 continue;
             }
             if (!curSolution.empty() && curSolution.back() == removed.back()) {
@@ -751,6 +983,34 @@ private:
         if (curSolution.size() > bestSolution.size()) {
 #ifdef DEBUG_BRANCHING
             std::cout << spaces << "cutoff(cur=" << curSolution.size() << ",best=" << bestSolution.size() << ")" << std::endl;
+#endif
+            return;
+        }
+
+        int lpReduced = 0;
+        fastLPKernel.update(graphView);
+        for (int i = 0; i < (int)graphView.leftVertices.size(); ) {
+            int u = graphView.leftVertices[i];
+            auto resolution = fastLPKernel.vertexResolution(u);
+            if (resolution == FastLPKernel::VertexResolution::TAKE) {
+                curSolution.push(u);
+                removed.push_back(u);
+                graph.removeVertex(u);
+                graphView.removeVertex(u);
+                ++lpReduced;
+            } else if (resolution == FastLPKernel::VertexResolution::REMOVE) {
+                removed.push_back(u);
+                graph.removeVertex(u);
+                graphView.removeVertex(u);
+                ++lpReduced;
+            } else {
+                i++;
+            }
+        }
+
+        if (curSolution.size() + (graphView.leftVertices.size() + 1) / 2 > bestSolution.size()) {
+#ifdef DEBUG_BRANCHING
+            std::cout << spaces << "lp_cutoff(cur=" << curSolution.size() << ",best=" << bestSolution.size() << ")" << std::endl;
 #endif
             return;
         }
@@ -835,7 +1095,7 @@ private:
         }
 
 #ifdef DEBUG_BRANCHING
-        std::cout << spaces << "inner(size=" << graphView.leftVertices.size() << ")" << std::endl;
+        std::cout << spaces << "inner(size=" << graphView.leftVertices.size() << ",lpReduced=" << lpReduced << ")" << std::endl;
 #endif
 
         {
