@@ -894,11 +894,47 @@ struct PassageHandler {
     }
 };
 
+struct GreedyISFinder {
+    Graph& graph;
+
+    int iteration = 0;
+    std::vector<int> status;
+    std::vector<int> suggestedSolution;
+
+    GreedyISFinder(Graph& g)
+        : graph(g)
+        , status(2 * g.n)
+    {
+        suggestedSolution.reserve(2 * g.n);
+    }
+
+    void find(GraphViewRef& graphView) {
+        iteration++;
+        suggestedSolution.clear();
+        for (int u : graphView.leftVertices) {
+            status[u] = iteration;
+        }
+        for (int u : graphView.leftVertices) {
+            if (status[u] == iteration) {
+                for (int i = graph.firstEdge[u]; i < graph.lastEdge[u]; i++) {
+                    if (status[graph.edges[i]] == iteration) {
+                        status[graph.edges[i]]--;
+                    }
+                }
+            } else {
+                suggestedSolution.push_back(u);
+            }
+        }
+    }
+};
+
 class Brancher {
     Graph& graph;
 
     ComponentSplitter compSplitter;
     LeafHandler leafHandler;
+
+    GreedyISFinder greedyISFinder;
 
     std::vector<int> removed;
     std::vector<int> bestSolution;
@@ -914,17 +950,31 @@ class Brancher {
     std::string spaces = "c  ";
 #endif
 
+    std::vector<int> ofDegree;
+    std::vector<int> degSorted;
+    std::vector<int> usedAs;
+    int iteration = 0;
+
+    std::vector<int> branchedAt;
+    std::vector<int> branchedAtBegin;
+
 public:
     Brancher(Graph& g, std::vector<int> aprior)
         : graph(g)
         , compSplitter(g)
         , leafHandler(g, fastLPKernel, removed, curSolution)
+        , greedyISFinder(g)
         , bestSolution(graph.n)
         , curSolution(g.n, aprior)
         , fastLPKernel(g)
         , passageHandler(graph, compSplitter, leafHandler, curSolution, fastLPKernel, removed)
     {
         std::iota(bestSolution.begin(), bestSolution.end(), 0);
+        ofDegree.resize(2 * g.n);
+        degSorted.reserve(2 * g.n);
+        usedAs.resize(2 * g.n);
+        branchedAt.reserve(2 * g.n);
+        branchedAtBegin.reserve(2 * g.n);
     }
 
     void branch() {
@@ -961,17 +1011,7 @@ private:
         bestSolution.swap(bestSolutionCopy);
     }
 
-    void branch(GraphViewRef& graphView) {
-        removed.push_back(-1);
-        curDepth--;
-#ifdef DEBUG_BRANCHING
-        spaces.push_back(' ');
-#endif
-        wrapBranch(graphView);
-#ifdef DEBUG_BRANCHING
-        spaces.pop_back();
-#endif
-        curDepth++;
+    void restoreRemoved(GraphViewRef& graphView) {
         while (removed.back() != -1) {
             if (removed.back() == -2) {
                 removed.pop_back();
@@ -997,6 +1037,20 @@ private:
             removed.pop_back();
         }
         removed.pop_back();
+    }
+
+    void branch(GraphViewRef& graphView) {
+        removed.push_back(-1);
+        curDepth--;
+#ifdef DEBUG_BRANCHING
+        spaces.push_back(' ');
+#endif
+        wrapBranch(graphView);
+#ifdef DEBUG_BRANCHING
+        spaces.pop_back();
+#endif
+        curDepth++;
+        restoreRemoved(graphView);
     }
 
     void wrapBranch(GraphViewRef& graphView) {
@@ -1038,6 +1092,14 @@ private:
             } else {
                 i++;
             }
+        }
+
+        greedyISFinder.find(graphView);
+        if (curSolution.size() + greedyISFinder.suggestedSolution.size() < bestSolution.size()) {
+            int rem = curSolution.size();
+            curSolution.append(greedyISFinder.suggestedSolution);
+            curSolution.saveTo(bestSolution);
+            curSolution.shrinkToSize(rem);
         }
 
         if (curSolution.size() + (graphView.leftVertices.size() + 1) / 2 > bestSolution.size()) {
@@ -1120,45 +1182,101 @@ private:
 
         passageHandler.handle(graphView);
 
-        int v = graphView.leftVertices[0];
-        int mxd = graph.getDegree(v);
-        for (int i = 0; i < (int)graphView.leftVertices.size(); i++) {
-            int u = graphView.leftVertices[i];
-            if (graph.getDegree(u) > mxd) {
-                v = u;
-                mxd  = graph.getDegree(u);
-            }
-        }
-
 #ifdef DEBUG_BRANCHING
         std::cout << spaces << "inner(size=" << graphView.leftVertices.size() << ",lpReduced=" << lpReduced << ")" << std::endl;
 #endif
 
-        {
-#ifdef DEBUG_BRANCHING
-            std::cout << spaces << "take(" << v << ")" << std::endl;
-#endif
-            curSolution.push(v);
-            graph.removeVertex(v);
-            graphView.removeVertex(v);
-
-            branch(graphView);
-
-            graphView.addVertex(v);
-            graph.revertVertexRemoval(v);
-            curSolution.pop();
+        std::memset(ofDegree.data(), 0, sizeof(int) * graphView.leftVertices.size());
+        iteration += 2;
+        for (int u : graphView.leftVertices) {
+            ofDegree[graph.getDegree(u)]++;
+        }
+        for (int i = 1; i < (int)graphView.leftVertices.size(); i++) {
+            ofDegree[i] += ofDegree[i - 1];
+        }
+        std::memmove(ofDegree.data() + 1, ofDegree.data(), sizeof(int) * graphView.leftVertices.size());
+        ofDegree[0] = 0;
+        degSorted.resize(graphView.leftVertices.size());
+        for (int i = graphView.leftVertices.size() - 1; i >= 0; i--) {
+            int u = graphView.leftVertices[i];
+            degSorted[ofDegree[graph.getDegree(u)]++] = u;
+        }
+        branchedAtBegin.push_back(branchedAt.size());
+        int set = 0, neighbours = 0;
+        for (int i = graphView.leftVertices.size() - 1; i >= 0; i--) {
+            int u = degSorted[i];
+            if (usedAs[u] != iteration - 1) {
+                if (graph.getDegree(u) < neighbours - set + 1) {
+                    continue;
+                }
+                int cntWrong = 0;
+                for (int j = graph.firstEdge[u]; cntWrong < 2 && j < graph.lastEdge[u]; j++) {
+                    if (i != (int)graphView.leftVertices.size() - 1 && usedAs[graph.edges[j]] != iteration - 1) {
+                        cntWrong++;
+                    }
+                }
+                if (cntWrong > 1) {
+                    continue;
+                }
+                set++;
+                usedAs[u] = iteration;
+                branchedAt.push_back(u);
+                for (int j = graph.firstEdge[u]; j < graph.lastEdge[u]; j++) {
+                    if (usedAs[graph.edges[j]] != iteration - 1) {
+                        usedAs[graph.edges[j]] = iteration - 1;
+                        neighbours++;
+                    }
+                }
+            }
         }
 
         {
 #ifdef DEBUG_BRANCHING
-            std::cout << spaces << "takeNeighbours(" << v << ")" << std::endl;
+            std::cout << spaces << "take(";
+            for (int i = branchedAtBegin.back(); i < (int)branchedAt.size(); i++) {
+                std::cout << branchedAt[i];
+                if (i < (int)branchedAt.size() - 1) {
+                    std::cout << ", ";
+                }
+            }
+            std::cout << ")" << std::endl;
+#endif
+            for (int i = branchedAtBegin.back(); i < (int)branchedAt.size(); i++) {
+                int v = branchedAt[i];
+                curSolution.push(v);
+                graph.removeVertex(v);
+                graphView.removeVertex(v);
+            }
+
+            branch(graphView);
+
+            for (int i = branchedAt.size() - 1; i >= branchedAtBegin.back(); i--) {
+                int v = branchedAt[i];
+                graphView.addVertex(v);
+                graph.revertVertexRemoval(v);
+                curSolution.pop();
+            }
+        }
+
+        {
+#ifdef DEBUG_BRANCHING
+            std::cout << spaces << "takeNeighbours(";
+            for (int i = branchedAtBegin.back(); i < (int)branchedAt.size(); i++) {
+                std::cout << branchedAt[i];
+                if (i < (int)branchedAt.size() - 1) {
+                    std::cout << ", ";
+                }
+            }
+            std::cout << ")" << std::endl;
 #endif
             int rem = removed.size();
-            for (int i = graph.firstEdge[v]; i < graph.lastEdge[v]; i++) {
-                if (!graphView.isIn(graph.edges[i]))
-                    continue;
-                graphView.removeVertex(graph.edges[i]);
-                removed.push_back(graph.edges[i]);
+            for (int i = branchedAtBegin.back(); i < (int)branchedAt.size(); i++) {
+                for (int j = graph.firstEdge[branchedAt[i]]; j < graph.lastEdge[branchedAt[i]]; j++) {
+                    if (!graphView.isIn(graph.edges[j]))
+                        continue;
+                    graphView.removeVertex(graph.edges[j]);
+                    removed.push_back(graph.edges[j]);
+                }
             }
             for (int i = rem; i < (int)removed.size(); i++) {
                 graph.removeVertex(removed[i]);
@@ -1172,6 +1290,9 @@ private:
             }
             // State of graph and graphView will be restored in branch() subroutine
         }
+
+        branchedAt.resize(branchedAtBegin.back());
+        branchedAtBegin.pop_back();
     }
 };
 
