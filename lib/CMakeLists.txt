@@ -15,6 +15,8 @@ add_library(pacevc STATIC
     branching/debug_branching.cpp
     branching/max_degree.cpp
 
+    cut/vertex_cut.cpp
+
     kernels/bound.cpp
     kernels/common.cpp
     kernels/crown/crown.cpp

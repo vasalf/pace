@@ -37,6 +37,7 @@ class TestRepr:
         self.solved_by = test.info.get("solved_by", "—")
         self.zs = KernelStatsRepr(test.info["stat_zs"])
         self.c2k = KernelStatsRepr(test.info["stat_c2k"])
+        self.vertex_cut = test.info["vertex_cut"]
 
     def update_status(self, database):
         self.status = TestStatus.UNSOLVED

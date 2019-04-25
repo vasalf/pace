@@ -33,7 +33,7 @@
             left: 10px;
         }
 
-        .test-n, .test-m, .test-comps, .test-cutpoints, .test-mnd, .test-mxd, .test-answer, .test-surplus, .test-lpvc, .test-greed, .test-crbound, .test-zs-n, .test-zs-m, .test-zs-greed {
+        .test-n, .test-m, .test-comps, .test-cutpoints, .test-mnd, .test-mxd, .test-answer, .test-surplus, .test-lpvc, .test-greed, .test-crbound, .test-zs-n, .test-zs-m, .test-zs-greed, .test-vcut {
             text-align: center;
         }
 
@@ -74,6 +74,7 @@
             <th id="test-zs-m">ZS: E</th>
             <th id="test-zs-greed">ZS: Greed</th>
             <th id="test-zs-comps">ZS: High-degree vertices</th>
+            <th id="test-vcut">VCut</th>
         </tr>
     </thead>
     </table>
@@ -105,6 +106,7 @@
                 <td class="test-zs-m">{{ test.zs.m }}</td>
                 <td class="test-zs-greed">{{ test.zs.greed }}</td>
                 <td class="test-zs-comps">{{ test.zs.comps }}</td>
+                <td class="test-vcut">{{ test.vertex_cut }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -130,6 +132,7 @@
         "test-zs-m",
         "test-zs-greed",
         "test-zs-comps",
+        "test-vcut",
     ]
     for (i in classes) {
         c = classes[i];

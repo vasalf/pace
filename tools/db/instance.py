@@ -17,6 +17,7 @@ class TestInfo:
         "update_kernel_stats",
         "update_cutpoints",
         "update_comps",
+        "update_vertex_cut",
     ]
 
     def __init__(self, config, db=None):
@@ -146,6 +147,15 @@ class TestInfo:
             p.wait()
             compsstr = p.stdout.readline().decode("utf-8")
         self.info["comps"] = int(compsstr)
+
+    def update_vertex_cut(self):
+        if "vertex_cut" in self.info:
+            return
+        with open(self.config.filename, "r") as test:
+            p = subprocess.Popen(["./build/tools/vertex_cut/vertex_cut"], stdin=test, stdout=subprocess.PIPE)
+            p.wait()
+            compsstr = p.stdout.readline().decode("utf-8")
+        self.info["vertex_cut"] = int(compsstr)
 
 
 class Test:
