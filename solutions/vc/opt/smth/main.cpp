@@ -1365,8 +1365,12 @@ private:
             return;
         }
 
+        int graphSizeRem = graphView.leftVertices.size();
+        passageHandler.handle(graphView);
+        (void)graphSizeRem;
+
 #ifdef ABOVE_LP_BRANCHING
-        if (fastLPKernel.updateAboveLP(graphView)) {
+        if (graphSizeRem == (int)graphView.leftVertices.size() && fastLPKernel.updateAboveLP(graphView)) {
             aboveLPDelegation.clear();
             int a = 0, b = 1;
             graph.startNewDelegation();
@@ -1424,8 +1428,6 @@ private:
             }
         }
 #endif
-
-        passageHandler.handle(graphView);
 
 #ifdef DEBUG_BRANCHING
         std::cout << spaces << "inner(size=" << graphView.leftVertices.size() << ",lpReduced=" << lpReduced << ")" << std::endl;
