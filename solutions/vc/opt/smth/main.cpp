@@ -1365,6 +1365,7 @@ private:
             return;
         }
 
+#ifdef ABOVE_LP_BRANCHING
         if (fastLPKernel.updateAboveLP(graphView)) {
             aboveLPDelegation.clear();
             int a = 0, b = 1;
@@ -1421,8 +1422,10 @@ private:
                 graph.uniqueizeEdgesOf(graph.n - 1);
                 removed.push_back(-2);
             }
-            passageHandler.handle(graphView);
         }
+#endif
+
+        passageHandler.handle(graphView);
 
 #ifdef DEBUG_BRANCHING
         std::cout << spaces << "inner(size=" << graphView.leftVertices.size() << ",lpReduced=" << lpReduced << ")" << std::endl;
@@ -1586,7 +1589,7 @@ int main() {
     }
 
     Brancher b(g, aprior);
-    //b.setMaxDepth(15);
+    b.setMaxDepth(15);
     b.branch();
     auto solution = b.getBestSolution();
 
