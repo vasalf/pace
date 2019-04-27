@@ -1,0 +1,2 @@
+add_executable(biconnected_comp_tree main.cpp)
+target_link_libraries(biconnected_comp_tree LINK_PUBLIC pacevc)
