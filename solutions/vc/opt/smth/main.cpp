@@ -3,6 +3,7 @@
 #include <cstring>
 #include <iostream>
 #include <numeric>
+#include <random>
 #include <sstream>
 #include <vector>
 
@@ -278,7 +279,7 @@ struct GraphViewRef {
     }
 
     inline bool isIn(int v) {
-        return 0 <= which[v] && which[v] < (int)leftVertices.size() && leftVertices[which[v]] == v;
+        return v < (int)which.size() && 0 <= which[v] && which[v] < (int)leftVertices.size() && leftVertices[which[v]] == v;
     }
 };
 
@@ -1101,6 +1102,155 @@ struct GreedyISFinder {
     }
 };
 
+struct CutpointFinder {
+    Graph& graph;
+
+    std::vector<int> height;
+    std::vector<int> up;
+
+    CutpointFinder(Graph& g)
+        : graph(g)
+        , height(2 * g.n)
+        , up(2 * g.n)
+    { }
+
+    int cutpoint = -1;
+
+    int dfs(int v, int h) {
+        height[v] = h;
+        up[v] = h;
+        int ret = 0;
+        bool added = false;
+        for (int i = graph.firstEdge[v]; i < graph.lastEdge[v]; i++) {
+            int u = graph.edges[i];
+            if (height[u] == -1) {
+                dfs(u, h + 1);
+                if (cutpoint != -1) {
+                    return ret;
+                }
+                up[v] = std::min(up[v], up[u]);
+                ++ret;
+                if (h > 0 && up[u] >= h && !added) {
+                    cutpoint = v;
+                    return ret;
+                }
+            } else {
+                up[v] = std::min(up[v], height[u]);
+            }
+        }
+        return ret;
+    }
+
+    int find(GraphViewRef& graphView) {
+        cutpoint = -1;
+        for (int u : graphView.leftVertices) {
+            height[u] = -1;
+        }
+        int a = dfs(graphView.leftVertices[0], 0);
+        if (cutpoint != -1) {
+            return cutpoint;
+        } else if (a > 1) {
+            return graphView.leftVertices[0];
+        }
+        return -1;
+    }
+};
+
+struct VertexCutFinder {
+    std::mt19937 rnd;
+
+    Graph& graph;
+
+    VertexCutFinder(Graph& g)
+        : rnd(179)
+        , graph(g)
+        , prevIn(2 * g.n)
+        , flow(2 * g.n)
+        , visIn(2 * g.n)
+        , visOut(2 * g.n)
+    {
+        cut.reserve(g.n);
+    }
+
+    std::vector<int> prevIn;
+    std::vector<bool> flow;
+
+    int iteration = 0;
+    std::vector<int> visIn, visOut;
+
+    bool dfs(int v, int sink) {
+        visOut[v] = iteration;
+        for (int i = graph.firstEdge[v]; i < graph.lastEdge[v]; i++) {
+            int u = graph.edges[i];
+            if (visIn[u] != iteration /*&& prevIn[u] != v*/) {
+                if (u == sink) {
+                    return true;
+                }
+                visIn[u] = iteration;
+                if (visOut[u] != iteration && !flow[u] && dfs(u, sink)) {
+                    flow[u] = true;
+                    prevIn[u] = v;
+                    return true;
+                }
+                if (prevIn[u] != -1 && visOut[prevIn[u]] != iteration && dfs(prevIn[u], sink)) {
+                    prevIn[u] = v;
+                    return true;
+                }
+            }
+        }
+        if (flow[v] && visIn[v] != iteration) {
+            visIn[v] = iteration;
+            if (prevIn[v] != -1 && visOut[prevIn[v]] != iteration && dfs(prevIn[v], sink)) {
+                flow[v] = false;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    std::vector<int> cut;
+
+    bool findCut(GraphViewRef& graphView, int maxSize) {
+        std::uniform_int_distribution<int> dist(0, graphView.leftVertices.size() - 1);
+        int a, b;
+        int i = 0;
+        do {
+            a = graphView.leftVertices[dist(rnd)];
+            b = graphView.leftVertices[dist(rnd)];
+            i++;
+        } while (i < 5 && (a == b || graph.areAdjacent(a, b)));
+        if (a == b || graph.areAdjacent(a, b)) {
+            return false;
+        }
+        for (int u : graphView.leftVertices) {
+            prevIn[u] = -1;
+            flow[u] = false;
+        }
+        bool ok = false;
+        int sz = 0;
+        for (int i = 0; i < maxSize + 1 && !ok; i++) {
+            ++iteration;
+            if (!dfs(a, b)) {
+                ok = true;
+            } else {
+                ++sz;
+            }
+        }
+        if (!ok) {
+            return false;
+        }
+        cut.clear();
+        for (int u : graphView.leftVertices) {
+            if (visIn[u] == iteration && visOut[u] != iteration) {
+                cut.push_back(u);
+            }
+        }
+        assert((int)cut.size() == sz);
+        assert(sz > 1);
+        return true;
+    }
+};
+
 class Brancher {
     Graph& graph;
 
@@ -1117,6 +1267,9 @@ class Brancher {
 
     PassageHandler passageHandler;
 
+    CutpointFinder cutpointFinder;
+    VertexCutFinder vertexCutFinder;
+
     int curDepth = -1;
 
 #ifdef DEBUG_BRANCHING
@@ -1130,6 +1283,7 @@ class Brancher {
 
     std::vector<int> branchedAt;
     std::vector<int> branchedAtBegin;
+    std::vector<int> forceBranch;
 
     std::vector<int> aboveLPDelegation;
 
@@ -1143,6 +1297,8 @@ public:
         , curSolution(g.n, aprior)
         , fastLPKernel(g)
         , passageHandler(graph, compSplitter, leafHandler, curSolution, fastLPKernel, removed)
+        , cutpointFinder(g)
+        , vertexCutFinder(g)
     {
         std::iota(bestSolution.begin(), bestSolution.end(), 0);
         ofDegree.resize(2 * g.n);
@@ -1151,6 +1307,7 @@ public:
         branchedAt.reserve(2 * g.n);
         branchedAtBegin.reserve(2 * g.n);
         aboveLPDelegation.reserve(2 * g.n);
+        forceBranch.reserve(g.n);
     }
 
     void branch() {
@@ -1429,9 +1586,70 @@ private:
         }
 #endif
 
+        bool isComplete = true;
+        for (int u : graphView.leftVertices) {
+            if (graph.getDegree(u) < (int)graphView.leftVertices.size() - 1) {
+                isComplete = false;
+                break;
+            }
+        }
+        if (isComplete) {
+#ifdef DEBUG_BRANCHING
+            std::cout << spaces << "complete(size=" << graphView.leftVertices.size() << ")" << std::endl;
+#endif
+            int rem = curSolution.size();
+            for (int i = 1; i < (int)graphView.leftVertices.size(); i++) {
+                curSolution.push(graphView.leftVertices[i]);
+            }
+            if (curSolution.size() < bestSolution.size()) {
+                curSolution.saveTo(bestSolution);
+            }
+            curSolution.shrinkToSize(rem);
+            return;
+        }
+
 #ifdef DEBUG_BRANCHING
         std::cout << spaces << "inner(size=" << graphView.leftVertices.size() << ",lpReduced=" << lpReduced << ")" << std::endl;
 #endif
+
+        int v = -1;
+        std::vector<int> fbret;
+        while (!forceBranch.empty() && v == -1) {
+            int u = forceBranch.back();
+            fbret.push_back(u);
+            forceBranch.pop_back();
+            if (graphView.isIn(u)) {
+                v = u;
+            }
+        }
+        if (v == -1) {
+            v = cutpointFinder.find(graphView);
+        }
+        if (v == -1) {
+            int mnd = -1;
+            for (int u : graphView.leftVertices) {
+                if (mnd == -1 || graph.getDegree(u) < mnd) {
+                    mnd = graph.getDegree(u);
+                }
+            }
+            if (mnd > 2) {
+                if (vertexCutFinder.findCut(graphView, mnd - 1)) {
+                    forceBranch.resize(vertexCutFinder.cut.size());
+                    std::memcpy(forceBranch.data(), vertexCutFinder.cut.data(), sizeof(int) * forceBranch.size());
+                    v = forceBranch.back();
+                    forceBranch.pop_back();
+                }
+            }
+        }
+        if (v == -1) {
+            int mxd = -1;
+            for (int u : graphView.leftVertices) {
+                if (mxd == -1 || graph.getDegree(u) > mxd) {
+                    mxd = graph.getDegree(u);
+                    v = u;
+                }
+            }
+        }
 
         std::memset(ofDegree.data(), 0, sizeof(int) * graphView.leftVertices.size());
         iteration += 2;
@@ -1444,10 +1662,15 @@ private:
         std::memmove(ofDegree.data() + 1, ofDegree.data(), sizeof(int) * graphView.leftVertices.size());
         ofDegree[0] = 0;
         degSorted.resize(graphView.leftVertices.size());
+        int vId;
         for (int i = graphView.leftVertices.size() - 1; i >= 0; i--) {
             int u = graphView.leftVertices[i];
+            if (u == v) {
+                vId = ofDegree[graph.getDegree(u)];
+            }
             degSorted[ofDegree[graph.getDegree(u)]++] = u;
         }
+        std::swap(degSorted[vId], degSorted.back());
         branchedAtBegin.push_back(branchedAt.size());
         int set = 0, neighbours = 0;
         for (int i = graphView.leftVertices.size() - 1; i >= 0; i--) {
@@ -1538,6 +1761,12 @@ private:
             // State of graph and graphView will be restored in branch() subroutine
         }
 
+        if (!fbret.empty()) {
+            int rem = forceBranch.size();
+            forceBranch.resize(rem + fbret.size());
+            std::memcpy(forceBranch.data() + rem, fbret.data(), sizeof(int) * fbret.size());
+        }
+
         branchedAt.resize(branchedAtBegin.back());
         branchedAtBegin.pop_back();
     }
@@ -1591,7 +1820,7 @@ int main() {
     }
 
     Brancher b(g, aprior);
-    b.setMaxDepth(15);
+    //b.setMaxDepth(15);
     b.branch();
     auto solution = b.getBestSolution();
 
