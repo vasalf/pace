@@ -1,3 +1,4 @@
+add_subdirectory(biconnected_comp_tree)
 add_subdirectory(comps)
 add_subdirectory(crown_bound)
 add_subdirectory(cutpoints)
