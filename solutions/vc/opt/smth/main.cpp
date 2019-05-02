@@ -1170,6 +1170,9 @@ struct VertexCutFinder {
         , visOut(2 * g.n)
     {
         cut.reserve(g.n);
+#ifdef DEBUG_VCUT
+        visCheck.resize(2 * g.n);
+#endif
     }
 
     std::vector<int> prevIn;
@@ -1210,6 +1213,30 @@ struct VertexCutFinder {
 
     std::vector<int> cut;
 
+#ifdef DEBUG_VCUT
+    std::vector<int> visCheck;
+
+    bool pathDfs(int v, int e) {
+        visCheck[v] = iteration;
+        if (v == e) {
+            return true;
+        }
+        for (int i = graph.firstEdge[v]; i < graph.lastEdge[v]; i++) {
+            int u = graph.edges[i];
+            if (visCheck[u] == iteration) {
+                continue;
+            }
+            if (std::binary_search(cut.begin(), cut.end(), u)) {
+                continue;
+            }
+            if (pathDfs(u, e)) {
+                return true;
+            }
+        }
+        return false;
+    }
+#endif
+
     bool findCut(GraphViewRef& graphView, int maxSize) {
         std::uniform_int_distribution<int> dist(0, graphView.leftVertices.size() - 1);
         int a, b;
@@ -1247,6 +1274,13 @@ struct VertexCutFinder {
         }
         assert((int)cut.size() == sz);
         assert(sz > 1);
+#ifdef DEBUG_VCUT
+        std::sort(cut.begin(), cut.end());
+        assert(!std::binary_search(cut.begin(), cut.end(), a));
+        assert(!std::binary_search(cut.begin(), cut.end(), b));
+        ++iteration;
+        assert(!pathDfs(a, b));
+#endif
         return true;
     }
 };
@@ -1268,7 +1302,9 @@ class Brancher {
     PassageHandler passageHandler;
 
     CutpointFinder cutpointFinder;
+#ifdef VCUT_SELECTOR
     VertexCutFinder vertexCutFinder;
+#endif
 
     int curDepth = -1;
 
@@ -1283,7 +1319,6 @@ class Brancher {
 
     std::vector<int> branchedAt;
     std::vector<int> branchedAtBegin;
-    std::vector<int> forceBranch;
 
     std::vector<int> aboveLPDelegation;
 
@@ -1298,7 +1333,9 @@ public:
         , fastLPKernel(g)
         , passageHandler(graph, compSplitter, leafHandler, curSolution, fastLPKernel, removed)
         , cutpointFinder(g)
+#ifdef VCUT_SELECTOR
         , vertexCutFinder(g)
+#endif
     {
         std::iota(bestSolution.begin(), bestSolution.end(), 0);
         ofDegree.resize(2 * g.n);
@@ -1307,7 +1344,6 @@ public:
         branchedAt.reserve(2 * g.n);
         branchedAtBegin.reserve(2 * g.n);
         aboveLPDelegation.reserve(2 * g.n);
-        forceBranch.reserve(g.n);
     }
 
     void branch() {
@@ -1613,18 +1649,10 @@ private:
 #endif
 
         int v = -1;
-        std::vector<int> fbret;
-        while (!forceBranch.empty() && v == -1) {
-            int u = forceBranch.back();
-            fbret.push_back(u);
-            forceBranch.pop_back();
-            if (graphView.isIn(u)) {
-                v = u;
-            }
-        }
         if (v == -1) {
             v = cutpointFinder.find(graphView);
         }
+#ifdef VCUT_SELECTOR
         if (v == -1) {
             int mnd = -1;
             for (int u : graphView.leftVertices) {
@@ -1634,13 +1662,17 @@ private:
             }
             if (mnd > 2) {
                 if (vertexCutFinder.findCut(graphView, mnd - 1)) {
-                    forceBranch.resize(vertexCutFinder.cut.size());
-                    std::memcpy(forceBranch.data(), vertexCutFinder.cut.data(), sizeof(int) * forceBranch.size());
-                    v = forceBranch.back();
-                    forceBranch.pop_back();
+                    v = vertexCutFinder.cut[0];
+#ifdef DEBUG_VCUT
+                    std::cout << spaces << "vcut: ";
+                    for (int u : vertexCutFinder.cut)
+                        std::cout << u << " ";
+                    std::cout << std::endl;
+#endif
                 }
             }
         }
+#endif
         if (v == -1) {
             int mxd = -1;
             for (int u : graphView.leftVertices) {
@@ -1759,12 +1791,6 @@ private:
                 curSolution.pop();
             }
             // State of graph and graphView will be restored in branch() subroutine
-        }
-
-        if (!fbret.empty()) {
-            int rem = forceBranch.size();
-            forceBranch.resize(rem + fbret.size());
-            std::memcpy(forceBranch.data() + rem, fbret.data(), sizeof(int) * fbret.size());
         }
 
         branchedAt.resize(branchedAtBegin.back());
